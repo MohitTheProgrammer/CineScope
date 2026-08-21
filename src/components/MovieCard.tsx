@@ -1,0 +1,299 @@
+
+export interface MovieCardProps {
+    id: number;
+    title: string;
+    posterPath: string | null;
+    releaseDate?: string;
+    rating?: number;
+    genres?: string[];
+}
+
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+
+const MovieCard = ({
+    id,
+    title,
+    posterPath,
+    releaseDate,
+    rating,
+    genres = [],
+}: MovieCardProps) => {
+    const year = releaseDate
+        ? new Date(releaseDate).getFullYear()
+        : null;
+
+    const posterUrl = posterPath
+        ? `${IMAGE_BASE_URL}${posterPath}`
+        : "/placeholder-movie.jpg";
+
+    return (
+        <article
+            data-movie-id={id}
+            className="
+        group relative
+        w-44 shrink-0
+        cursor-pointer
+        sm:w-48
+        lg:w-52
+      "
+        >
+            {/* Poster */}
+            <div
+                className="
+          relative
+          aspect-2/3
+          overflow-hidden
+          rounded-2xl
+          border border-white/10
+          bg-white/5
+          shadow-[0_10px_30px_rgba(0,0,0,0.25)]
+          transition-all
+          duration-500
+          ease-out
+
+          group-hover:-translate-y-2
+          group-hover:border-(--accent-primary)
+          group-hover:shadow-[0_15px_45px_var(--accent-glow)]
+        "
+            >
+                <img
+                    src={posterUrl}
+                    alt={title}
+                    loading="lazy"
+                    className="
+            absolute inset-0
+            h-full w-full
+            object-cover
+            transition-transform
+            duration-700
+            ease-out
+            group-hover:scale-110
+          "
+                />
+
+                {/* Bottom gradient */}
+                <div
+                    className="
+            absolute inset-x-0 bottom-0
+            h-2/3
+            bg-linear-to-t
+            from-black/95
+            via-black/30
+            to-transparent
+            opacity-90
+          "
+                />
+
+                {/* Hover overlay */}
+                <div
+                    className="
+            absolute inset-0
+            bg-black/20
+            opacity-0
+            transition-opacity
+            duration-300
+            group-hover:opacity-100
+          "
+                />
+
+                {/* Rating */}
+                {rating !== undefined && (
+                    <Rating value={rating} />
+                )}
+
+                {/* Add button */}
+                <button
+                    type="button"
+                    aria-label={`Add ${title} to my list`}
+                    className="
+            absolute right-3 top-3
+            flex size-8
+            items-center justify-center
+            rounded-full
+            border border-white/15
+            bg-black/50
+            text-white/80
+            opacity-0
+            backdrop-blur-md
+            transition-all
+            duration-300
+
+            hover:border-(--accent-primary)
+            hover:bg-(--accent-primary)
+            hover:text-white
+
+            group-hover:opacity-100
+          "
+                >
+                    <PlusIcon />
+                </button>
+
+                {/* Play button */}
+                <button
+                    type="button"
+                    aria-label={`Play ${title}`}
+                    className="
+            absolute left-1/2 top-1/2
+            flex size-11
+            -translate-x-1/2
+            -translate-y-1/2
+            items-center justify-center
+            rounded-full
+            bg-(--accent-primary)
+            text-white
+            opacity-0
+            shadow-[0_0_25px_var(--accent-glow)]
+            transition-all
+            duration-300
+            hover:scale-110
+            group-hover:opacity-100
+          "
+                >
+                    <PlayIcon />
+                </button>
+
+                {/* Movie information */}
+                <div
+                    className="
+            absolute inset-x-0 bottom-0
+            z-10
+            p-4
+          "
+                >
+                    <h3
+                        className="
+              line-clamp-2
+              text-sm
+              font-bold
+              leading-tight
+              text-white
+            "
+                    >
+                        {title}
+                    </h3>
+
+                    <div
+                        className="
+              mt-1.5
+              flex items-center gap-2
+              text-[11px]
+              font-medium
+              text-white/60
+            "
+                    >
+                        {year && <span>{year}</span>}
+
+                        {year && rating !== undefined && (
+                            <span className="size-1 rounded-full bg-white/30" />
+                        )}
+
+                        {rating !== undefined && (
+                            <span>{rating.toFixed(1)}</span>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Genres */}
+            {genres.length > 0 && (
+                <div className="mt-2 flex gap-1.5 overflow-hidden">
+                    {genres.slice(0, 2).map((genre) => (
+                        <span
+                            key={genre}
+                            className="
+                truncate
+                rounded-full
+                border border-white/10
+                bg-white/5
+                px-2
+                py-0.5
+                text-[9px]
+                font-medium
+                uppercase
+                tracking-wide
+                text-white/50
+              "
+                        >
+                            {genre}
+                        </span>
+                    ))}
+                </div>
+            )}
+        </article>
+    );
+};
+
+/* -------------------------------------------------------------------------- */
+/* Rating                                                                     */
+/* -------------------------------------------------------------------------- */
+
+interface RatingProps {
+    value: number;
+}
+
+const Rating = ({ value }: RatingProps) => {
+    return (
+        <div
+            className="
+        absolute left-3 top-3
+        z-10
+        flex items-center gap-1
+        rounded-full
+        border border-white/10
+        bg-black/60
+        px-2 py-1
+        text-[10px]
+        font-bold
+        text-white
+        backdrop-blur-md
+      "
+        >
+            <StarIcon />
+
+            <span>{value.toFixed(1)}</span>
+        </div>
+    );
+};
+
+/* -------------------------------------------------------------------------- */
+/* Icons                                                                      */
+/* -------------------------------------------------------------------------- */
+
+const PlayIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="size-4"
+        aria-hidden="true"
+    >
+        <path d="M8 5.14v13.72c0 .79.87 1.27 1.54.85l10.98-6.86a1 1 0 0 0 0-1.7L9.54 4.29A1 1 0 0 0 8 5.14Z" />
+    </svg>
+);
+
+const PlusIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        className="size-4"
+        aria-hidden="true"
+    >
+        <path d="M12 5v14" />
+        <path d="M5 12h14" />
+    </svg>
+);
+
+const StarIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="size-3 text-(--accent-secondary)"
+        aria-hidden="true"
+    >
+        <path d="m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z" />
+    </svg>
+);
+
+export default MovieCard;

@@ -1,25 +1,73 @@
 @import "tailwindcss";
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --background: #05020a;
-  --surface: #0d0815;
-  --surface-light: #151020;
-
-  --neon-pink: #ff2da6;
-  --neon-purple: #8b5cf6;
-  --neon-cyan: #00e5ff;
+/* :root {
+  --bg-primary: #05020a;
+  --bg-secondary: #0d0815;
+  --bg-glass: rgba(8, 5, 14, 0.82);
 
   --text-primary: #f8f7fb;
   --text-secondary: #aaa6b5;
-  --border: rgba(255, 255, 255, 0.08);
+  --text-muted: #777282;
+
+  --accent-primary: #ff2da6;
+  --accent-secondary: #00e5ff;
+
+  --border: rgba(255, 255, 255, 0.1);
+  --accent-glow: rgba(255, 45, 166, 0.3);
+} */
+:root {
+  --bg-primary: #05020a;
+  --bg-secondary: #0d0815;
+  --bg-glass: rgba(8, 5, 14, 0.82);
+
+  --text-primary: #f8f7fb;
+  --text-secondary: #aaa6b5;
+  --text-muted: #777282;
+
+  --accent-primary: #ff2da6;
+  --accent-secondary: #00e5ff;
+
+  --border: rgba(255, 255, 255, 0.1);
+  --accent-glow: rgba(255, 45, 166, 0.3);
 }
 
+/* Purple */
+
+[data-theme="purple"] {
+  --bg-primary: #06030b;
+  --bg-secondary: #10071c;
+  --bg-glass: rgba(12, 6, 22, 0.82);
+
+  --accent-primary: #a855f7;
+  --accent-secondary: #6366f1;
+
+  --accent-glow: rgba(168, 85, 247, 0.3);
+}
+
+/* Cyan */
+
+[data-theme="cyan"] {
+  --bg-primary: #020708;
+  --bg-secondary: #061316;
+  --bg-glass: rgba(3, 12, 14, 0.82);
+
+  --accent-primary: #00e5ff;
+  --accent-secondary: #00ffa3;
+
+  --accent-glow: rgba(0, 229, 255, 0.3);
+}
+
+/* Red */
+
+[data-theme="red"] {
+  --bg-primary: #090202;
+  --bg-secondary: #150606;
+  --bg-glass: rgba(15, 4, 4, 0.82);
+
+  --accent-primary: #ff3b3b;
+  --accent-secondary: #ff8a00;
+
+  --accent-glow: rgba(255, 59, 59, 0.3);
+}
 * {
   box-sizing: border-box;
 }
