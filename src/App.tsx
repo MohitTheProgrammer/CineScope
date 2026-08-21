@@ -3,7 +3,10 @@ import './App.css'
 function App() {
 
   return (
-    <div>Hello CineScope
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <h1 className="text-5xl font-bold text-pink-500">
+        CineScope
+      </h1>
     </div>
   )
 }
