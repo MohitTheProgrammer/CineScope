@@ -25,7 +25,11 @@ const GENRE_MAP: Record<number, string> = {
     37: "Western",
 };
 
-const MovieCard = (movie: Movie,) => {
+interface MovieCardProps extends Movie {
+    orientation: "vertical" | "horizontal";
+}
+
+const MovieCard = (movie: MovieCardProps,) => {
     const navigate = useNavigate();
 
 

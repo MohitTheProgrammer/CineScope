@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { ArrowIcon } from "../assets/icons/Icons";
 import { type Movie } from "../types/movie";
 import MovieCard from "./MovieCard";
@@ -15,6 +16,10 @@ const TrendingSection = ({
     loading,
     error,
 }: TrendingSectionProps) => {
+    const navigate = useNavigate();
+    const handleClickViewAll = () => {
+        navigate("/trending")
+    }
     return (
         <section
             id="trending"
@@ -78,6 +83,7 @@ const TrendingSection = ({
                         hover:text-(--accent-primary)
                         sm:flex
                     "
+                    onClick={handleClickViewAll}
                 >
                     View all
                     <ArrowIcon />

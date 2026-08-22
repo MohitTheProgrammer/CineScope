@@ -9,6 +9,7 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home";
 import Trending from "../pages/Trending";
 import MovieDetail from "../pages/MovieDetail";
+import Search from "../pages/Search";
 // import Search from "../pages/Search";
 // import MovieDetails from "../pages/MovieDetails";
 // import Login from "../pages/Login";
@@ -31,10 +32,15 @@ const AppRoutes = () => {
                         element={<Trending />}
                     />
                     <Route
-    path="/movie/:id"
-    element={<MovieDetail />}
+                        path="/movie/:id"
+                        element={<MovieDetail />}
 
-/>
+                    />
+
+                    <Route
+                        path="/search"
+                        element={<Search />}
+                    />
 
                     {/* <Route
             path="/search"

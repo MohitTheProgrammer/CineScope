@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import MovieCard from "../components/MovieCard";
 import type { Movie } from "../types/movie";
-import { getPopularMovies } from "../services/tmdb";
+import { getTrendingMovies } from "../services/tmdb";
 
 interface MoviesResponse {
     page: number;
@@ -30,12 +30,12 @@ const Trending = () => {
                 setLoading(true);
                 setError(null);
 
-                const data: MoviesResponse = await getPopularMovies(
+                const data: MoviesResponse = await getTrendingMovies(
                     currentPage
                 );
 
                 setMovies(data.results);
-                setTotalPages(Math.min(data.total_pages, 500));
+                setTotalPages(Math.min(data.total_pages, 50000));
                 console.log(data.total_pages)
             } catch (error) {
                 console.error(

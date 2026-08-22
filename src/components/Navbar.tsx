@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
+import MovieSearch from "./MovieSearch";
 
 const Navbar = () => {
+
+
   return (
     <header
       className="
@@ -53,10 +56,10 @@ const Navbar = () => {
         {/* Actions */}
         <div className="flex items-center gap-3">
           <ThemeSwitcher />
+          {/* <MovieSearch /> */}
 
-          <IconButton label="Search">
-            <SearchIcon />
-          </IconButton>
+          {/* <Search /> */}
+          <MovieSearch />
 
           <IconButton
             label="Profile"
@@ -266,24 +269,6 @@ const IconButton = ({
 /* -------------------------------------------------------------------------- */
 /* Icons                                                                      */
 /* -------------------------------------------------------------------------- */
-
-const SearchIcon = () => {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-4.5"
-      aria-hidden="true"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-4-4" />
-    </svg>
-  );
-};
 
 const UserIcon = () => {
   return (

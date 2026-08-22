@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TrendingSection from "../components/TrendingSection";
-import { getPopularMovies } from "../services/tmdb";
+import { getTrendingMovies } from "../services/tmdb";
 import type { Movie } from "../types/movie";
 import { ArrowIcon } from "../assets/icons/Icons";
 import Stat from "../components/Stat";
@@ -16,7 +16,7 @@ const Home = () => {
                 setLoading(true);
                 setError(null);
 
-                const data = await getPopularMovies();
+                const data = await getTrendingMovies();
 
                 setMovies(data.results);
             } catch (error) {

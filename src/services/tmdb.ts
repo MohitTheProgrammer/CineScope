@@ -1,4 +1,5 @@
 import axios from "axios";
+import { type Movie } from "../types/movie";
 
 const tmdb = axios.create({
     baseURL: "https://api.themoviedb.org/3",
@@ -8,8 +9,8 @@ const tmdb = axios.create({
     },
 });
 
-export const getPopularMovies = async (page = 1) => {
-    const response = await tmdb.get("/movie/popular", {
+export const getTrendingMovies = async (page = 1) => {
+    const response = await tmdb.get("/trending/movie/week", {
         params: {
             page,
         },
@@ -24,6 +25,22 @@ export const getMovieVideos = async (movieId: number) => {
     );
 
     return response.data;
+};
+
+
+export const searchMovies = async (
+    query: string
+): Promise<Movie[]> => {
+    const response = await tmdb.get("/search/movie", {
+        params: {
+            query,
+            include_adult: true,
+            language: "en-US",
+            page: 1,
+        },
+    });
+
+    return response.data.results;
 };
 
 
