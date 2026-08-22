@@ -1,129 +1,174 @@
-
-export interface MovieCardProps {
-    id: number;
-    title: string;
-    posterPath: string | null;
-    releaseDate?: string;
-    rating?: number;
-    genres?: string[];
-}
+import type { Movie } from "../types/movie";
+import { useNavigate } from "react-router-dom";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-const MovieCard = ({
-    id,
-    title,
-    posterPath,
-    releaseDate,
-    rating,
-    genres = [],
-}: MovieCardProps) => {
-    const year = releaseDate
-        ? new Date(releaseDate).getFullYear()
+const GENRE_MAP: Record<number, string> = {
+    28: "Action",
+    12: "Adventure",
+    16: "Animation",
+    35: "Comedy",
+    80: "Crime",
+    99: "Documentary",
+    18: "Drama",
+    10751: "Family",
+    14: "Fantasy",
+    36: "History",
+    27: "Horror",
+    10402: "Music",
+    9648: "Mystery",
+    10749: "Romance",
+    878: "Sci-Fi",
+    10770: "TV Movie",
+    53: "Thriller",
+    10752: "War",
+    37: "Western",
+};
+
+const MovieCard = (movie: Movie,) => {
+    const navigate = useNavigate();
+
+
+
+    const {
+        id,
+        title,
+        poster_path,
+        release_date,
+        vote_average,
+        genre_ids = [],
+        orientation
+    } = movie;
+
+    const year = release_date
+        ? new Date(release_date).getFullYear()
         : null;
 
-    const posterUrl = posterPath
-        ? `${IMAGE_BASE_URL}${posterPath}`
+    const posterUrl = poster_path
+        ? `${IMAGE_BASE_URL}${poster_path}`
         : "/placeholder-movie.jpg";
+
+    const genres = genre_ids
+        .map((genreId) => GENRE_MAP[genreId])
+        .filter(Boolean);
+
+    const handleMovieClick = () => {
+        navigate(`/movie/${id}`, {
+            state: {
+                movie,
+            },
+        });
+    };
 
     return (
         <article
             data-movie-id={id}
-            className="
-        group relative
-        w-44 shrink-0
-        cursor-pointer
-        sm:w-48
-        lg:w-52
-      "
+            onClick={handleMovieClick}
+            className={
+                orientation === "vertical"
+                    ? "group relative w-full min-w-0 cursor-pointer"
+                    : "group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52"
+            }
         >
+
+
             {/* Poster */}
             <div
                 className="
-          relative
-          aspect-2/3
-          overflow-hidden
-          rounded-2xl
-          border border-white/10
-          bg-white/5
-          shadow-[0_10px_30px_rgba(0,0,0,0.25)]
-          transition-all
-          duration-500
-          ease-out
-
-          group-hover:-translate-y-2
-          group-hover:border-(--accent-primary)
-          group-hover:shadow-[0_15px_45px_var(--accent-glow)]
-        "
+                    relative
+                    aspect-2/3
+                    overflow-hidden
+                    rounded-2xl
+                    border border-white/10
+                    bg-white/5
+                    shadow-[0_10px_30px_rgba(0,0,0,0.25)]
+                    transition-all
+                    duration-500
+                    ease-out
+                    group-hover:-translate-y-2
+                    group-hover:border-(--accent-primary)
+                    group-hover:shadow-[0_15px_45px_var(--accent-glow)]
+                "
             >
+                {/* Image */}
                 <img
                     src={posterUrl}
                     alt={title}
                     loading="lazy"
                     className="
-            absolute inset-0
-            h-full w-full
-            object-cover
-            transition-transform
-            duration-700
-            ease-out
-            group-hover:scale-110
-          "
+                        absolute
+                        inset-0
+                        h-full
+                        w-full
+                        object-cover
+                        transition-transform
+                        duration-700
+                        ease-out
+                        group-hover:scale-110
+                    "
                 />
 
                 {/* Bottom gradient */}
                 <div
                     className="
-            absolute inset-x-0 bottom-0
-            h-2/3
-            bg-linear-to-t
-            from-black/95
-            via-black/30
-            to-transparent
-            opacity-90
-          "
+                        absolute
+                        inset-x-0
+                        bottom-0
+                        h-2/3
+                        bg-linear-to-t
+                        from-black/95
+                        via-black/30
+                        to-transparent
+                        opacity-90
+                    "
                 />
 
                 {/* Hover overlay */}
                 <div
                     className="
-            absolute inset-0
-            bg-black/20
-            opacity-0
-            transition-opacity
-            duration-300
-            group-hover:opacity-100
-          "
+                        absolute
+                        inset-0
+                        bg-black/20
+                        opacity-0
+                        transition-opacity
+                        duration-300
+                        group-hover:opacity-100
+                    "
                 />
 
                 {/* Rating */}
-                {rating !== undefined && (
-                    <Rating value={rating} />
-                )}
+                <Rating value={vote_average} />
 
                 {/* Add button */}
                 <button
                     type="button"
                     aria-label={`Add ${title} to my list`}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                    }}
                     className="
-            absolute right-3 top-3
-            flex size-8
-            items-center justify-center
-            rounded-full
-            border border-white/15
-            bg-black/50
-            text-white/80
-            opacity-0
-            backdrop-blur-md
-            transition-all
-            duration-300
-
-            hover:border-(--accent-primary)
-            hover:bg-(--accent-primary)
-            hover:text-white
-
-            group-hover:opacity-100
-          "
+                        absolute
+                        right-3
+                        top-3
+                        z-20
+                        flex
+                        size-8
+                        items-center
+                        justify-center
+                        rounded-full
+                        border
+                        border-white/15
+                        bg-black/50
+                        text-white/80
+                        opacity-0
+                        backdrop-blur-md
+                        transition-all
+                        duration-300
+                        hover:border-(--accent-primary)
+                        hover:bg-(--accent-primary)
+                        hover:text-white
+                        group-hover:opacity-100
+                    "
                 >
                     <PlusIcon />
                 </button>
@@ -131,23 +176,32 @@ const MovieCard = ({
                 {/* Play button */}
                 <button
                     type="button"
-                    aria-label={`Play ${title}`}
+                    aria-label={`Open ${title}`}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        handleMovieClick();
+                    }}
                     className="
-            absolute left-1/2 top-1/2
-            flex size-11
-            -translate-x-1/2
-            -translate-y-1/2
-            items-center justify-center
-            rounded-full
-            bg-(--accent-primary)
-            text-white
-            opacity-0
-            shadow-[0_0_25px_var(--accent-glow)]
-            transition-all
-            duration-300
-            hover:scale-110
-            group-hover:opacity-100
-          "
+                        absolute
+                        left-1/2
+                        top-1/2
+                        z-20
+                        flex
+                        size-11
+                        -translate-x-1/2
+                        -translate-y-1/2
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-(--accent-primary)
+                        text-white
+                        opacity-0
+                        shadow-[0_0_25px_var(--accent-glow)]
+                        transition-all
+                        duration-300
+                        hover:scale-110
+                        group-hover:opacity-100
+                    "
                 >
                     <PlayIcon />
                 </button>
@@ -155,64 +209,82 @@ const MovieCard = ({
                 {/* Movie information */}
                 <div
                     className="
-            absolute inset-x-0 bottom-0
-            z-10
-            p-4
-          "
+                        absolute
+                        inset-x-0
+                        bottom-0
+                        z-10
+                        p-4
+                    "
                 >
                     <h3
                         className="
-              line-clamp-2
-              text-sm
-              font-bold
-              leading-tight
-              text-white
-            "
+                            line-clamp-2
+                            text-sm
+                            font-bold
+                            leading-tight
+                            text-white
+                        "
                     >
                         {title}
                     </h3>
 
                     <div
                         className="
-              mt-1.5
-              flex items-center gap-2
-              text-[11px]
-              font-medium
-              text-white/60
-            "
+                            mt-1.5
+                            flex
+                            items-center
+                            gap-2
+                            text-[11px]
+                            font-medium
+                            text-white/60
+                        "
                     >
                         {year && <span>{year}</span>}
 
-                        {year && rating !== undefined && (
-                            <span className="size-1 rounded-full bg-white/30" />
+                        {year && (
+                            <span
+                                className="
+                                    size-1
+                                    rounded-full
+                                    bg-white/30
+                                "
+                            />
                         )}
 
-                        {rating !== undefined && (
-                            <span>{rating.toFixed(1)}</span>
-                        )}
+                        <span>
+                            {vote_average.toFixed(1)}
+                        </span>
                     </div>
                 </div>
             </div>
 
             {/* Genres */}
             {genres.length > 0 && (
-                <div className="mt-2 flex gap-1.5 overflow-hidden">
+                <div
+                    className="
+                        mt-2
+                        flex
+                        gap-1.5
+                        overflow-hidden
+                    "
+                >
                     {genres.slice(0, 2).map((genre) => (
                         <span
                             key={genre}
                             className="
-                truncate
-                rounded-full
-                border border-white/10
-                bg-white/5
-                px-2
-                py-0.5
-                text-[9px]
-                font-medium
-                uppercase
-                tracking-wide
-                text-white/50
-              "
+                                truncate
+                                rounded-full
+                                border
+                                border-white/10
+                                bg-white/5
+                                px-2
+                                py-0.5
+                                text-[9px]
+                                font-medium
+                                uppercase
+                                tracking-wide
+                                text-white/50
+                            "
                         >
                             {genre}
                         </span>
@@ -235,18 +307,24 @@ const Rating = ({ value }: RatingProps) => {
     return (
         <div
             className="
-        absolute left-3 top-3
-        z-10
-        flex items-center gap-1
-        rounded-full
-        border border-white/10
-        bg-black/60
-        px-2 py-1
-        text-[10px]
-        font-bold
-        text-white
-        backdrop-blur-md
-      "
+                absolute
+                left-3
+                top-3
+                z-10
+                flex
+                items-center
+                gap-1
+                rounded-full
+                border
+                border-white/10
+                bg-black/60
+                px-2
+                py-1
+                text-[10px]
+                font-bold
+                text-white
+                backdrop-blur-md
+            "
         >
             <StarIcon />
 

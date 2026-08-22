@@ -1,37 +1,59 @@
 import type { ReactNode } from "react";
+import { NavLink } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navbar = () => {
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
-        
+    <header
+      className="
+                fixed
+                inset-x-0
+                top-0
+                z-50
+                border-b
+                border-white/5
+                bg-black/70
+                backdrop-blur-xl
+            "
+    >
+      <nav
+        className="
+                    mx-auto
+                    flex
+                    h-20
+                    max-w-7xl
+                    items-center
+                    justify-between
+                    px-6
+                    lg:px-8
+                "
+      >
         {/* Logo */}
         <Logo />
 
         {/* Navigation */}
-        <div className="hidden items-center gap-9 md:flex">
-          <NavItem href="/" active>
+        <div className="hidden items-center gap-8 md:flex">
+          <NavItem to="/">
             Discover
           </NavItem>
 
-          <NavItem href="#trending">
+          <NavItem to="/trending">
             Trending
           </NavItem>
 
-          <NavItem href="#my-list">
+          <NavItem to="/my-list">
             My List
           </NavItem>
 
-          <NavItem href="#recommendations">
+          <NavItem to="/recommendations">
             For You
           </NavItem>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          
-  <ThemeSwitcher />
+          <ThemeSwitcher />
+
           <IconButton label="Search">
             <SearchIcon />
           </IconButton>
@@ -46,18 +68,22 @@ const Navbar = () => {
           <button
             type="button"
             className="
-              hidden
-              rounded-full
-              border border-(--accent-primary)
-              bg-(--accent-primary)
-              px-5 py-2.5
-              text-sm font-semibold
-              text-white
-              transition-all duration-300
-              hover:scale-105
-              hover:shadow-[0_0_25px_var(--accent-glow)]
-              sm:block
-            "
+                            hidden
+                            rounded-full
+                            border
+                            border-(--accent-primary)
+                            bg-(--accent-primary)
+                            px-5
+                            py-2.5
+                            text-sm
+                            font-semibold
+                            text-white
+                            transition-all
+                            duration-300
+                            hover:scale-105
+                            hover:shadow-[0_0_25px_var(--accent-glow)]
+                            sm:block
+                        "
           >
             Sign In
           </button>
@@ -71,16 +97,18 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Bottom glow */}
+      {/* Bottom accent line */}
       <div
         className="
-          mx-auto h-px max-w-7xl
-          bg-linear-to-r
-          from-transparent
-          via-(--accent-primary)
-          to-transparent
-          opacity-40
-        "
+                    mx-auto
+                    h-px
+                    max-w-7xl
+                    bg-linear-to-r
+                    from-transparent
+                    via-(--accent-primary)
+                    to-transparent
+                    opacity-40
+                "
       />
     </header>
   );
@@ -92,27 +120,27 @@ const Navbar = () => {
 
 const Logo = () => {
   return (
-    <a
-      href="/"
+    <NavLink
+      to="/"
       aria-label="CineScope home"
       className="group flex items-center gap-2"
     >
       <span
         className="
-          text-2xl
-          font-black
-          tracking-[-0.06em]
-          text-white
-        "
+                    text-2xl
+                    font-black
+                    tracking-[-0.06em]
+                    text-white
+                "
       >
         Cine
         <span
           className="
-            text-(--accent-primary)
-            transition-all
-            duration-300
-            group-hover:[text-shadow:0_0_18px_var(--accent-glow)]
-          "
+                        text-(--accent-primary)
+                        transition-all
+                        duration-300
+                        group-hover:[text-shadow:0_0_18px_var(--accent-glow)]
+                    "
         >
           Scope
         </span>
@@ -120,74 +148,79 @@ const Logo = () => {
 
       <span
         className="
-          h-1.5
-          w-1.5
-          rounded-full
-          bg-(--accent-secondary)
-          shadow-[0_0_10px_var(--accent-secondary)]
-        "
+                    size-1.5
+                    rounded-full
+                    bg-(--accent-secondary)
+                    shadow-[0_0_10px_var(--accent-secondary)]
+                "
       />
-    </a>
+    </NavLink>
   );
 };
 
 /* -------------------------------------------------------------------------- */
-/* Navigation item                                                            */
+/* Navigation Item                                                            */
 /* -------------------------------------------------------------------------- */
 
 interface NavItemProps {
-  href: string;
+  to: string;
   children: ReactNode;
-  active?: boolean;
 }
 
-const NavItem = ({
-  href,
-  children,
-  active = false,
-}: NavItemProps) => {
+const NavItem = ({ to, children }: NavItemProps) => {
   return (
-    <a
-      href={href}
-      className={`
-        group
-        relative
-        py-2
-        text-sm
-        font-medium
-        transition-colors
-        duration-300
+    <NavLink
+      to={to}
+      end={to === "/"}
+      className={({ isActive }) => `
+                group
+                relative
+                flex
+                h-10
+                items-center
+                text-sm
+                font-semibold
+                transition-colors
+                duration-300
 
-        ${
-          active
-            ? "text-white"
-            : "text-white/60 hover:text-white"
+                ${isActive
+          ? "text-white"
+          : "text-white/50 hover:text-white"
         }
-      `}
+            `}
     >
-      {children}
+      {({ isActive }) => (
+        <>
+          <span>{children}</span>
 
-      <span
-        className={`
-          absolute
-          bottom-0
-          left-1/2
-          h-px
-          -translate-x-1/2
-          bg-(--accent-primary)
-          shadow-[0_0_8px_var(--accent-primary)]
-          transition-all
-          duration-300
+          {/* Active indicator */}
+          <span
+            className={`
+                            absolute
+                            -bottom-1
+                            left-1/2
+                            h-0.5
+                            -translate-x-1/2
+                            rounded-full
+                            bg-(--accent-primary)
+                            shadow-[0_0_10px_var(--accent-glow)]
+                            transition-all
+                            duration-300
 
-          ${active ? "w-full" : "w-0 group-hover:w-full"}
-        `}
-      />
-    </a>
+                            ${isActive
+                ? "w-full opacity-100"
+                : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+              }
+                        `}
+          />
+        </>
+      )}
+    </NavLink>
   );
 };
 
 /* -------------------------------------------------------------------------- */
-/* Icon button                                                                */
+/* Icon Button                                                                */
 /* -------------------------------------------------------------------------- */
 
 interface IconButtonProps {
@@ -206,31 +239,24 @@ const IconButton = ({
       type="button"
       aria-label={label}
       className={`
-        flex
-        size-10
-        items-center
-        justify-center
-        rounded-full
-
-        border
-        border-white/10
-
-        bg-white/5
-
-        text-white/70
-
-        backdrop-blur-xl
-
-        transition-all
-        duration-300
-
-        hover:border-(--accent-primary)
-        hover:bg-(--accent-primary)/10
-        hover:text-(--accent-primary)
-        hover:shadow-[0_0_20px_var(--accent-glow)]
-
-        ${className}
-      `}
+                flex
+                size-10
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-white/10
+                bg-white/5
+                text-white/60
+                backdrop-blur-xl
+                transition-all
+                duration-300
+                hover:border-(--accent-primary)
+                hover:bg-(--accent-primary)/10
+                hover:text-(--accent-primary)
+                hover:shadow-[0_0_20px_var(--accent-glow)]
+                ${className}
+            `}
     >
       {children}
     </button>
