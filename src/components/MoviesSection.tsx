@@ -5,20 +5,26 @@ import MovieCard from "./MovieCard";
 import MovieSkeletons from "./MovieSkeletons";
 
 
-interface TrendingSectionProps {
+interface MoviesSectionProps {
     movies: Movie[];
     loading: boolean;
     error: string | null;
+    title: string,
+    subtitle:string,
+    redirectLink: string
 }
 
-const TrendingSection = ({
+const MoviesSection = ({
     movies,
     loading,
     error,
-}: TrendingSectionProps) => {
+    title,
+    redirectLink,
+    subtitle
+}: MoviesSectionProps) => {
     const navigate = useNavigate();
     const handleClickViewAll = () => {
-        navigate("/trending")
+        navigate(redirectLink)
     }
     return (
         <section
@@ -27,7 +33,7 @@ const TrendingSection = ({
                 mx-auto
                 max-w-7xl
                 px-6
-                py-20
+                py-4
                 lg:px-8
             "
         >
@@ -53,7 +59,7 @@ const TrendingSection = ({
                                 text-(--accent-primary)
                             "
                         >
-                            Right now
+                            {subtitle}
                         </span>
                     </div>
 
@@ -64,9 +70,10 @@ const TrendingSection = ({
                             tracking-tight
                             text-white
                             sm:text-4xl
+                            capitalize
                         "
                     >
-                        Trending Movies
+                        {title}
                     </h2>
                 </div>
 
@@ -157,4 +164,4 @@ const TrendingSection = ({
     );
 };
 
-export default TrendingSection
+export default MoviesSection

@@ -35,9 +35,6 @@ const MovieDetail = () => {
 
     const state = location.state as MovieDetailState | null;
     const movie = state?.movie;
-
-    console.log({movie})
-
     const [videos, setVideos] = useState<Video[]>([]);
     const [cast, setCast] = useState<CastMember[]>([]);
     const [loadingVideos, setLoadingVideos] = useState(true);
@@ -97,10 +94,9 @@ const MovieDetail = () => {
                     `https://api.themoviedb.org/3/movie/${movie.id}/credits`,
                     {
                         headers: {
-                            Authorization: `Bearer ${
-                                import.meta.env
-                                    .VITE_TMDB_ACCESS_TOKEN
-                            }`,
+                            Authorization: `Bearer ${import.meta.env
+                                .VITE_TMDB_ACCESS_TOKEN
+                                }`,
                             "Content-Type":
                                 "application/json",
                         },
@@ -320,6 +316,24 @@ const MovieDetail = () => {
                                         {movie.vote_count.toLocaleString()}{" "}
                                         votes
                                     </span>
+
+                                    {movie.adult && (
+                                        <>  <Dot />   <span
+                                            className="
+            rounded-md
+            border
+            border-red-500/30
+            bg-red-500/10
+            px-2
+            py-1
+            text-xs
+            font-bold
+            text-red-400
+        "
+                                        >
+                                            18+
+                                        </span></>
+                                    )}
                                 </>
                             )}
                         </div>

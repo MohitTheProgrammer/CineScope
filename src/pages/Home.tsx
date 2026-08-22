@@ -1,43 +1,75 @@
 import { useEffect, useState } from "react";
-import TrendingSection from "../components/TrendingSection";
-import { getTrendingMovies } from "../services/tmdb";
+import MoviesSection from "../components/MoviesSection";
+import { getTrendingMovies, getPopularMovies } from "../services/tmdb";
 import type { Movie } from "../types/movie";
 import { ArrowIcon } from "../assets/icons/Icons";
 import Stat from "../components/Stat";
 
 const Home = () => {
-    const [movies, setMovies] = useState<Movie[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
+    const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+    const [trendingLoading, setTrendingLoading] = useState(true);
+    const [trendingError, setTrendingError] = useState<string | null>(null);
+    const [popularLoading, setPopularLoading] = useState(true);
+    const [popularError, setPopularError] = useState<string | null>(null);
 
     useEffect(() => {
-        const loadMovies = async () => {
+        const loadTrendingMovies = async () => {
             try {
-                setLoading(true);
-                setError(null);
+                setTrendingLoading(true);
+                setTrendingError(null);
 
                 const data = await getTrendingMovies();
 
-                setMovies(data.results);
+                setTrendingMovies(data.results);
             } catch (error) {
                 console.error("Failed to load movies:", error);
-                setError("Unable to load movies right now.");
+                setTrendingError("Unable to load movies right now.");
             } finally {
-                setLoading(false);
+                setTrendingLoading(false);
+            }
+        };
+        const loadPopularMovies = async () => {
+            try {
+                setPopularLoading(true);
+                setPopularError(null);
+
+                const data = await getPopularMovies();
+
+                setPopularMovies(data.results);
+            } catch (error) {
+                console.error("Failed to load movies:", error);
+                setPopularError("Unable to load movies right now.");
+            } finally {
+                setPopularLoading(false);
             }
         };
 
-        loadMovies();
+        loadTrendingMovies();
+        loadPopularMovies()
     }, []);
 
     return (
         <div className="min-h-screen bg-(--bg-primary)">
             <Hero />
 
-            <TrendingSection
-                movies={movies}
-                loading={loading}
-                error={error}
+            <MoviesSection
+                movies={trendingMovies}
+                loading={trendingLoading}
+                error={trendingError}
+                title="trending movies"
+                redirectLink="/trending"
+                subtitle="right now"
+                id="trending"
+            />
+            <MoviesSection
+                movies={popularMovies}
+                loading={popularLoading}
+                error={popularError}
+                title="popular movies"
+                redirectLink="/popular"
+                subtitle="among people"
+                id="popular"
             />
         </div>
     );

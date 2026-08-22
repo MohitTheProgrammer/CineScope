@@ -35,8 +35,7 @@ const Trending = () => {
                 );
 
                 setMovies(data.results);
-                setTotalPages(Math.min(data.total_pages, 50000));
-                console.log(data.total_pages)
+                setTotalPages(Math.min(data.total_pages, 500));
             } catch (error) {
                 console.error(
                     "Failed to load trending movies:",

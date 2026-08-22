@@ -19,6 +19,12 @@ export const getTrendingMovies = async (page = 1) => {
     return response.data;
 };
 
+export const getPopularMovies = async () => {
+    const response = await tmdb.get("/movie/popular");
+
+    return response.data;
+};
+
 export const getMovieVideos = async (movieId: number) => {
     const response = await tmdb.get(
         `/movie/${movieId}/videos`
