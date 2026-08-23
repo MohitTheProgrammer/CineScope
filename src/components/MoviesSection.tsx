@@ -11,7 +11,8 @@ interface MoviesSectionProps {
     error: string | null;
     title: string,
     subtitle:string,
-    redirectLink: string
+    redirectLink: string,
+    id:string
 }
 
 const MoviesSection = ({
@@ -20,7 +21,8 @@ const MoviesSection = ({
     error,
     title,
     redirectLink,
-    subtitle
+    subtitle,
+    id
 }: MoviesSectionProps) => {
     const navigate = useNavigate();
     const handleClickViewAll = () => {
@@ -28,7 +30,7 @@ const MoviesSection = ({
     }
     return (
         <section
-            id="trending"
+            id={id}
             className="
                 mx-auto
                 max-w-7xl

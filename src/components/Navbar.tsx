@@ -3,9 +3,15 @@ import { NavLink } from "react-router-dom";
 
 import ThemeSwitcher from "./ThemeSwitcher";
 import MovieSearch from "./MovieSearch";
+import { useUser } from "../context/UserContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useUser()
+
+  console.log({ user })
+
+
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -101,19 +107,19 @@ const Navbar = () => {
           </div>
 
           {/* Profile - Desktop */}
-
-          <IconButton
-            label="Profile"
-            className="hidden lg:flex"
-          >
-            <UserIcon />
-          </IconButton>
-
+          <NavLink to={"/Profile"}>
+            <IconButton
+              label="Profile"
+              className="hidden lg:flex"
+            >
+              <UserIcon />
+            </IconButton>
+          </NavLink>
           {/* Sign In - Desktop */}
-
-          <button
-            type="button"
-            className="
+          <NavLink to={"/login"}>
+            <button
+              type="button"
+              className="
                             hidden
                             rounded-full
                             border
@@ -130,9 +136,11 @@ const Navbar = () => {
                             hover:shadow-[0_0_25px_var(--accent-glow)]
                             lg:block
                         "
-          >
-            Sign In
-          </button>
+            >
+
+              Sign In
+            </button>
+          </NavLink>
 
           {/* -------------------------------------------------------- */}
           {/* Hamburger                                                 */}

@@ -10,6 +10,9 @@ import Home from "../pages/Home";
 import Trending from "../pages/Trending";
 import MovieDetail from "../pages/MovieDetail";
 import Search from "../pages/Search";
+import Popular from "../pages/Popular";
+import AuthPage from "../pages/auth/AuthPage";
+import Profile from "../pages/Profile";
 // import Search from "../pages/Search";
 // import MovieDetails from "../pages/MovieDetails";
 // import Login from "../pages/Login";
@@ -32,7 +35,7 @@ const AppRoutes = () => {
                         element={<Trending />}
                     />
                     <Route
-                        path="/movie/:id"
+                        path="/movie/:movieId"
                         element={<MovieDetail />}
 
                     />
@@ -42,41 +45,24 @@ const AppRoutes = () => {
                         element={<Search />}
                     />
 
-                    {/* <Route
-            path="/search"
-            element={<Search />}
-          /> */}
+                    <Route path="/popular" element={<Popular />} />
 
-                    {/* <Route
-            path="/movie/:id"
-            element={<MovieDetails />}
-          /> */}
+                    <Route
+                        path="/login"
+                        element={<AuthPage />}
+                    />
 
-                    {/* Protected routes */}
-                    {/* <Route element={<ProtectedRoute />}>
-            <Route
-              path="/my-list"
-              element={<MyList />}
-            />
+                    <Route
+                        path="/register"
+                        element={<AuthPage />}
+                    />
 
-            <Route
-              path="/recommendations"
-              element={<Recommendations />}
-            />
-          </Route> */}
+                    <Route path="/profile" element={<Profile />} />
+
+
                 </Route>
 
-                {/* Authentication */}
-                {/* <Route
-          path="/login"
-          element={<Login />}
-        /> */}
 
-                {/* 404 */}
-                {/* <Route
-          path="*"
-          element={<NotFound />}
-        /> */}
 
             </Routes>
         </BrowserRouter>

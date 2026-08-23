@@ -1,7 +1,11 @@
 import type { Movie } from "../types/movie";
 import { useNavigate } from "react-router-dom";
 
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+import { useUser } from "../context/UserContext";
+import { addLikedMovie } from "../services/movie";
+
+const IMAGE_BASE_URL =
+    "https://image.tmdb.org/t/p/w500";
 
 const GENRE_MAP: Record<number, string> = {
     28: "Action",
@@ -29,10 +33,9 @@ interface MovieCardProps extends Movie {
     orientation: "vertical" | "horizontal";
 }
 
-const MovieCard = (movie: MovieCardProps,) => {
+const MovieCard = (movie: MovieCardProps) => {
     const navigate = useNavigate();
-
-
+    const { user } = useUser();
 
     const {
         id,
@@ -41,7 +44,7 @@ const MovieCard = (movie: MovieCardProps,) => {
         release_date,
         vote_average,
         genre_ids = [],
-        orientation
+        orientation,
     } = movie;
 
     const year = release_date
@@ -57,11 +60,43 @@ const MovieCard = (movie: MovieCardProps,) => {
         .filter(Boolean);
 
     const handleMovieClick = () => {
-        navigate(`/movie/${id}`, {
-            state: {
-                movie,
-            },
-        });
+        if (!id) return;
+
+        navigate(`/movie/${id}`);
+    };
+
+    const handleLike = async (
+        e: React.MouseEvent<HTMLButtonElement>
+    ) => {
+        e.stopPropagation();
+
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+
+        if (!id) return;
+
+        try {
+            const likedMovie = {
+                id,
+                title,
+                poster_path,
+                vote_average,
+            };
+
+            console.log(likedMovie);
+
+            await addLikedMovie(
+                user.uid,
+                likedMovie
+            );
+        } catch (error) {
+            console.error(
+                "Failed to add movie:",
+                error
+            );
+        }
     };
 
     return (
@@ -74,9 +109,8 @@ const MovieCard = (movie: MovieCardProps,) => {
                     : "group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52"
             }
         >
-
-
             {/* Poster */}
+
             <div
                 className="
                     relative
@@ -95,24 +129,43 @@ const MovieCard = (movie: MovieCardProps,) => {
                 "
             >
                 {/* Image */}
-                <img
-                    src={posterUrl}
-                    alt={title}
-                    loading="lazy"
-                    className="
-                        absolute
-                        inset-0
-                        h-full
-                        w-full
-                        object-cover
-                        transition-transform
-                        duration-700
-                        ease-out
-                        group-hover:scale-110
-                    "
-                />
+
+                {poster_path ? (
+                    <img
+                        src={posterUrl}
+                        alt={title || "Movie poster"}
+                        loading="lazy"
+                        className="
+                            absolute
+                            inset-0
+                            h-full
+                            w-full
+                            object-cover
+                            transition-transform
+                            duration-700
+                            ease-out
+                            group-hover:scale-110
+                        "
+                    />
+                ) : (
+                    <div
+                        className="
+                            absolute
+                            inset-0
+                            flex
+                            items-center
+                            justify-center
+                            bg-white/5
+                            text-xs
+                            text-white/30
+                        "
+                    >
+                        No poster
+                    </div>
+                )}
 
                 {/* Bottom gradient */}
+
                 <div
                     className="
                         absolute
@@ -128,6 +181,7 @@ const MovieCard = (movie: MovieCardProps,) => {
                 />
 
                 {/* Hover overlay */}
+
                 <div
                     className="
                         absolute
@@ -141,76 +195,92 @@ const MovieCard = (movie: MovieCardProps,) => {
                 />
 
                 {/* Rating */}
-                <Rating value={vote_average} />
+
+                {vote_average > 0 && (
+                    <Rating value={vote_average} />
+                )}
 
                 {/* Add button */}
-                <button
-                    type="button"
-                    aria-label={`Add ${title} to my list`}
-                    onClick={(event) => {
-                        event.stopPropagation();
-                    }}
-                    className="
-                        absolute
-                        right-3
-                        top-3
-                        z-20
-                        flex
-                        size-8
-                        items-center
-                        justify-center
-                        rounded-full
-                        border
-                        border-white/15
-                        bg-black/50
-                        text-white/80
-                        opacity-0
-                        backdrop-blur-md
-                        transition-all
-                        duration-300
-                        hover:border-(--accent-primary)
-                        hover:bg-(--accent-primary)
-                        hover:text-white
-                        group-hover:opacity-100
-                    "
-                >
-                    <PlusIcon />
-                </button>
+
+                {id && (
+                    <button
+                        type="button"
+                        aria-label={
+                            title
+                                ? `Add ${title} to my list`
+                                : "Add movie to my list"
+                        }
+                        onClick={handleLike}
+                        className="
+                            absolute
+                            right-3
+                            top-3
+                            z-20
+                            flex
+                            size-8
+                            items-center
+                            justify-center
+                            rounded-full
+                            border
+                            border-white/15
+                            bg-black/50
+                            text-white/80
+                            opacity-0
+                            backdrop-blur-md
+                            transition-all
+                            duration-300
+                            hover:border-(--accent-primary)
+                            hover:bg-(--accent-primary)
+                            hover:text-white
+                            group-hover:opacity-100
+                        "
+                    >
+                        <PlusIcon />
+                    </button>
+                )}
 
                 {/* Play button */}
-                <button
-                    type="button"
-                    aria-label={`Open ${title}`}
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        handleMovieClick();
-                    }}
-                    className="
-                        absolute
-                        left-1/2
-                        top-1/2
-                        z-20
-                        flex
-                        size-11
-                        -translate-x-1/2
-                        -translate-y-1/2
-                        items-center
-                        justify-center
-                        rounded-full
-                        bg-(--accent-primary)
-                        text-white
-                        opacity-0
-                        shadow-[0_0_25px_var(--accent-glow)]
-                        transition-all
-                        duration-300
-                        hover:scale-110
-                        group-hover:opacity-100
-                    "
-                >
-                    <PlayIcon />
-                </button>
+
+                {id && (
+                    <button
+                        type="button"
+                        aria-label={
+                            title
+                                ? `Open ${title}`
+                                : "Open movie"
+                        }
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            handleMovieClick();
+                        }}
+                        className="
+                            absolute
+                            left-1/2
+                            top-1/2
+                            z-20
+                            flex
+                            size-11
+                            -translate-x-1/2
+                            -translate-y-1/2
+                            items-center
+                            justify-center
+                            rounded-full
+                            bg-(--accent-primary)
+                            text-white
+                            opacity-0
+                            shadow-[0_0_25px_var(--accent-glow)]
+                            transition-all
+                            duration-300
+                            hover:scale-110
+                            group-hover:opacity-100
+                        "
+                    >
+                        <PlayIcon />
+                    </button>
+                )}
 
                 {/* Movie information */}
+
                 <div
                     className="
                         absolute
@@ -220,49 +290,67 @@ const MovieCard = (movie: MovieCardProps,) => {
                         p-4
                     "
                 >
-                    <h3
-                        className="
-                            line-clamp-2
-                            text-sm
-                            font-bold
-                            leading-tight
-                            text-white
-                        "
-                    >
-                        {title}
-                    </h3>
+                    {/* Title */}
 
-                    <div
-                        className="
-                            mt-1.5
-                            flex
-                            items-center
-                            gap-2
-                            text-[11px]
-                            font-medium
-                            text-white/60
-                        "
-                    >
-                        {year && <span>{year}</span>}
+                    {title && (
+                        <h3
+                            className="
+                                line-clamp-2
+                                text-sm
+                                font-bold
+                                leading-tight
+                                text-white
+                            "
+                        >
+                            {title}
+                        </h3>
+                    )}
 
-                        {year && (
-                            <span
-                                className="
-                                    size-1
-                                    rounded-full
-                                    bg-white/30
-                                "
-                            />
-                        )}
+                    {/* Meta */}
 
-                        <span>
-                            {vote_average.toFixed(1)}
-                        </span>
-                    </div>
+                    {(year || vote_average > 0) && (
+                        <div
+                            className="
+                                mt-1.5
+                                flex
+                                items-center
+                                gap-2
+                                text-[11px]
+                                font-medium
+                                text-white/60
+                            "
+                        >
+                            {year && (
+                                <span>
+                                    {year}
+                                </span>
+                            )}
+
+                            {year &&
+                                vote_average > 0 && (
+                                    <span
+                                        className="
+                                            size-1
+                                            rounded-full
+                                            bg-white/30
+                                        "
+                                    />
+                                )}
+
+                            {vote_average > 0 && (
+                                <span>
+                                    {vote_average.toFixed(
+                                        1
+                                    )}
+                                </span>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
             {/* Genres */}
+
             {genres.length > 0 && (
                 <div
                     className="
@@ -272,27 +360,29 @@ const MovieCard = (movie: MovieCardProps,) => {
                         overflow-hidden
                     "
                 >
-                    {genres.slice(0, 2).map((genre) => (
-                        <span
-                            key={genre}
-                            className="
-                                truncate
-                                rounded-full
-                                border
-                                border-white/10
-                                bg-white/5
-                                px-2
-                                py-0.5
-                                text-[9px]
-                                font-medium
-                                uppercase
-                                tracking-wide
-                                text-white/50
-                            "
-                        >
-                            {genre}
-                        </span>
-                    ))}
+                    {genres
+                        .slice(0, 2)
+                        .map((genre) => (
+                            <span
+                                key={genre}
+                                className="
+                                    truncate
+                                    rounded-full
+                                    border
+                                    border-white/10
+                                    bg-white/5
+                                    px-2
+                                    py-0.5
+                                    text-[9px]
+                                    font-medium
+                                    uppercase
+                                    tracking-wide
+                                    text-white/50
+                                "
+                            >
+                                {genre}
+                            </span>
+                        ))}
                 </div>
             )}
         </article>
@@ -308,6 +398,10 @@ interface RatingProps {
 }
 
 const Rating = ({ value }: RatingProps) => {
+    if (!value || value <= 0) {
+        return null;
+    }
+
     return (
         <div
             className="

@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 import type { Movie } from "../types/movie";
-import { getMovieVideos } from "../services/tmdb";
+import {
+    getMovieById,
+    getMovieVideos,
+} from "../services/tmdb";
 
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+const IMAGE_BASE_URL =
+    "https://image.tmdb.org/t/p";
 
-interface MovieDetailState {
-    movie: Movie;
-}
+
 
 interface Video {
     id: string;
@@ -29,52 +33,95 @@ interface MovieVideosResponse {
     results: Video[];
 }
 
+interface TMDBGenre {
+    id: number;
+    name: string;
+}
+
+interface TMDBMovieResponse extends Omit<Movie, "genres"> {
+    genres?: TMDBGenre[];
+}
+
 const MovieDetail = () => {
-    const location = useLocation();
+    const { movieId } = useParams<{ movieId: string }>();
+
+    const id = Number(movieId);
+    console.log({ id, movieId })
     const navigate = useNavigate();
 
-    const state = location.state as MovieDetailState | null;
-    const movie = state?.movie;
+    const [movie, setMovie] =
+        useState<Movie | null>(null);
+
     const [videos, setVideos] = useState<Video[]>([]);
     const [cast, setCast] = useState<CastMember[]>([]);
-    const [loadingVideos, setLoadingVideos] = useState(true);
+
+    const [loading, setLoading] = useState(true);
+    const [loadingVideos, setLoadingVideos] =
+        useState(true);
+
+    const [error, setError] = useState<string | null>(
+        null
+    );
 
     /*
-     * If someone directly opens /movie/:id or refreshes the page,
-     * the router state won't exist.
+     * ============================================================
+     * Load full movie details
+     * ============================================================
      */
-    if (!movie) {
-        return (
-            <main className="flex min-h-screen items-center justify-center bg-(--bg-primary)">
-                <div className="text-center">
-                    <h1 className="text-2xl font-black text-white">
-                        Movie not found
-                    </h1>
 
-                    <p className="mt-2 text-sm text-white/50">
-                        Open this movie from CineScope.
-                    </p>
+    useEffect(() => {
+        const loadMovie = async () => {
+            try {
+                setLoading(true);
+                setError(null);
 
-                    <Link
-                        to="/trending"
-                        className="
-                            mt-6
-                            inline-flex
-                            rounded-full
-                            bg-(--accent-primary)
-                            px-6
-                            py-3
-                            text-sm
-                            font-bold
-                            text-white
-                        "
-                    >
-                        Browse Movies
-                    </Link>
-                </div>
-            </main>
-        );
-    }
+                const data: TMDBMovieResponse =
+                    await getMovieById(id);
+
+                /*
+                 * TMDB detail endpoint returns genres as:
+                 *
+                 * genres: [
+                 *   { id: 28, name: "Action" },
+                 *   { id: 12, name: "Adventure" }
+                 * ]
+                 *
+                 * Your Movie type currently expects:
+                 *
+                 * genres: string[]
+                 */
+
+                const formattedMovie: Movie = {
+                    ...data,
+                    genres:
+                        data.genres?.map(
+                            (genre) => genre.name
+                        ) ?? [],
+                };
+
+                setMovie(formattedMovie);
+            } catch (error) {
+                console.error(
+                    "Failed to load movie:",
+                    error
+                );
+
+                setError(
+                    "Failed to load movie details."
+                );
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadMovie();
+    }, [movieId]);
+
+    /*
+     * ============================================================
+     * Load trailer + cast
+     * ============================================================
+     */
 
     useEffect(() => {
         const loadMovieExtras = async () => {
@@ -82,7 +129,7 @@ const MovieDetail = () => {
                 setLoadingVideos(true);
 
                 const data: MovieVideosResponse =
-                    await getMovieVideos(movie.id);
+                    await getMovieVideos(id);
 
                 setVideos(data.results);
 
@@ -90,8 +137,9 @@ const MovieDetail = () => {
                  * TMDB's videos endpoint doesn't return cast.
                  * We'll use the credits endpoint below.
                  */
+
                 const creditsResponse = await fetch(
-                    `https://api.themoviedb.org/3/movie/${movie.id}/credits`,
+                    `https://api.themoviedb.org/3/movie/${movieId}/credits`,
                     {
                         headers: {
                             Authorization: `Bearer ${import.meta.env
@@ -122,15 +170,22 @@ const MovieDetail = () => {
         };
 
         loadMovieExtras();
-    }, [movie.id]);
+    }, [movieId]);
+
+    /*
+     * ============================================================
+     * Trailer selection
+     * ============================================================
+     */
 
     const trailer = useMemo(() => {
-        return videos.find(
-            (video) =>
-                video.site === "YouTube" &&
-                video.type === "Trailer" &&
-                video.official
-        ) ??
+        return (
+            videos.find(
+                (video) =>
+                    video.site === "YouTube" &&
+                    video.type === "Trailer" &&
+                    video.official
+            ) ??
             videos.find(
                 (video) =>
                     video.site === "YouTube" &&
@@ -139,11 +194,90 @@ const MovieDetail = () => {
             videos.find(
                 (video) =>
                     video.site === "YouTube"
-            );
+            )
+        );
     }, [videos]);
 
+    /*
+     * ============================================================
+     * Loading
+     * ============================================================
+     */
+
+    if (loading) {
+        return (
+            <main className="flex min-h-screen items-center justify-center bg-(--bg-primary)">
+                <div className="text-center">
+                    <div
+                        className="
+                            mx-auto
+                            size-8
+                            animate-spin
+                            rounded-full
+                            border-2
+                            border-white/10
+                            border-t-(--accent-primary)
+                        "
+                    />
+
+                    <p className="mt-4 text-sm text-white/40">
+                        Loading movie...
+                    </p>
+                </div>
+            </main>
+        );
+    }
+
+    /*
+     * ============================================================
+     * Error / movie not found
+     * ============================================================
+     */
+
+    if (error || !movie) {
+        return (
+            <main className="flex min-h-screen items-center justify-center bg-(--bg-primary)">
+                <div className="text-center">
+                    <h1 className="text-2xl font-black text-white">
+                        Movie not found
+                    </h1>
+
+                    <p className="mt-2 text-sm text-white/50">
+                        {error ??
+                            "Unable to load this movie."}
+                    </p>
+
+                    <Link
+                        to="/trending"
+                        className="
+                            mt-6
+                            inline-flex
+                            rounded-full
+                            bg-(--accent-primary)
+                            px-6
+                            py-3
+                            text-sm
+                            font-bold
+                            text-white
+                        "
+                    >
+                        Browse Movies
+                    </Link>
+                </div>
+            </main>
+        );
+    }
+
+    /*
+     * ============================================================
+     * Movie metadata
+     * ============================================================
+     */
+
     const year = movie.release_date
-        ? new Date(movie.release_date).getFullYear()
+        ? new Date(
+            movie.release_date
+        ).getFullYear()
         : null;
 
     return (
@@ -240,26 +374,28 @@ const MovieDetail = () => {
                         {/* Genres */}
 
                         <div className="mb-4 flex flex-wrap gap-2">
-                            {movie.genres?.map((genre) => (
-                                <span
-                                    key={genre}
-                                    className="
-                                        rounded-full
-                                        border
-                                        border-(--accent-primary)/30
-                                        bg-(--accent-primary)/10
-                                        px-3
-                                        py-1
-                                        text-[10px]
-                                        font-bold
-                                        uppercase
-                                        tracking-wider
-                                        text-(--accent-primary)
-                                    "
-                                >
-                                    {genre}
-                                </span>
-                            ))}
+                            {movie.genres?.map(
+                                (genre) => (
+                                    <span
+                                        key={genre}
+                                        className="
+                                            rounded-full
+                                            border
+                                            border-(--accent-primary)/30
+                                            bg-(--accent-primary)/10
+                                            px-3
+                                            py-1
+                                            text-[10px]
+                                            font-bold
+                                            uppercase
+                                            tracking-wider
+                                            text-(--accent-primary)
+                                        "
+                                    >
+                                        {genre}
+                                    </span>
+                                )
+                            )}
                         </div>
 
                         {/* Title */}
@@ -318,21 +454,25 @@ const MovieDetail = () => {
                                     </span>
 
                                     {movie.adult && (
-                                        <>  <Dot />   <span
-                                            className="
-            rounded-md
-            border
-            border-red-500/30
-            bg-red-500/10
-            px-2
-            py-1
-            text-xs
-            font-bold
-            text-red-400
-        "
-                                        >
-                                            18+
-                                        </span></>
+                                        <>
+                                            <Dot />
+
+                                            <span
+                                                className="
+                                                    rounded-md
+                                                    border
+                                                    border-red-500/30
+                                                    bg-red-500/10
+                                                    px-2
+                                                    py-1
+                                                    text-xs
+                                                    font-bold
+                                                    text-red-400
+                                                "
+                                            >
+                                                18+
+                                            </span>
+                                        </>
                                     )}
                                 </>
                             )}
@@ -477,12 +617,18 @@ const MovieDetail = () => {
 
                     <InfoCard
                         label="Original Language"
-                        value={movie.original_language?.toUpperCase() ?? "—"}
+                        value={
+                            movie.original_language?.toUpperCase() ??
+                            "—"
+                        }
                     />
 
                     <InfoCard
                         label="Popularity"
-                        value={movie.popularity?.toFixed(0) ?? "—"}
+                        value={
+                            movie.popularity?.toFixed(0) ??
+                            "—"
+                        }
                     />
                 </div>
             </section>
