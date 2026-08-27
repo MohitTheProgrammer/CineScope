@@ -1,5 +1,5 @@
 import type { Movie } from "../types/movie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useUser } from "../context/UserContext";
 import { addLikedMovie } from "../services/movie";
@@ -37,6 +37,7 @@ interface MovieCardProps extends Movie {
 
 const MovieCard = (movie: MovieCardProps) => {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
     const { user } = useUser();
     const [toast, setToast] = useState<{
         message: string;
@@ -64,6 +65,9 @@ const MovieCard = (movie: MovieCardProps) => {
     const genres = genre_ids
         .map((genreId) => GENRE_MAP[genreId])
         .filter(Boolean);
+
+    const shouldShowLikeButton =
+        pathname !== "/my-list" && pathname !== "/profile";
 
     const handleMovieClick = () => {
         if (!id) return;
@@ -221,7 +225,7 @@ const MovieCard = (movie: MovieCardProps) => {
 
                 {/* Add button */}
 
-                {id && (
+                {id && shouldShowLikeButton && (
                     <button
                         type="button"
                         aria-label={
@@ -370,7 +374,7 @@ const MovieCard = (movie: MovieCardProps) => {
 
             {/* Genres */}
 
-            {genres.length > 0 && (
+            {shouldShowLikeButton && genres.length > 0 && (
                 <div
                     className="
                         mt-2

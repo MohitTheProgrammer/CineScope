@@ -2,8 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import { addWatchlistMovie } from "../services/movie";
-import { isMovieInWatchlist } from "../services/movie";
+import {
+    addWatchedMovie,
+    addWatchlistMovie,
+    getMovieRating,
+    isMovieInWatchlist,
+    isMovieWatched,
+    rateMovie,
+} from "../services/movie";
 
 import type { Movie, WatchProvider, WatchProviders } from "../types/movie";
 import {
@@ -55,6 +61,14 @@ const MovieDetail = () => {
     const [watchlistAdded, setWatchlistAdded] = useState(false);
     const [checkingWatchlist, setCheckingWatchlist] = useState(true);
     const [addingToWatchlist, setAddingToWatchlist] = useState(false);
+    const [watched, setWatched] = useState(false);
+    const [checkingWatched, setCheckingWatched] = useState(true);
+    const [addingWatched, setAddingWatched] = useState(false);
+    const [ratingOpen, setRatingOpen] = useState(false);
+    const [savingRating, setSavingRating] = useState(false);
+    const [userRating, setUserRating] = useState<number | null>(null);
+    const [rated, setRated] = useState(false);
+    const [checkingRated, setCheckingRated] = useState(true);
 
     const handleAddToWatchlist = async () => {
         if (!user) {
@@ -70,11 +84,10 @@ const MovieDetail = () => {
             await addWatchlistMovie(user.uid, {
                 id: movie.id,
                 title: movie.title,
-                posterPath: movie.poster_path,
+                poster_path: movie.poster_path,
                 vote_average: movie.vote_average,
-                genre_ids: movie.genre_ids
+                genre_ids: movie.genre_ids ?? [],
             });
-
             setWatchlistAdded(true);
 
             console.log(
@@ -87,6 +100,58 @@ const MovieDetail = () => {
             );
         } finally {
             setAddingToWatchlist(false);
+        }
+    };
+
+    const handleAddWatched = async () => {
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+
+        if (!movie) return;
+
+        try {
+            setAddingWatched(true);
+            await addWatchedMovie(user.uid, {
+                id: movie.id,
+                title: movie.title,
+                poster_path: movie.poster_path,
+                vote_average: movie.vote_average,
+                genre_ids: movie.genre_ids ?? [],
+            });
+            setWatched(true);
+        } catch (error) {
+            console.error("Failed to mark movie as watched:", error);
+        } finally {
+            setAddingWatched(false);
+        }
+    };
+
+    const handleRateMovie = async (rating: number) => {
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+
+        if (!movie) return;
+
+        try {
+            setSavingRating(true);
+            await rateMovie(user.uid, {
+                id: movie.id,
+                title: movie.title,
+                poster_path: movie.poster_path,
+                vote_average: movie.vote_average,
+                genre_ids: movie.genre_ids ?? [],
+            }, rating);
+            setUserRating(rating);
+            setRated(true);
+            setRatingOpen(false);
+        } catch (error) {
+            console.error("Failed to rate movie:", error);
+        } finally {
+            setSavingRating(false);
         }
     };
 
@@ -172,6 +237,71 @@ const MovieDetail = () => {
         };
 
         void loadMovie();
+    }, [user, id, isValidMovieId]);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        const checkRated = async () => {
+            if (!user || !isValidMovieId) {
+                if (!cancelled) {
+                    setRated(false);
+                    setCheckingRated(false);
+                }
+                return;
+            }
+
+            try {
+                setCheckingRated(true);
+                const savedRating = await getMovieRating(user.uid, id);
+                if (!cancelled) {
+                    setUserRating(savedRating);
+                    setRated(savedRating !== null);
+                }
+            } catch (error) {
+                console.error("Failed to check rated status:", error);
+                if (!cancelled) setRated(false);
+            } finally {
+                if (!cancelled) setCheckingRated(false);
+            }
+        };
+
+        void checkRated();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [user, id, isValidMovieId]);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        const checkWatched = async () => {
+            if (!user || !isValidMovieId) {
+                if (!cancelled) {
+                    setWatched(false);
+                    setCheckingWatched(false);
+                }
+                return;
+            }
+
+            try {
+                setCheckingWatched(true);
+                const exists = await isMovieWatched(user.uid, id);
+                if (!cancelled) setWatched(exists);
+            } catch (error) {
+                console.error("Failed to check watched status:", error);
+                if (!cancelled) setWatched(false);
+            } finally {
+                if (!cancelled) setCheckingWatched(false);
+            }
+        };
+
+        void checkWatched();
+
+        return () => {
+            cancelled = true;
+        };
     }, [user, id, isValidMovieId]);
 
     /*
@@ -275,6 +405,14 @@ const MovieDetail = () => {
             )
         );
     }, [videos]);
+
+    const releaseDate = movie?.release_date
+        ? new Date(`${movie.release_date}T00:00:00`)
+        : null;
+    const hasBeenReleased =
+        releaseDate !== null &&
+        !Number.isNaN(releaseDate.getTime()) &&
+        releaseDate <= new Date();
 
     /*
      * ============================================================
@@ -585,7 +723,7 @@ const MovieDetail = () => {
                                 {movie.overview ||
                                     "No synopsis available."}
                             </p>
-                            <div className="mt-6">
+                            <div className="mt-6 flex flex-wrap gap-3">
                                 <button
                                     type="button"
                                     onClick={handleAddToWatchlist}
@@ -637,6 +775,131 @@ const MovieDetail = () => {
                                         </>
                                     )}
                                 </button>
+
+                                {hasBeenReleased && (
+                                    <button
+                                        type="button"
+                                        onClick={handleAddWatched}
+                                        disabled={
+                                            checkingWatched ||
+                                            addingWatched ||
+                                            watched
+                                        }
+                                        className="
+                                            inline-flex
+                                            items-center
+                                            gap-2
+                                            rounded-xl
+                                            border
+                                            border-white/10
+                                            bg-white/5
+                                            px-5
+                                            py-3
+                                            text-sm
+                                            font-bold
+                                            text-white
+                                            transition-all
+                                            duration-300
+                                            hover:border-(--accent-primary)
+                                            hover:bg-(--accent-primary)
+                                            disabled:cursor-not-allowed
+                                            disabled:opacity-60
+                                        "
+                                    >
+                                        {checkingWatched ? (
+                                            <>
+                                                <LoadingIcon />
+                                                Checking...
+                                            </>
+                                        ) : watched ? (
+                                            <>
+                                                <CheckIcon />
+                                                Marked as Watched
+                                            </>
+                                        ) : addingWatched ? (
+                                            <>
+                                                <LoadingIcon />
+                                                Marking...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <CheckIcon />
+                                                Mark as Watched
+                                            </>
+                                        )}
+                                    </button>
+                                )}
+
+                                {hasBeenReleased && (
+                                    <div className="relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => setRatingOpen((open) => !open)}
+                                            disabled={
+                                                checkingRated ||
+                                                savingRating ||
+                                                rated
+                                            }
+                                            aria-expanded={ratingOpen}
+                                            className="
+                                                inline-flex
+                                                items-center
+                                                gap-2
+                                                rounded-xl
+                                                border
+                                                border-white/10
+                                                bg-white/5
+                                                px-5
+                                                py-3
+                                                text-sm
+                                                font-bold
+                                                text-white
+                                                transition-all
+                                                duration-300
+                                                hover:border-(--accent-primary)
+                                                hover:bg-(--accent-primary)
+                                                disabled:cursor-not-allowed
+                                                disabled:opacity-60
+                                            "
+                                        >
+                                            {checkingRated ? (
+                                                <>
+                                                    <LoadingIcon />
+                                                    Checking...
+                                                </>
+                                            ) : rated ? (
+                                                <>
+                                                    <CheckIcon />
+                                                    {userRating
+                                                        ? `Your rating: ${userRating}/5`
+                                                        : "Rated"}
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <StarIcon />
+                                                    Rate Movie
+                                                </>
+                                            )}
+                                        </button>
+
+                                        {ratingOpen && !rated && (
+                                            <div className="absolute left-0 top-full z-20 mt-2 flex min-w-max gap-1 rounded-xl border border-white/10 bg-(--bg-primary) p-2 shadow-xl">
+                                                {[1, 2, 3, 4, 5].map((rating) => (
+                                                    <button
+                                                        key={rating}
+                                                        type="button"
+                                                        onClick={() => void handleRateMovie(rating)}
+                                                        disabled={savingRating}
+                                                        aria-label={`Rate ${rating} out of 5`}
+                                                        className="flex size-9 items-center justify-center rounded-lg text-sm font-bold text-white/70 transition-colors hover:bg-(--accent-primary) hover:text-white disabled:cursor-not-allowed"
+                                                    >
+                                                        {savingRating ? <LoadingIcon /> : rating}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -1279,4 +1542,3 @@ const ChevronIcon = ({
 );
 
 export default MovieDetail;
-

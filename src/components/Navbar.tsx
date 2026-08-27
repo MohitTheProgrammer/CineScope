@@ -116,9 +116,9 @@ const Navbar = () => {
             <MovieSearch />
           </div>
 
-          <div className="hidden lg:block">
+          {user && <div className="hidden lg:block">
             <ThemeSwitcher />
-          </div>
+          </div>}
 
           {/* Profile - Desktop */}
           {user && <NavLink to="/profile">
@@ -442,7 +442,7 @@ const MobileMenu = ({
         >
           {/* Theme */}
 
-          <div
+          {isUser &&<div
             className="
                             flex
                             items-center
@@ -462,7 +462,7 @@ const MobileMenu = ({
             </span>
 
             <ThemeSwitcher />
-          </div>
+          </div>}
 
           {/* Profile + Sign In */}
 

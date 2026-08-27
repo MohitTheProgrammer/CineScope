@@ -32,3 +32,28 @@ export interface WatchProviders {
     buy?: WatchProvider[];
     link?: string;
 }
+
+import type { Timestamp } from "firebase/firestore";
+
+export interface UserMovie {
+    movieId: number;
+
+    title: string;
+    posterPath: string | null;
+    genreIds: number[];
+
+    // TMDB rating
+    voteAverage: number;
+
+    // User's movie state
+    liked: boolean;
+    watchlisted: boolean;
+    watched: boolean;
+
+    // Personal rating
+    rated: boolean;
+    rating: number | null;
+
+    createdAt: Timestamp | null;
+    updatedAt: Timestamp | null;
+}

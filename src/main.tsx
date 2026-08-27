@@ -6,13 +6,16 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { UserProvider } from "./context/UserContext";
 
 import "./index.css";
+import AppStartup from "./pages/AppStartup";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <UserProvider>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <AppStartup>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </AppStartup>
     </UserProvider>
   </StrictMode>
 );

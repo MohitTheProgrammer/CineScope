@@ -5,10 +5,18 @@ import {
     Routes,
 } from "react-router-dom";
 
-import { lazy, Suspense, type ReactNode } from "react";
+import {
+    lazy,
+    Suspense,
+    type ReactNode,
+} from "react";
 
 import MainLayout from "../layout/MainLayout";
 import { useUser } from "../context/UserContext";
+
+/* -------------------------------------------------------------------------- */
+/* Pages                                                                       */
+/* -------------------------------------------------------------------------- */
 
 const Home = lazy(() => import("../pages/Home"));
 const Trending = lazy(() => import("../pages/Trending"));
@@ -19,13 +27,11 @@ const AuthPage = lazy(() => import("../pages/auth/AuthPage"));
 const Profile = lazy(() => import("../pages/Profile"));
 const MyList = lazy(() => import("../pages/MyList"));
 const ForYou = lazy(() => import("../pages/ForYou"));
-const HowItWorks = lazy(
-    () => import("../pages/HowItWorks")
-);
+const HowItWorks = lazy(() => import("../pages/HowItWorks"));
 
-/* ==========================================================================
-   Protected Route
-   ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* Protected Route                                                             */
+/* -------------------------------------------------------------------------- */
 
 interface ProtectedRouteProps {
     children: ReactNode;
@@ -37,11 +43,14 @@ const ProtectedRoute = ({
     const { user, loading } = useUser();
 
     /*
-     * Firebase is still checking whether the user
-     * already has an authenticated session.
+     * Firebase is still checking the existing authentication
+     * session.
      *
      * IMPORTANT:
-     * Don't redirect while loading is true.
+     * Do not redirect while loading is true.
+     *
+     * This prevents the page from redirecting to /login
+     * for a moment when the browser is refreshed.
      */
     if (loading) {
         return (
@@ -54,8 +63,8 @@ const ProtectedRoute = ({
     }
 
     /*
-     * Firebase finished checking and there is
-     * no authenticated user.
+     * Firebase finished checking and there is no
+     * authenticated user.
      */
     if (!user) {
         return (
@@ -69,9 +78,9 @@ const ProtectedRoute = ({
     return <>{children}</>;
 };
 
-/* ==========================================================================
-   App Routes
-   ========================================================================== */
+/* -------------------------------------------------------------------------- */
+/* App Routes                                                                  */
+/* -------------------------------------------------------------------------- */
 
 const AppRoutes = () => {
     return (
@@ -83,11 +92,15 @@ const AppRoutes = () => {
             >
                 <Routes>
 
-                    {/* ======================================================
-                        Public application routes
-                       ====================================================== */}
+                    {/* ------------------------------------------------------ */}
+                    {/* Main application layout                               */}
+                    {/* ------------------------------------------------------ */}
 
                     <Route element={<MainLayout />}>
+
+                        {/* -------------------------------------------------- */}
+                        {/* Public routes                                     */}
+                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="/"
@@ -119,9 +132,9 @@ const AppRoutes = () => {
                             element={<HowItWorks />}
                         />
 
-                        {/* ==================================================
-                            Protected routes
-                           ================================================== */}
+                        {/* -------------------------------------------------- */}
+                        {/* Protected routes                                  */}
+                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="/my-list"
@@ -150,9 +163,9 @@ const AppRoutes = () => {
                             }
                         />
 
-                        {/* ==================================================
-                            Authentication
-                           ================================================== */}
+                        {/* -------------------------------------------------- */}
+                        {/* Authentication                                    */}
+                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="/login"
@@ -164,9 +177,9 @@ const AppRoutes = () => {
                             element={<AuthPage />}
                         />
 
-                        {/* ==================================================
-                            404
-                           ================================================== */}
+                        {/* -------------------------------------------------- */}
+                        {/* 404                                                */}
+                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="*"

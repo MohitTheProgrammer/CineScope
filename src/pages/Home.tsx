@@ -5,6 +5,30 @@ import { getTrendingMovies, getPopularMovies } from "../services/tmdb";
 import type { Movie } from "../types/movie";
 import { ArrowIcon } from "../assets/icons/Icons";
 import Stat from "../components/Stat";
+import { getRandomHeroBackdrop } from "../services/heroBackdrop";
+
+const HERO_TEXTS = [
+    {
+        first: "Discover",
+        accent: "something",
+        last: "unforgettable.",
+    },
+    {
+        first: "Explore",
+        accent: "incredible",
+        last: "adventures.",
+    },
+    {
+        first: "Uncover",
+        accent: "captivating",
+        last: "storylines.",
+    },
+    {
+        first: "Experience",
+        accent: "extraordinary",
+        last: "masterpieces.",
+    },
+];
 
 const Home = () => {
     const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
@@ -13,6 +37,8 @@ const Home = () => {
     const [trendingError, setTrendingError] = useState<string | null>(null);
     const [popularLoading, setPopularLoading] = useState(true);
     const [popularError, setPopularError] = useState<string | null>(null);
+
+
 
     useEffect(() => {
         const loadTrendingMovies = async () => {
@@ -50,6 +76,8 @@ const Home = () => {
         loadPopularMovies()
     }, []);
 
+
+
     return (
         <div className="min-h-screen bg-(--bg-primary)">
             <Hero />
@@ -83,12 +111,42 @@ export default Home;
 /* -------------------------------------------------------------------------- */
 
 const Hero = () => {
+    const [heroTextIndex, setHeroTextIndex] = useState(() =>
+        Math.floor(Math.random() * HERO_TEXTS.length)
+    );
+
+    const [heroBackdrop, setHeroBackdrop] =
+        useState("");
+
+    useEffect(() => {
+        const loadBackdrop = async () => {
+            const backdrop =
+                await getRandomHeroBackdrop();
+
+            if (backdrop) {
+                setHeroBackdrop(backdrop);
+            } else setHeroBackdrop("https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg")
+
+        };
+
+        loadBackdrop();
+
+        const interval = setInterval(() => {
+            setHeroTextIndex((previous) =>
+                (previous + 1) % HERO_TEXTS.length
+            );
+        }, 5000);
+
+        return () => clearInterval(interval);
+
+
+    }, []);
     return (
         <section className="relative min-h-180 overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0">
                 <img
-                    src="https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg"
+                    src={heroBackdrop}
                     alt=""
                     aria-hidden="true"
                     className="
@@ -179,26 +237,28 @@ const Hero = () => {
 
                     {/* Heading */}
                     <h1
+                        key={heroTextIndex}
                         className="
-                            text-5xl
-                            font-black
-                            leading-[0.92]
-                            tracking-tighter
-                            text-white
-                            sm:text-6xl
-                            lg:text-8xl
-                        "
+        animate-[fadeIn_500ms_ease-in-out]
+        text-5xl
+        font-black
+        leading-[0.92]
+        tracking-tighter
+        text-white
+        sm:text-6xl
+        lg:text-8xl
+    "
                     >
-                        Discover
+                        {HERO_TEXTS[heroTextIndex].first}
                         <br />
 
                         <span className="text-(--accent-primary)">
-                            something
+                            {HERO_TEXTS[heroTextIndex].accent}
                         </span>
 
                         <br />
 
-                        unforgettable.
+                        {HERO_TEXTS[heroTextIndex].last}
                     </h1>
 
                     {/* Description */}

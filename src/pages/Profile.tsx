@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { signOut, updateProfile } from "firebase/auth";
 import {
-    collection,
     doc,
     getDoc,
-    getDocs,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +10,7 @@ import { auth, db } from "../services/firebase";
 import MovieCard from "../components/MovieCard";
 import type { Movie } from "../types/movie";
 import { updateUserProfile } from "../services/userService";
+import { getLikedMovies } from "../services/movie";
 
 const AVATARS = [
     {
@@ -45,13 +44,6 @@ interface UserData {
     displayName: string;
     email: string;
     avatarId: string;
-}
-
-interface LikedMovie {
-    movieId: number;
-    title: string;
-    posterPath: string | null;
-    voteAverage: number
 }
 
 const ProfilePage = () => {
@@ -153,33 +145,23 @@ const ProfilePage = () => {
             try {
                 setMoviesLoading(true);
 
-                const likedMoviesRef = collection(
-                    db,
-                    "users",
-                    user.uid,
-                    "likedMovies"
-                );
+                const savedLikedMovies = await getLikedMovies(user.uid);
 
-                const snapshot =
-                    await getDocs(likedMoviesRef);
-
-                const movies: Movie[] = snapshot.docs.map(
-                    (movieDoc) => {
-                        const data =
-                            movieDoc.data() as LikedMovie;
+                const movies: Movie[] = savedLikedMovies.map(
+                    (movie) => {
 
                         return {
-                            id: data.movieId,
-                            title: data.title,
+                            id: movie.id,
+                            title: movie.title,
                             poster_path:
-                                data.posterPath,
+                                movie.posterPath,
                             release_date: "",
-                            vote_average: 0,
-                            genre_ids: [],
+                            vote_average: movie.voteAverage,
+                            genre_ids: movie.genreIds,
                             backdrop_path: null,
                             adult: false,
                             original_language: "",
-                            original_title: data.title,
+                            original_title: movie.title,
                             overview: "",
                             popularity: 0,
                             video: false,
@@ -645,7 +627,7 @@ const ProfilePage = () => {
                     {!moviesLoading &&
                         likedMovies.length >
                         0 && (
-                            <div className="flex gap-5 overflow-x-auto pb-6 scrollbar-none [&::-webkit-scrollbar]:hidden">
+                            <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
 
                                 {likedMovies.map(
                                     (movie) => (
@@ -654,7 +636,7 @@ const ProfilePage = () => {
                                                 movie.id
                                             }
                                             {...movie}
-                                            orientation="horizontal"
+                                            orientation="vertical"
                                         />
                                     )
                                 )}

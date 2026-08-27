@@ -548,7 +548,7 @@ const AuthPage = () => {
                                 <button
                                     type="button"
                                     onClick={() =>
-                                        navigate("/login")
+                                        !loading && navigate("/login")
                                     }
                                     className={`
                                         relative
@@ -574,7 +574,7 @@ const AuthPage = () => {
                                 <button
                                     type="button"
                                     onClick={() =>
-                                        navigate("/register")
+                                        !loading && navigate("/register")
                                     }
                                     className={`
                                         relative
@@ -873,6 +873,9 @@ const Input = ({
     required,
     minLength,
 }: InputProps) => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const isPassword = type === "password";
+
     return (
         <div>
             <label
@@ -890,33 +893,47 @@ const Input = ({
                 {label}
             </label>
 
-            <input
-                id={name}
-                name={name}
-                type={type}
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-                autoComplete={autoComplete}
-                required={required}
-                minLength={minLength}
-                className="
-                    w-full
-                    border-b
-                    border-white/10
-                    bg-transparent
-                    px-1
-                    py-3
-                    text-sm
-                    text-white
-                    outline-none
-                    placeholder:text-white/20
-                    transition-all
-                    duration-300
-                    focus:border-(--accent-primary)
-                    focus:[box-shadow:0_1px_0_var(--accent-primary)]
-                "
-            />
+            <div className="relative">
+                <input
+                    id={name}
+                    name={name}
+                    type={isPassword && passwordVisible ? "text" : type}
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                    autoComplete={autoComplete}
+                    required={required}
+                    minLength={minLength}
+                    className="
+                        w-full
+                        border-b
+                        border-white/10
+                        bg-transparent
+                        px-1
+                        py-3
+                        pr-12
+                        text-sm
+                        text-white
+                        outline-none
+                        placeholder:text-white/20
+                        transition-all
+                        duration-300
+                        focus:border-(--accent-primary)
+                        focus:[box-shadow:0_1px_0_var(--accent-primary)]
+                    "
+                />
+
+                {isPassword && (
+                    <button
+                        type="button"
+                        onClick={() => setPasswordVisible((visible) => !visible)}
+                        aria-label={passwordVisible ? "Hide password" : "Show password"}
+                        className="absolute bottom-0 right-0 px-1 py-3 text-[10px] font-bold uppercase tracking-wide text-white/40 transition-colors hover:text-(--accent-primary)"
+                    >
+                        {passwordVisible ? "Hide" : "Show"}
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
