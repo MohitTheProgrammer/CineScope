@@ -6,6 +6,7 @@ import type { Movie } from "../types/movie";
 import { ArrowIcon } from "../assets/icons/Icons";
 import Stat from "../components/Stat";
 import { getRandomHeroBackdrop } from "../services/heroBackdrop";
+import { useUser } from "../context/UserContext";
 
 const HERO_TEXTS = [
     {
@@ -111,6 +112,7 @@ export default Home;
 /* -------------------------------------------------------------------------- */
 
 const Hero = () => {
+    const { user } = useUser()
     const [heroTextIndex, setHeroTextIndex] = useState(() =>
         Math.floor(Math.random() * HERO_TEXTS.length)
     );
@@ -121,7 +123,7 @@ const Hero = () => {
     useEffect(() => {
         const loadBackdrop = async () => {
             const backdrop =
-                await getRandomHeroBackdrop();
+                await getRandomHeroBackdrop(user?.uid || "");
 
             if (backdrop) {
                 setHeroBackdrop(backdrop);

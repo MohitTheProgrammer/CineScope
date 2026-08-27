@@ -1,17 +1,12 @@
+import { getUserMovieIds } from "./userService";
+
 const TMDB_IMAGE_BASE_URL =
     "https://image.tmdb.org/t/p/original";
 
-const HERO_MOVIE_IDS = [
-    438631,
-    693134,
-    603692,
-    872585,
-    299534,
-    569094,
-    385687,
-    346698,
-    27205,
-    155,
+const FALLBACK_BACKDROPS = [
+    "https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg",
+
+    // Add your other fallback backdrop URLs here.
 ];
 
 interface TMDBBackdrop {
@@ -26,41 +21,86 @@ interface TMDBImagesResponse {
     backdrops: TMDBBackdrop[];
 }
 
-export const getRandomHeroBackdrop = async (): Promise<
-    string | null
-> => {
+/* -------------------------------------------------------------------------- */
+/* Get Random Hero Backdrop                                                   */
+/* -------------------------------------------------------------------------- */
+
+export const getRandomHeroBackdrop = async (
+    userId: string
+): Promise<string | null> => {
     try {
-        const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+        const apiKey =
+            import.meta.env.VITE_TMDB_API_KEY;
 
         if (!apiKey) {
-            console.error("TMDB API key is missing");
-            return null;
+            console.error(
+                "TMDB API key is missing"
+            );
+
+            return getFallbackBackdrop();
         }
 
-        const responses = await Promise.all(
-            HERO_MOVIE_IDS.map(async (movieId) => {
-                const response = await fetch(
-                    `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}&include_image_language=en,null`
-                );
+        /*
+         * Get up to 15 movie IDs from the user's
+         * personal movie collection.
+         */
+        const movieIds =
+            await getUserMovieIds(userId, 15);
 
-                if (!response.ok) {
-                    throw new Error(
-                        `Failed to fetch images for movie ${movieId}: ${response.status}`
-                    );
-                }
+        /*
+         * No movies yet → fallback.
+         */
+        if (!movieIds.length) {
+            return getFallbackBackdrop();
+        }
 
-                return response.json() as Promise<TMDBImagesResponse>;
-            })
-        );
+        /*
+         * Fetch backdrops only for those 15 movies.
+         */
+        const responses =
+            await Promise.allSettled(
+                movieIds.map(async (movieId) => {
+                    const response =
+                        await fetch(
+                            `${"https://api.themoviedb.org/3"}/movie/${movieId}/images?api_key=${apiKey}&include_image_language=en,null`
+                        );
 
-        const backdrops = responses.flatMap(
-            (response) => response.backdrops
-        );
+                    if (!response.ok) {
+                        throw new Error(
+                            `Failed to fetch images for movie ${movieId}: ${response.status}`
+                        );
+                    }
 
+                    return response.json() as Promise<TMDBImagesResponse>;
+                })
+            );
+
+        /*
+         * Keep only successful TMDB responses.
+         */
+        const backdrops = responses
+            .filter(
+                (
+                    result
+                ): result is PromiseFulfilledResult<TMDBImagesResponse> =>
+                    result.status ===
+                    "fulfilled"
+            )
+            .flatMap(
+                (result) =>
+                    result.value.backdrops
+            );
+
+        /*
+         * Nothing usable → fallback.
+         */
         if (!backdrops.length) {
-            return null;
+            return getFallbackBackdrop();
         }
 
+        /*
+         * Prefer large cinematic backdrops.
+         */
         const cinematicBackdrops =
             backdrops.filter(
                 (backdrop) =>
@@ -73,17 +113,28 @@ export const getRandomHeroBackdrop = async (): Promise<
                 ? cinematicBackdrops
                 : backdrops;
 
-        const sortedBackdrops = [...pool].sort(
-            (a, b) =>
-                b.vote_average - a.vote_average
-        );
+        /*
+         * Sort the best TMDB images first.
+         */
+        const sortedBackdrops =
+            [...pool].sort(
+                (a, b) =>
+                    b.vote_average -
+                    a.vote_average
+            );
 
+        /*
+         * Don't always use the #1 image.
+         * Pick randomly from the best 20.
+         */
         const topBackdrops =
             sortedBackdrops.slice(0, 20);
 
-        const randomIndex = Math.floor(
-            Math.random() * topBackdrops.length
-        );
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                    topBackdrops.length
+            );
 
         return (
             TMDB_IMAGE_BASE_URL +
@@ -95,6 +146,23 @@ export const getRandomHeroBackdrop = async (): Promise<
             error
         );
 
+        return getFallbackBackdrop();
+    }
+};
+
+/* -------------------------------------------------------------------------- */
+/* Fallback                                                                    */
+/* -------------------------------------------------------------------------- */
+
+const getFallbackBackdrop = (): string | null => {
+    if (!FALLBACK_BACKDROPS.length) {
         return null;
     }
+
+    const randomIndex = Math.floor(
+        Math.random() *
+            FALLBACK_BACKDROPS.length
+    );
+
+    return FALLBACK_BACKDROPS[randomIndex];
 };
