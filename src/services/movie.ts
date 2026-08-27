@@ -5,6 +5,7 @@ import {
     setDoc,
     getDocs,
     collection,
+    getDoc,
 } from "firebase/firestore";
 
 import { db } from "../services/firebase";
@@ -15,7 +16,8 @@ export const addWatchlistMovie = async (
         id: number;
         title: string;
         posterPath: string | null;
-        vote_average: number;
+        vote_average?: number;
+        genre_ids?: number[];
     }
 ) => {
     const movieRef = doc(
@@ -27,8 +29,12 @@ export const addWatchlistMovie = async (
     );
 
     await setDoc(movieRef, {
-        ...movie,
-        addedAt: new Date(),
+        movieId: movie.id,
+        title: movie.title,
+        posterPath: movie.posterPath,
+        voteAverage: movie.vote_average ?? 0,
+        genreIds: movie.genre_ids ?? [],
+        addedAt: serverTimestamp(),
     });
 };
 
@@ -38,6 +44,8 @@ export const addLikedMovie = async (
         id: number;
         title: string;
         poster_path: string | null;
+        vote_average?: number;
+        genre_ids?: number[];
     }
 ) => {
     const movieRef = doc(
@@ -52,6 +60,8 @@ export const addLikedMovie = async (
         movieId: movie.id,
         title: movie.title,
         posterPath: movie.poster_path,
+        voteAverage: movie.vote_average ?? 0,
+        genreIds: movie.genre_ids ?? [],
         addedAt: serverTimestamp(),
     });
 };
@@ -117,4 +127,22 @@ export const getLikedMovies = async (uid: string): Promise<LikedMovie[]> => {
             posterPath: movie.posterPath ?? null,
             voteAverage: movie.voteAverage ?? 0,
         }));
+};
+
+
+export const isMovieInWatchlist = async (
+    userId: string,
+    movieId: number
+): Promise<boolean> => {
+    const movieRef = doc(
+        db,
+        "users",
+        userId,
+        "watchlist",
+        String(movieId)
+    );
+
+    const snapshot = await getDoc(movieRef);
+
+    return snapshot.exists();
 };

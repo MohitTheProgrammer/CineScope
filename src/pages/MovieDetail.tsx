@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { addWatchlistMovie } from "../services/movie";
+import { isMovieInWatchlist } from "../services/movie";
 
 import type { Movie, WatchProvider, WatchProviders } from "../types/movie";
 import {
@@ -50,11 +51,10 @@ const MovieDetail = () => {
     const { movieId } = useParams<{ movieId: string }>();
     const { user } = useUser();
 
-    const [addingToWatchlist, setAddingToWatchlist] =
-        useState(false);
 
-    const [watchlistAdded, setWatchlistAdded] =
-        useState(false);
+    const [watchlistAdded, setWatchlistAdded] = useState(false);
+    const [checkingWatchlist, setCheckingWatchlist] = useState(true);
+    const [addingToWatchlist, setAddingToWatchlist] = useState(false);
 
     const handleAddToWatchlist = async () => {
         if (!user) {
@@ -72,6 +72,7 @@ const MovieDetail = () => {
                 title: movie.title,
                 posterPath: movie.poster_path,
                 vote_average: movie.vote_average,
+                genre_ids: movie.genre_ids
             });
 
             setWatchlistAdded(true);
@@ -170,8 +171,46 @@ const MovieDetail = () => {
             }
         };
 
-        loadMovie();
-    }, [id, isValidMovieId]);
+        void loadMovie();
+    }, [user, id, isValidMovieId]);
+
+    /*
+     * A watchlist entry's Firestore document ID is the TMDB movie ID, so the
+     * route ID is sufficient to determine membership. Keeping this separate
+     * from loading movie details also ensures it runs when either the user or
+     * the displayed movie changes.
+     */
+    useEffect(() => {
+        let cancelled = false;
+
+        const checkWatchlist = async () => {
+            if (!user || !isValidMovieId) {
+                if (!cancelled) {
+                    setWatchlistAdded(false);
+                    setCheckingWatchlist(false);
+                }
+                return;
+            }
+
+            try {
+                setCheckingWatchlist(true);
+                const exists = await isMovieInWatchlist(user.uid, id);
+
+                if (!cancelled) setWatchlistAdded(exists);
+            } catch (error) {
+                console.error("Failed to check watchlist:", error);
+                if (!cancelled) setWatchlistAdded(false);
+            } finally {
+                if (!cancelled) setCheckingWatchlist(false);
+            }
+        };
+
+        void checkWatchlist();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [user, id, isValidMovieId]);
 
     /*
      * ============================================================
@@ -551,6 +590,7 @@ const MovieDetail = () => {
                                     type="button"
                                     onClick={handleAddToWatchlist}
                                     disabled={
+                                        checkingWatchlist ||
                                         addingToWatchlist ||
                                         watchlistAdded
                                     }
@@ -575,7 +615,12 @@ const MovieDetail = () => {
             disabled:opacity-60
         "
                                 >
-                                    {watchlistAdded ? (
+                                    {checkingWatchlist ? (
+                                        <>
+                                            <LoadingIcon />
+                                            Checking...
+                                        </>
+                                    ) : watchlistAdded ? (
                                         <>
                                             <CheckIcon />
                                             Added to Watchlist
@@ -1234,5 +1279,4 @@ const ChevronIcon = ({
 );
 
 export default MovieDetail;
-
 

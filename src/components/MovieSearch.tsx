@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const MovieSearch = () => {
+interface Props {
+    closeMenu?: () => void
+}
+
+const MovieSearch = ({ closeMenu }: Props) => {
     const [query, setQuery] = useState("");
 
     const navigate = useNavigate();
@@ -22,6 +26,7 @@ const MovieSearch = () => {
     ) => {
         if (event.key === "Enter") {
             handleSearch();
+            closeMenu && closeMenu()
         }
     };
 

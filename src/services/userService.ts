@@ -1,7 +1,9 @@
 import {
     doc,
+    getDoc,
     serverTimestamp,
-    setDoc
+    setDoc,
+    updateDoc
 } from "firebase/firestore";
 
 import { db } from "../services/firebase";
@@ -34,4 +36,27 @@ export const createUserDocument = async (
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     });
+};
+
+export const updateUserProfile = async (
+    uid: string,
+    displayName: string,
+    avatarId: string
+) => {
+    const userRef = doc(db, "users", uid);
+
+    const snapshot = await getDoc(userRef);
+
+    const data = {
+        displayName: displayName.trim(),
+        avatarId,
+    };
+
+    if (snapshot.exists()) {
+        // User document exists → update it
+        await updateDoc(userRef, data);
+    } else {
+        // User document doesn't exist → create it
+        await setDoc(userRef, data);
+    }
 };

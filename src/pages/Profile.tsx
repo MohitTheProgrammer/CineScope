@@ -5,14 +5,13 @@ import {
     doc,
     getDoc,
     getDocs,
-    serverTimestamp,
-    updateDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 import { auth, db } from "../services/firebase";
 import MovieCard from "../components/MovieCard";
 import type { Movie } from "../types/movie";
+import { updateUserProfile } from "../services/userService";
 
 const AVATARS = [
     {
@@ -207,6 +206,7 @@ const ProfilePage = () => {
     // Save profile
     // -------------------------------------------------------------------------
 
+
     const handleSaveProfile = async () => {
         const user = auth.currentUser;
 
@@ -223,17 +223,11 @@ const ProfilePage = () => {
         try {
             setSaving(true);
 
-            const userRef = doc(
-                db,
-                "users",
-                user.uid
+            await updateUserProfile(
+                user.uid,
+                trimmedName,
+                selectedAvatar
             );
-
-            await updateDoc(userRef, {
-                displayName: trimmedName,
-                avatarId: selectedAvatar,
-                updatedAt: serverTimestamp(),
-            });
 
             await updateProfile(user, {
                 displayName: trimmedName,

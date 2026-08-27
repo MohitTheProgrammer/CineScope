@@ -244,8 +244,8 @@ const Hero = () => {
                             <ArrowIcon />
                         </Link>
 
-                        <a
-                            href="#trending"
+                        <Link
+                            to="/how-it-works"
                             className="
                                 rounded-full
                                 border
@@ -265,7 +265,7 @@ const Hero = () => {
                             "
                         >
                             How it works
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Stats */}

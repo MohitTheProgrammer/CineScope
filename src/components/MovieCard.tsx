@@ -88,12 +88,11 @@ const MovieCard = (movie: MovieCardProps) => {
                 id,
                 title,
                 poster_path,
+                vote_average,
+                genre_ids,
             };
 
-            await addLikedMovie(
-                user.uid,
-                likedMovie
-            );
+            await addLikedMovie(user.uid, likedMovie);
 
             setToast({
                 message: `${title} added to your liked list`,

@@ -1,13 +1,17 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
-import ThemeSwitcher from "./ThemeSwitcher";
-import MovieSearch from "./MovieSearch";
 import { useUser } from "../context/UserContext";
+import MovieSearch from "./MovieSearch";
+import ThemeSwitcher from "./ThemeSwitcher";
+import type { User } from "firebase/auth";
+
+let isUser: User | null;
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useUser();
+  isUser = user
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
@@ -80,9 +84,17 @@ const Navbar = () => {
             Trending
           </NavItem>
 
-          <NavItem to="/my-list">
-            My List
-          </NavItem>
+          {user && <>
+            <NavItem to="/my-list">
+              Watch List
+            </NavItem>
+
+            <NavItem to="/for-you">
+              For You
+            </NavItem>
+          </>}
+
+
 
         </div>
 
@@ -367,7 +379,7 @@ const MobileMenu = ({
         {/* ------------------------------------------------------------ */}
 
         <div className="mb-5">
-          <MovieSearch />
+          <MovieSearch closeMenu={onClose} />
         </div>
 
         {/* ------------------------------------------------------------ */}
@@ -390,12 +402,26 @@ const MobileMenu = ({
             Trending
           </MobileNavItem>
 
-          <MobileNavItem
-            to="/my-list"
-            onClick={onClose}
-          >
-            My List
-          </MobileNavItem>
+          {isUser && <>
+
+            <MobileNavItem
+              to="/my-list"
+              onClick={onClose}
+            >
+              Watch List
+            </MobileNavItem>
+
+            <MobileNavItem
+              to="/for-you"
+              onClick={onClose}
+            >
+              For You
+            </MobileNavItem>
+
+          </>}
+
+
+
 
         </div>
 
