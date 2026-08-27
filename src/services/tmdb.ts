@@ -51,13 +51,18 @@ export const getMovieVideos = async (movieId: number) => {
     return response.data;
 };
 
+export const getMovieCredits = async (movieId: number) => {
+    const response = await tmdb.get(`/movie/${movieId}/credits`);
+    return response.data;
+};
+
 export const searchMovies = async (
     query: string
 ): Promise<Movie[]> => {
     const response = await tmdb.get("/search/movie", {
         params: {
             query,
-            include_adult: true,
+            include_adult: false,
             language: "en-US",
             page: 1,
         },

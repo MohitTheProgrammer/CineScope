@@ -58,30 +58,30 @@ const AuthPage = () => {
                     return;
                 }
 
-                const user = await registerUser(
+                await registerUser(
                     form.name.trim(),
                     form.email.trim(),
                     form.password,
                     "01"
                 );
 
-                console.log("Registered user:", user);
-
                 navigate("/");
             } else {
-                const user = await loginUser(
+                await loginUser(
                     form.email.trim(),
                     form.password
                 );
 
-                console.log("Logged in user:", user);
-
                 navigate("/");
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Authentication error:", error);
 
-            switch (error.code) {
+            const errorCode = typeof error === "object" && error !== null && "code" in error
+                ? String(error.code)
+                : "";
+
+            switch (errorCode) {
                 case "auth/email-already-in-use":
                     setError(
                         "An account with this email already exists."

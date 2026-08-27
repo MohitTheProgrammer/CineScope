@@ -16,3 +16,19 @@ export interface Movie {
   genres?: string[];
   orientation?: "vertical" | "horizontal"
 }
+
+export interface WatchProvider {
+    logo_path: string;
+    provider_id: number;
+    provider_name: string;
+    display_priority: number;
+}
+
+export interface WatchProviders {
+    ads?: WatchProvider[];
+    free?: WatchProvider[];
+    flatrate?: WatchProvider[];
+    rent?: WatchProvider[];
+    buy?: WatchProvider[];
+    link?: string;
+}

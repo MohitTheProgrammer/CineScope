@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useUser } from "../context/UserContext";
 import { addLikedMovie } from "../services/movie";
+import Toast from "./Toast";
+import { useState } from "react";
 
 const IMAGE_BASE_URL =
     "https://image.tmdb.org/t/p/w500";
@@ -36,6 +38,10 @@ interface MovieCardProps extends Movie {
 const MovieCard = (movie: MovieCardProps) => {
     const navigate = useNavigate();
     const { user } = useUser();
+    const [toast, setToast] = useState<{
+        message: string;
+        type: "success" | "error";
+    } | null>(null);
 
     const {
         id,
@@ -82,20 +88,26 @@ const MovieCard = (movie: MovieCardProps) => {
                 id,
                 title,
                 poster_path,
-                vote_average,
             };
-
-            console.log(likedMovie);
 
             await addLikedMovie(
                 user.uid,
                 likedMovie
             );
+
+            setToast({
+                message: `${title} added to your liked list`,
+                type: "success",
+            });
         } catch (error) {
             console.error(
                 "Failed to add movie:",
                 error
             );
+            setToast({
+                message: "Failed to add movie",
+                type: "error",
+            });
         }
     };
 
@@ -103,6 +115,14 @@ const MovieCard = (movie: MovieCardProps) => {
         <article
             data-movie-id={id}
             onClick={handleMovieClick}
+            tabIndex={0}
+            role="link"
+            onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    handleMovieClick();
+                }
+            }}
             className={
                 orientation === "vertical"
                     ? "group relative w-full min-w-0 cursor-pointer"
@@ -225,14 +245,14 @@ const MovieCard = (movie: MovieCardProps) => {
                             border-white/15
                             bg-black/50
                             text-white/80
-                            opacity-0
+                            opacity-100 sm:opacity-0
                             backdrop-blur-md
                             transition-all
                             duration-300
                             hover:border-(--accent-primary)
                             hover:bg-(--accent-primary)
                             hover:text-white
-                            group-hover:opacity-100
+                            group-hover:opacity-100 group-focus-within:opacity-100
                         "
                     >
                         <PlusIcon />
@@ -384,6 +404,13 @@ const MovieCard = (movie: MovieCardProps) => {
                             </span>
                         ))}
                 </div>
+            )}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
             )}
         </article>
     );

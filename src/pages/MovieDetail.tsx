@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+import { addWatchlistMovie } from "../services/movie";
 
-import type { Movie } from "../types/movie";
+import type { Movie, WatchProvider, WatchProviders } from "../types/movie";
 import {
     getMovieById,
+    getMovieCredits,
     getMovieVideos,
 } from "../services/tmdb";
+import { getMovieWatchProviders } from "../services/watch_source/api_provider";
 
 const IMAGE_BASE_URL =
     "https://image.tmdb.org/t/p";
@@ -44,9 +48,49 @@ interface TMDBMovieResponse extends Omit<Movie, "genres"> {
 
 const MovieDetail = () => {
     const { movieId } = useParams<{ movieId: string }>();
+    const { user } = useUser();
+
+    const [addingToWatchlist, setAddingToWatchlist] =
+        useState(false);
+
+    const [watchlistAdded, setWatchlistAdded] =
+        useState(false);
+
+    const handleAddToWatchlist = async () => {
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+
+        if (!movie) return;
+
+        try {
+            setAddingToWatchlist(true);
+
+            await addWatchlistMovie(user.uid, {
+                id: movie.id,
+                title: movie.title,
+                posterPath: movie.poster_path,
+                vote_average: movie.vote_average,
+            });
+
+            setWatchlistAdded(true);
+
+            console.log(
+                "Movie added to watchlist"
+            );
+        } catch (error) {
+            console.error(
+                "Failed to add movie to watchlist:",
+                error
+            );
+        } finally {
+            setAddingToWatchlist(false);
+        }
+    };
 
     const id = Number(movieId);
-    console.log({ id, movieId })
+    const isValidMovieId = Number.isInteger(id) && id > 0;
     const navigate = useNavigate();
 
     const [movie, setMovie] =
@@ -55,13 +99,19 @@ const MovieDetail = () => {
     const [videos, setVideos] = useState<Video[]>([]);
     const [cast, setCast] = useState<CastMember[]>([]);
 
-    const [loading, setLoading] = useState(true);
+    const [watchProviders, setWatchProviders] = useState<WatchProviders | null>(null);
+    const [showWatchSources, setShowWatchSources] =
+        useState(false);
+
+    const [loading, setLoading] = useState(isValidMovieId);
     const [loadingVideos, setLoadingVideos] =
         useState(true);
 
     const [error, setError] = useState<string | null>(
         null
     );
+
+
 
     /*
      * ============================================================
@@ -70,6 +120,7 @@ const MovieDetail = () => {
      */
 
     useEffect(() => {
+        if (!isValidMovieId) return;
         const loadMovie = async () => {
             try {
                 setLoading(true);
@@ -78,6 +129,11 @@ const MovieDetail = () => {
                 const data: TMDBMovieResponse =
                     await getMovieById(id);
 
+                const providers = await getMovieWatchProviders(
+                    id
+                );
+
+                setWatchProviders(providers);
                 /*
                  * TMDB detail endpoint returns genres as:
                  *
@@ -115,7 +171,7 @@ const MovieDetail = () => {
         };
 
         loadMovie();
-    }, [movieId]);
+    }, [id, isValidMovieId]);
 
     /*
      * ============================================================
@@ -124,6 +180,8 @@ const MovieDetail = () => {
      */
 
     useEffect(() => {
+        if (!isValidMovieId) return;
+
         const loadMovieExtras = async () => {
             try {
                 setLoadingVideos(true);
@@ -138,27 +196,8 @@ const MovieDetail = () => {
                  * We'll use the credits endpoint below.
                  */
 
-                const creditsResponse = await fetch(
-                    `https://api.themoviedb.org/3/movie/${movieId}/credits`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${import.meta.env
-                                .VITE_TMDB_ACCESS_TOKEN
-                                }`,
-                            "Content-Type":
-                                "application/json",
-                        },
-                    }
-                );
-
-                if (creditsResponse.ok) {
-                    const credits =
-                        await creditsResponse.json();
-
-                    setCast(
-                        credits.cast?.slice(0, 10) ?? []
-                    );
-                }
+                const credits = await getMovieCredits(id);
+                setCast(credits.cast?.slice(0, 10) ?? []);
             } catch (error) {
                 console.error(
                     "Failed to load movie extras:",
@@ -170,7 +209,7 @@ const MovieDetail = () => {
         };
 
         loadMovieExtras();
-    }, [movieId]);
+    }, [id, isValidMovieId]);
 
     /*
      * ============================================================
@@ -234,7 +273,7 @@ const MovieDetail = () => {
      * ============================================================
      */
 
-    if (error || !movie) {
+    if (!isValidMovieId || error || !movie) {
         return (
             <main className="flex min-h-screen items-center justify-center bg-(--bg-primary)">
                 <div className="text-center">
@@ -243,8 +282,9 @@ const MovieDetail = () => {
                     </h1>
 
                     <p className="mt-2 text-sm text-white/50">
-                        {error ??
-                            "Unable to load this movie."}
+                        {error ?? (isValidMovieId
+                            ? "Unable to load this movie."
+                            : "This movie link is invalid.")}
                     </p>
 
                     <Link
@@ -506,10 +546,178 @@ const MovieDetail = () => {
                                 {movie.overview ||
                                     "No synopsis available."}
                             </p>
+                            <div className="mt-6">
+                                <button
+                                    type="button"
+                                    onClick={handleAddToWatchlist}
+                                    disabled={
+                                        addingToWatchlist ||
+                                        watchlistAdded
+                                    }
+                                    className="
+            inline-flex
+            items-center
+            gap-2
+            rounded-xl
+            border
+            border-white/10
+            bg-white/5
+            px-5
+            py-3
+            text-sm
+            font-bold
+            text-white
+            transition-all
+            duration-300
+            hover:border-(--accent-primary)
+            hover:bg-(--accent-primary)
+            disabled:cursor-not-allowed
+            disabled:opacity-60
+        "
+                                >
+                                    {watchlistAdded ? (
+                                        <>
+                                            <CheckIcon />
+                                            Added to Watchlist
+                                        </>
+                                    ) : addingToWatchlist ? (
+                                        <>
+                                            <LoadingIcon />
+                                            Adding...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <PlusIcon />
+                                            Add to Watchlist
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
+            {/* ============================================================ */}
+            {/* Watch Providers                                              */}
+            {/* ============================================================ */}
+
+            {watchProviders && (
+                <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-8">
+                    <SectionHeading
+                        eyebrow="Where to watch"
+                        title="Watch Providers"
+                    />
+
+                    {/* View sources button */}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setShowWatchSources((prev) => !prev)
+                        }
+                        className="
+                mt-6
+                flex
+                w-full
+                items-center
+                justify-between
+                rounded-2xl
+                border
+                border-white/10
+                bg-white/5
+                px-5
+                py-4
+                text-left
+                transition-all
+                duration-300
+                hover:border-white/20
+                hover:bg-white/10
+            "
+                    >
+                        <div>
+                            <p className="text-sm font-bold text-white">
+                                View Watch Sources
+                            </p>
+
+                            <p className="mt-1 text-xs text-white/40">
+                                See where this movie is available
+                            </p>
+                        </div>
+
+                        <ChevronIcon
+                            open={showWatchSources}
+                        />
+                    </button>
+
+                    {/* Sources */}
+
+                    <div
+                        className={`
+                grid
+                transition-all
+                duration-300
+                ${showWatchSources
+                                ? "mt-6 grid-rows-[1fr] opacity-100"
+                                : "grid-rows-[0fr] opacity-0"
+                            }
+            `}
+                    >
+                        <div className="overflow-hidden">
+                            <div className="space-y-6">
+                                {watchProviders.ads &&
+                                    watchProviders.ads.length > 0 && (
+                                        <ProviderGroup
+                                            title="Free with Ads"
+                                            providers={
+                                                watchProviders.ads
+                                            }
+                                        />
+                                    )}
+
+                                {watchProviders.free &&
+                                    watchProviders.free.length > 0 && (
+                                        <ProviderGroup
+                                            title="Free"
+                                            providers={
+                                                watchProviders.free
+                                            }
+                                        />
+                                    )}
+
+                                {watchProviders.flatrate &&
+                                    watchProviders.flatrate.length > 0 && (
+                                        <ProviderGroup
+                                            title="Subscription"
+                                            providers={
+                                                watchProviders.flatrate
+                                            }
+                                        />
+                                    )}
+
+                                {watchProviders.rent &&
+                                    watchProviders.rent.length > 0 && (
+                                        <ProviderGroup
+                                            title="Rent"
+                                            providers={
+                                                watchProviders.rent
+                                            }
+                                        />
+                                    )}
+
+                                {watchProviders.buy &&
+                                    watchProviders.buy.length > 0 && (
+                                        <ProviderGroup
+                                            title="Buy"
+                                            providers={
+                                                watchProviders.buy
+                                            }
+                                        />
+                                    )}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* ============================================================ */}
             {/* Trailer                                                       */}
@@ -881,4 +1089,150 @@ const Dot = () => (
     <span className="size-1 rounded-full bg-white/20" />
 );
 
+const PlusIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        className="size-4"
+    >
+        <path d="M12 5v14" />
+        <path d="M5 12h14" />
+    </svg>
+);
+
+const CheckIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-4"
+    >
+        <path d="m5 12 4 4L19 6" />
+    </svg>
+);
+
+const LoadingIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="size-4 animate-spin"
+    >
+        <circle
+            cx="12"
+            cy="12"
+            r="9"
+            className="opacity-25"
+        />
+
+        <path
+            d="M21 12a9 9 0 0 0-9-9"
+        />
+    </svg>
+);
+
+interface ProviderGroupProps {
+    title: string;
+    providers: WatchProvider[];
+}
+
+const ProviderGroup = ({
+    title,
+    providers,
+}: ProviderGroupProps) => {
+    return (
+        <div>
+            <h3
+                className="
+                    mb-3
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-[0.15em]
+                    text-white/40
+                "
+            >
+                {title}
+            </h3>
+
+            <div className="flex flex-wrap gap-3">
+                {providers.map((provider) => (
+                    <div
+                        key={provider.provider_id}
+                        className="
+                            flex
+                            items-center
+                            gap-3
+                            rounded-xl
+                            border
+                            border-white/10
+                            bg-white/5
+                            px-3
+                            py-2
+                            transition-all
+                            duration-300
+                            hover:border-white/20
+                            hover:bg-white/10
+                        "
+                    >
+                        <img
+                            src={`https://image.tmdb.org/t/p/w92${provider.logo_path}`}
+                            alt={provider.provider_name}
+                            className="
+                                size-9
+                                rounded-lg
+                                object-cover
+                            "
+                            loading="lazy"
+                        />
+
+                        <span
+                            className="
+                                text-sm
+                                font-medium
+                                text-white
+                            "
+                        >
+                            {provider.provider_name}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const ChevronIcon = ({
+    open,
+}: {
+    open: boolean;
+}) => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={`
+            size-5
+            text-white/40
+            transition-transform
+            duration-300
+            ${open ? "rotate-180" : ""}
+        `}
+    >
+        <path d="m6 9 6 6 6-6" />
+    </svg>
+);
+
 export default MovieDetail;
+
+

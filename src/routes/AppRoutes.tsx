@@ -3,28 +3,23 @@ import {
     Route,
     Routes,
 } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
 import MainLayout from "../layout/MainLayout";
 
-import Home from "../pages/Home";
-import Trending from "../pages/Trending";
-import MovieDetail from "../pages/MovieDetail";
-import Search from "../pages/Search";
-import Popular from "../pages/Popular";
-import AuthPage from "../pages/auth/AuthPage";
-import Profile from "../pages/Profile";
-// import Search from "../pages/Search";
-// import MovieDetails from "../pages/MovieDetails";
-// import Login from "../pages/Login";
-// import MyList from "../pages/MyList";
-// import Recommendations from "../pages/Recommendations";
-// import NotFound from "../pages/NotFound";
-
-// import ProtectedRoute from "./ProtectedRoute";
+const Home = lazy(() => import("../pages/Home"));
+const Trending = lazy(() => import("../pages/Trending"));
+const MovieDetail = lazy(() => import("../pages/MovieDetail"));
+const Search = lazy(() => import("../pages/Search"));
+const Popular = lazy(() => import("../pages/Popular"));
+const AuthPage = lazy(() => import("../pages/auth/AuthPage"));
+const Profile = lazy(() => import("../pages/Profile"));
+const MyList = lazy(() => import("../pages/MyList"));
 
 const AppRoutes = () => {
     return (
         <BrowserRouter>
+            <Suspense fallback={<main className="min-h-screen bg-(--bg-primary)" />}>
             <Routes>
 
                 {/* Public application routes */}
@@ -46,6 +41,7 @@ const AppRoutes = () => {
                     />
 
                     <Route path="/popular" element={<Popular />} />
+                    <Route path="/my-list" element={<MyList />} />
 
                     <Route
                         path="/login"
@@ -58,13 +54,10 @@ const AppRoutes = () => {
                     />
 
                     <Route path="/profile" element={<Profile />} />
-
-
+                    <Route path="*" element={<main className="flex min-h-screen items-center justify-center bg-(--bg-primary) text-center text-white"><div><h1 className="text-3xl font-black">Page not found</h1><a className="mt-4 inline-block text-(--accent-primary)" href="/">Return home</a></div></main>} />
                 </Route>
-
-
-
             </Routes>
+            </Suspense>
         </BrowserRouter>
     );
 };

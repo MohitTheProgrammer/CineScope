@@ -79,7 +79,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--background);
+  background: var(--bg-primary);
   color: var(--text-primary);
   font-family:
     Inter,
@@ -101,7 +101,7 @@ button {
 }
 
 ::selection {
-  background: var(--neon-pink);
+  background: var(--accent-primary);
   color: white;
 }
 
@@ -112,38 +112,21 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--neon-pink), var(--neon-purple));
+  background: linear-gradient(var(--accent-primary), var(--accent-secondary));
   border-radius: 999px;
 }
 
 /* Reusable neon effects */
 
-.neon-pink {
-  color: var(--neon-pink);
-}
-
-.neon-purple {
-  color: var(--neon-purple);
-}
-
-.neon-cyan {
-  color: var(--neon-cyan);
-}
-
-.neon-glow-pink {
-  box-shadow:
-    0 0 20px rgba(255, 45, 166, 0.25),
-    0 0 60px rgba(255, 45, 166, 0.08);
-}
-
-.neon-glow-purple {
-  box-shadow:
-    0 0 20px rgba(139, 92, 246, 0.25),
-    0 0 60px rgba(139, 92, 246, 0.08);
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
 }
 
 /* Glass */

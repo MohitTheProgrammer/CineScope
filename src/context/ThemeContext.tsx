@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
     createContext,
     useContext,
@@ -24,11 +25,16 @@ interface ThemeProviderProps {
 export const ThemeProvider = ({
     children,
 }: ThemeProviderProps) => {
-    const [theme, setThemeState] =
-        useState<ThemeName>("neon");
+    const [theme, setThemeState] = useState<ThemeName>(() => {
+        const savedTheme = localStorage.getItem("cinescope-theme");
+        return savedTheme === "purple" || savedTheme === "cyan" || savedTheme === "red"
+            ? savedTheme
+            : "neon";
+    });
 
     const setTheme = (newTheme: ThemeName) => {
         setThemeState(newTheme);
+        localStorage.setItem("cinescope-theme", newTheme);
     };
 
     useEffect(() => {

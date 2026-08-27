@@ -14,13 +14,14 @@ const Search = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [retryKey, setRetryKey] = useState(0);
 
     useEffect(() => {
         if (!query) {
-            setMovies([]);
             return;
         }
 
+        let active = true;
         const loadSearchResults = async () => {
             try {
                 setLoading(true);
@@ -28,20 +29,21 @@ const Search = () => {
 
                 const results = await searchMovies(query);
 
-                setMovies(results);
+                if (active) setMovies(results);
             } catch (error) {
                 console.error("Failed to search movies:", error);
 
-                setError(
+                if (active) setError(
                     "Something went wrong while searching for movies."
                 );
             } finally {
-                setLoading(false);
+                if (active) setLoading(false);
             }
         };
 
         loadSearchResults();
-    }, [query]);
+        return () => { active = false; };
+    }, [query, retryKey]);
 
     return (
         <main
@@ -64,7 +66,7 @@ const Search = () => {
 
                 {/* Error */}
                 {!loading && error && (
-                    <SearchError message={error} />
+                    <SearchError message={error} onRetry={() => setRetryKey((key) => key + 1)} />
                 )}
 
                 {/* Results */}
@@ -142,9 +144,10 @@ const SearchHeader = ({ query }: SearchHeaderProps) => {
 
 interface SearchErrorProps {
     message: string;
+    onRetry: () => void;
 }
 
-const SearchError = ({ message }: SearchErrorProps) => {
+const SearchError = ({ message, onRetry }: SearchErrorProps) => {
     return (
         <div
             className="
@@ -159,6 +162,9 @@ const SearchError = ({ message }: SearchErrorProps) => {
             <p className="text-sm text-white/50">
                 {message}
             </p>
+            <button type="button" onClick={onRetry} className="mt-4 font-bold text-(--accent-primary) hover:underline">
+                Try again
+            </button>
         </div>
     );
 };

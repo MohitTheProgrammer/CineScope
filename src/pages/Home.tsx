@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import MoviesSection from "../components/MoviesSection";
 import { getTrendingMovies, getPopularMovies } from "../services/tmdb";
 import type { Movie } from "../types/movie";
@@ -218,8 +219,8 @@ const Hero = () => {
 
                     {/* Actions */}
                     <div className="mt-8 flex flex-wrap gap-3">
-                        <button
-                            type="button"
+                        <Link
+                            to="/trending"
                             className="
                                 flex
                                 items-center
@@ -241,10 +242,10 @@ const Hero = () => {
                             Explore Movies
 
                             <ArrowIcon />
-                        </button>
+                        </Link>
 
-                        <button
-                            type="button"
+                        <a
+                            href="#trending"
                             className="
                                 rounded-full
                                 border
@@ -264,7 +265,7 @@ const Hero = () => {
                             "
                         >
                             How it works
-                        </button>
+                        </a>
                     </div>
 
                     {/* Stats */}

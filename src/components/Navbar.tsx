@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -7,9 +7,14 @@ import { useUser } from "../context/UserContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user } = useUser()
-
-  console.log({ user })
+  const { user } = useUser();
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
 
 
 
@@ -79,9 +84,6 @@ const Navbar = () => {
             My List
           </NavItem>
 
-          <NavItem to="/recommendations">
-            For You
-          </NavItem>
         </div>
 
         {/* ------------------------------------------------------------ */}
@@ -107,16 +109,16 @@ const Navbar = () => {
           </div>
 
           {/* Profile - Desktop */}
-          <NavLink to={"/Profile"}>
+          {user && <NavLink to="/profile">
             <IconButton
               label="Profile"
               className="hidden lg:flex"
             >
               <UserIcon />
             </IconButton>
-          </NavLink>
+          </NavLink>}
           {/* Sign In - Desktop */}
-          <NavLink to={"/login"}>
+          {!user && <NavLink to="/login">
             <button
               type="button"
               className="
@@ -140,7 +142,7 @@ const Navbar = () => {
 
               Sign In
             </button>
-          </NavLink>
+          </NavLink>}
 
           {/* -------------------------------------------------------- */}
           {/* Hamburger                                                 */}
@@ -190,6 +192,7 @@ const Navbar = () => {
       <MobileMenu
         open={menuOpen}
         onClose={closeMenu}
+        signedIn={Boolean(user)}
       />
     </header>
   );
@@ -324,11 +327,13 @@ const NavItem = ({
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
+  signedIn: boolean;
 }
 
 const MobileMenu = ({
   open,
   onClose,
+  signedIn,
 }: MobileMenuProps) => {
   return (
     <div
@@ -369,7 +374,7 @@ const MobileMenu = ({
         {/* Navigation                                                     */}
         {/* ------------------------------------------------------------ */}
 
-        <div className="flex flex-col">
+        <div className="flex flex-col" aria-label="Mobile navigation">
           <MobileNavItem
             to="/"
             end
@@ -392,12 +397,6 @@ const MobileMenu = ({
             My List
           </MobileNavItem>
 
-          <MobileNavItem
-            to="/recommendations"
-            onClick={onClose}
-          >
-            For You
-          </MobileNavItem>
         </div>
 
         {/* ------------------------------------------------------------ */}
@@ -448,29 +447,11 @@ const MobileMenu = ({
                             gap-3
                         "
           >
-            <IconButton label="Profile">
-              <UserIcon />
-            </IconButton>
+            {signedIn && <NavLink to="/profile" onClick={onClose}><IconButton label="Profile"><UserIcon /></IconButton></NavLink>}
 
-            <button
-              type="button"
-              className="
-                                rounded-full
-                                border
-                                border-(--accent-primary)
-                                bg-(--accent-primary)
-                                px-5
-                                py-2.5
-                                text-sm
-                                font-semibold
-                                text-white
-                                transition-all
-                                duration-300
-                                hover:shadow-[0_0_25px_var(--accent-glow)]
-                            "
-            >
+            {!signedIn && <NavLink to="/login" onClick={onClose} className="rounded-full border border-(--accent-primary) bg-(--accent-primary) px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-[0_0_25px_var(--accent-glow)]">
               Sign In
-            </button>
+            </NavLink>}
           </div>
         </div>
       </div>
