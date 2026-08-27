@@ -723,7 +723,7 @@ const MovieDetail = () => {
                                 {movie.overview ||
                                     "No synopsis available."}
                             </p>
-                            <div className="mt-6 flex flex-wrap gap-3">
+                            <div className="mt-6 grid w-full grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:flex-wrap">
                                 <button
                                     type="button"
                                     onClick={handleAddToWatchlist}
@@ -735,6 +735,8 @@ const MovieDetail = () => {
                                     className="
             inline-flex
             items-center
+            justify-center
+            w-full
             gap-2
             rounded-xl
             border
@@ -751,6 +753,7 @@ const MovieDetail = () => {
             hover:bg-(--accent-primary)
             disabled:cursor-not-allowed
             disabled:opacity-60
+            lg:w-auto
         "
                                 >
                                     {checkingWatchlist ? (
@@ -788,6 +791,8 @@ const MovieDetail = () => {
                                         className="
                                             inline-flex
                                             items-center
+                                            justify-center
+                                            w-full
                                             gap-2
                                             rounded-xl
                                             border
@@ -804,6 +809,7 @@ const MovieDetail = () => {
                                             hover:bg-(--accent-primary)
                                             disabled:cursor-not-allowed
                                             disabled:opacity-60
+                                            lg:w-auto
                                         "
                                     >
                                         {checkingWatched ? (
@@ -831,7 +837,7 @@ const MovieDetail = () => {
                                 )}
 
                                 {hasBeenReleased && (
-                                    <div className="relative">
+                                    <div className="relative w-full sm:col-span-2 lg:w-auto">
                                         <button
                                             type="button"
                                             onClick={() => setRatingOpen((open) => !open)}
@@ -844,6 +850,8 @@ const MovieDetail = () => {
                                             className="
                                                 inline-flex
                                                 items-center
+                                                justify-center
+                                                w-full
                                                 gap-2
                                                 rounded-xl
                                                 border
@@ -860,6 +868,7 @@ const MovieDetail = () => {
                                                 hover:bg-(--accent-primary)
                                                 disabled:cursor-not-allowed
                                                 disabled:opacity-60
+                                                lg:w-auto
                                             "
                                         >
                                             {checkingRated ? (
@@ -883,7 +892,7 @@ const MovieDetail = () => {
                                         </button>
 
                                         {ratingOpen && !rated && (
-                                            <div className="absolute left-0 top-full z-20 mt-2 flex min-w-max gap-1 rounded-xl border border-white/10 bg-(--bg-primary) p-2 shadow-xl">
+                                            <div className="absolute inset-x-0 top-full z-20 mt-2 flex justify-center gap-1 rounded-xl border border-white/10 bg-(--bg-primary) p-2 shadow-xl lg:left-0 lg:right-auto lg:min-w-max">
                                                 {[1, 2, 3, 4, 5].map((rating) => (
                                                     <button
                                                         key={rating}

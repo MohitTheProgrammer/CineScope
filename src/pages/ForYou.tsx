@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import type { ComponentType } from "react";
 
 import {
     FlameIcon,
@@ -9,19 +10,22 @@ import {
     BrainIcon,
     TargetIcon,
     DnaIcon,
+    ArrowRightIcon,
+    StarIcon,
+    PlayIcon,
 } from "../assets/icons/Icons";
 
-/* -------------------------------------------------------------------------- */
-/* Types                                                                      */
-/* -------------------------------------------------------------------------- */
+/* ==========================================================================
+   Types
+   ========================================================================== */
 
-type IconComponent = React.ComponentType<{
+type IconComponent = ComponentType<{
     className?: string;
 }>;
 
-/* -------------------------------------------------------------------------- */
-/* Genre Data                                                                 */
-/* -------------------------------------------------------------------------- */
+/* ==========================================================================
+   Genre Data
+   ========================================================================== */
 
 const GENRES = [
     {
@@ -66,9 +70,9 @@ const GENRES = [
     },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Genre Combinations                                                         */
-/* -------------------------------------------------------------------------- */
+/* ==========================================================================
+   Genre Combinations
+   ========================================================================== */
 
 const COMBINATIONS = [
     {
@@ -85,8 +89,7 @@ const COMBINATIONS = [
         second: "Comedy",
         secondIcon: SparklesIcon,
         percentage: 46,
-        description:
-            "Explosions with a sense of humor",
+        description: "Explosions with a sense of humor",
     },
     {
         first: "Mystery",
@@ -98,9 +101,9 @@ const COMBINATIONS = [
     },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Movies                                                                     */
-/* -------------------------------------------------------------------------- */
+/* ==========================================================================
+   Movies
+   ========================================================================== */
 
 const MOVIES = [
     {
@@ -108,90 +111,172 @@ const MOVIES = [
         title: "Bullet Train",
         poster:
             "https://image.tmdb.org/t/p/w500/9r3j1uW8V6FQ6c1K8xYq7Jq9.jpg",
+        rating: "7.8",
+        genre: "Action",
     },
     {
         id: 2,
         title: "Inception",
         poster:
             "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+        rating: "8.8",
+        genre: "Sci-Fi",
     },
     {
         id: 3,
         title: "The Dark Knight",
         poster:
             "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+        rating: "9.0",
+        genre: "Action",
     },
     {
         id: 4,
         title: "Interstellar",
         poster:
             "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        rating: "8.7",
+        genre: "Sci-Fi",
     },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* For You                                                                     */
-/* -------------------------------------------------------------------------- */
+/* ==========================================================================
+   For You
+   ========================================================================== */
 
 const ForYou = () => {
     const topGenre = GENRES[0];
-
     const TopGenreIcon = topGenre.icon;
 
     const totalMovies = useMemo(
         () =>
             GENRES.reduce(
-                (total, genre) =>
-                    total + genre.count,
+                (total, genre) => total + genre.count,
                 0
             ),
         []
     );
 
+    const handleSuggestMovie = () => {
+        console.log("Suggest me a movie");
+    };
+
     return (
-        <main className="min-h-screen bg-(--bg-primary) text-white">
+        <main className="min-h-screen overflow-hidden bg-(--bg-primary) text-white">
 
-            {/* ================================================================== */}
-            {/* Header                                                             */}
-            {/* ================================================================== */}
+            {/* =================================================================
+                HERO
+            ================================================================= */}
 
-            <section className="mx-auto max-w-7xl px-6 pb-16 pt-28 lg:px-8">
+            <section className="relative">
 
-                <div className="max-w-3xl">
+                {/* Background atmosphere */}
 
-                    <div className="flex items-center gap-2">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-150 overflow-hidden">
+                    <div
+                        className="
+                            absolute
+                            left-1/2
+                            top-0
+                            size-150
+                            -translate-x-1/2
+                            rounded-full
+                            bg-(--accent-primary)/10
+                            blur-[120px]
+                        "
+                    />
 
-                        <span
+                    <div
+                        className="
+                            absolute
+                            -right-40
+                            top-20
+                            size-100
+                            rounded-full
+                            bg-purple-500/5
+                            blur-[100px]
+                        "
+                    />
+
+                    <div
+                        className="
+                            absolute
+                            -left-40
+                            top-60
+                            size-100
+                            rounded-full
+                            bg-cyan-500/5
+                            blur-[100px]
+                        "
+                    />
+                </div>
+
+                <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-32 lg:px-8">
+
+                    {/* Eyebrow */}
+
+                    <div className="flex items-center gap-3">
+
+                        <div
                             className="
-                                size-1.5
-                                rounded-full
-                                bg-(--accent-primary)
-                                shadow-[0_0_12px_var(--accent-glow)]
-                            "
-                        />
-
-                        <span
-                            className="
-                                text-[10px]
-                                font-bold
-                                uppercase
-                                tracking-[0.3em]
+                                flex
+                                size-9
+                                items-center
+                                justify-center
+                                rounded-xl
+                                border
+                                border-(--accent-primary)/20
+                                bg-(--accent-primary)/10
                                 text-(--accent-primary)
+                                shadow-[0_0_30px_var(--accent-glow)]
                             "
                         >
-                            Personalized for you
-                        </span>
+                            <DnaIcon className="size-4.5" />
+                        </div>
+
+                        <div>
+
+                            <div className="flex items-center gap-2">
+
+                                <span
+                                    className="
+                                        size-1.5
+                                        rounded-full
+                                        bg-(--accent-primary)
+                                        shadow-[0_0_12px_var(--accent-glow)]
+                                    "
+                                />
+
+                                <span
+                                    className="
+                                        text-[10px]
+                                        font-black
+                                        uppercase
+                                        tracking-[0.3em]
+                                        text-(--accent-primary)
+                                    "
+                                >
+                                    Personalized for you
+                                </span>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
+                    {/* Heading */}
+
                     <h1
                         className="
-                            mt-4
+                            mt-6
+                            max-w-4xl
                             text-5xl
                             font-black
-                            tracking-[-0.04em]
+                            leading-[0.92]
+                            tracking-[-0.055em]
                             sm:text-6xl
-                            lg:text-7xl
+                            lg:text-8xl
                         "
                     >
                         Your{" "}
@@ -202,65 +287,332 @@ const ForYou = () => {
 
                     <p
                         className="
-                            mt-5
+                            mt-7
                             max-w-2xl
                             text-base
                             leading-7
                             text-white/45
                             sm:text-lg
+                            sm:leading-8
                         "
                     >
-                        We looked at the movies you love
-                        and found something interesting
-                        about your taste.
+                        We analyzed the movies you love and
+                        discovered the patterns hiding inside
+                        your taste.
                     </p>
+
+                    {/* Quick stats */}
+
+                    <div className="mt-8 flex flex-wrap gap-3">
+
+                        <StatPill
+                            icon={FilmIcon}
+                            value={`${totalMovies}`}
+                            label="movies analyzed"
+                        />
+
+                        <StatPill
+                            icon={StarIcon}
+                            value="4.8"
+                            label="avg personal rating"
+                        />
+
+                        <StatPill
+                            icon={BrainIcon}
+                            value="94%"
+                            label="taste confidence"
+                        />
+
+                    </div>
+
+                    {/* =========================================================
+                        RECOMMENDATION ENGINE
+                    ========================================================= */}
+
+                    <div
+                        className="
+                            group
+                            relative
+                            mt-14
+                            overflow-hidden
+                            rounded-4xl
+                            border
+                            border-(--accent-primary)/20
+                            bg-white/[0.035]
+                            shadow-[0_30px_100px_rgba(0,0,0,0.25)]
+                        "
+                    >
+
+                        {/* Glow */}
+
+                        <div
+                            className="
+                                pointer-events-none
+                                absolute
+                                -right-32
+                                -top-32
+                                size-100
+                                rounded-full
+                                bg-(--accent-primary)/15
+                                blur-[100px]
+                                transition-all
+                                duration-700
+                                group-hover:bg-(--accent-primary)/25
+                            "
+                        />
+
+                        <div
+                            className="
+                                pointer-events-none
+                                absolute
+                                -bottom-40
+                                left-1/4
+                                size-100
+                                rounded-full
+                                bg-purple-500/5
+                                blur-[100px]
+                            "
+                        />
+
+                        {/* Decorative DNA icon */}
+
+                        <div
+                            className="
+                                pointer-events-none
+                                absolute
+                                right-8
+                                top-8
+                                opacity-[0.035]
+                                sm:right-12
+                                sm:top-10
+                            "
+                        >
+                            <DnaIcon className="size-48 sm:size-64" />
+                        </div>
+
+                        <div
+                            className="
+                                relative
+                                flex
+                                min-h-75
+                                flex-col
+                                items-center
+                                justify-center
+                                px-6
+                                py-12
+                                text-center
+                                sm:min-h-80
+                                sm:px-10
+                            "
+                        >
+
+                            {/* Label */}
+
+                            <div className="flex items-center gap-3">
+
+                                <span className="size-1.5 rounded-full bg-(--accent-primary) shadow-[0_0_12px_var(--accent-glow)]" />
+
+                                <span
+                                    className="
+                                        text-[10px]
+                                        font-black
+                                        uppercase
+                                        tracking-[0.35em]
+                                        text-(--accent-primary)
+                                    "
+                                >
+                                    Your personal movie engine
+                                </span>
+
+                                <span className="size-1.5 rounded-full bg-(--accent-primary) shadow-[0_0_12px_var(--accent-glow)]" />
+
+                            </div>
+
+                            <h2
+                                className="
+                                    mt-5
+                                    text-3xl
+                                    font-black
+                                    tracking-tight
+                                    sm:text-5xl
+                                "
+                            >
+                                Don't know what to watch?
+                            </h2>
+
+                            <p
+                                className="
+                                    mt-4
+                                    max-w-xl
+                                    text-sm
+                                    leading-6
+                                    text-white/40
+                                    sm:text-base
+                                "
+                            >
+                                Let your Movie DNA decide.
+                                CineScope finds something that
+                                matches what you actually love.
+                            </p>
+
+                            {/* CTA */}
+
+                            <button
+                                type="button"
+                                onClick={handleSuggestMovie}
+                                className="
+                                    group/button
+                                    relative
+                                    mt-9
+                                    inline-flex
+                                    min-h-16
+                                    items-center
+                                    gap-4
+                                    overflow-hidden
+                                    rounded-2xl
+                                    border
+                                    border-(--accent-primary)/40
+                                    bg-(--accent-primary)
+                                    px-9
+                                    py-4
+                                    text-base
+                                    font-black
+                                    text-black
+                                    shadow-[0_15px_60px_var(--accent-glow)]
+                                    transition-all
+                                    duration-300
+                                    hover:-translate-y-1
+                                    hover:scale-[1.025]
+                                    hover:shadow-[0_25px_90px_var(--accent-glow)]
+                                    active:translate-y-0
+                                    active:scale-[0.99]
+                                    sm:px-12
+                                    sm:text-lg
+                                "
+                            >
+
+                                {/* Shine */}
+
+                                <span
+                                    className="
+                                        pointer-events-none
+                                        absolute
+                                        inset-y-0
+                                        -left-full
+                                        w-1/2
+                                        -skew-x-12
+                                        bg-white/25
+                                        transition-all
+                                        duration-700
+                                        group-hover/button:left-[120%]
+                                    "
+                                />
+
+                                <SparklesIcon
+                                    className="
+                                        relative
+                                        size-6
+                                        transition-transform
+                                        duration-300
+                                        group-hover/button:rotate-12
+                                        group-hover/button:scale-110
+                                    "
+                                />
+
+                                <span className="relative whitespace-nowrap">
+                                    Suggest Me a Movie
+                                </span>
+
+                                <ArrowRightIcon
+                                    className="
+                                        relative
+                                        size-5
+                                        transition-transform
+                                        duration-300
+                                        group-hover/button:translate-x-1
+                                    "
+                                />
+
+                            </button>
+
+                            <div
+                                className="
+                                    mt-5
+                                    flex
+                                    items-center
+                                    gap-2
+                                    text-[9px]
+                                    font-bold
+                                    uppercase
+                                    tracking-[0.2em]
+                                    text-white/20
+                                "
+                            >
+                                <DnaIcon className="size-3" />
+                                Powered by your Movie DNA
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-                {/* ============================================================= */}
-                {/* DNA Hero                                                       */}
-                {/* ============================================================= */}
+            </section>
+
+            {/* =================================================================
+                DNA SNAPSHOT
+            ================================================================= */}
+
+            <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
+
+                <div className="mb-7 flex items-end justify-between">
+
+                    <SectionHeading
+                        eyebrow="Your taste"
+                        title="Your DNA at a glance"
+                    />
+
+                    <span
+                        className="
+                            hidden
+                            text-xs
+                            font-bold
+                            text-white/20
+                            sm:block
+                        "
+                    >
+                        UPDATED JUST NOW
+                    </span>
+
+                </div>
 
                 <div
                     className="
                         relative
-                        mt-12
                         overflow-hidden
-                        rounded-3xl
+                        rounded-4xl
                         border
                         border-white/10
-                        bg-white/[0.035]
+                        bg-white/2.5
                         p-6
                         sm:p-8
                         lg:p-10
                     "
                 >
 
-                    {/* Accent glow */}
+                    {/* Glow */}
 
                     <div
                         className="
                             pointer-events-none
                             absolute
-                            -right-32
-                            -top-32
-                            size-96
+                            -right-40
+                            -top-40
+                            size-100
                             rounded-full
                             bg-(--accent-primary)/10
-                            blur-3xl
-                        "
-                    />
-
-                    <div
-                        className="
-                            pointer-events-none
-                            absolute
-                            -bottom-40
-                            left-1/3
-                            size-80
-                            rounded-full
-                            bg-(--accent-primary)/5
-                            blur-3xl
+                            blur-[100px]
                         "
                     />
 
@@ -269,12 +621,12 @@ const ForYou = () => {
                             relative
                             grid
                             gap-10
-                            lg:grid-cols-[1fr_280px]
+                            lg:grid-cols-[1fr_300px]
                             lg:items-center
                         "
                     >
 
-                        {/* Main genre */}
+                        {/* Genre */}
 
                         <div>
 
@@ -283,15 +635,15 @@ const ForYou = () => {
                                 <div
                                     className="
                                         flex
-                                        size-14
+                                        size-16
                                         items-center
                                         justify-center
                                         rounded-2xl
                                         border
-                                        border-(--accent-primary)/20
+                                        border-(--accent-primary)/25
                                         bg-(--accent-primary)/10
                                         text-(--accent-primary)
-                                        shadow-[0_0_35px_var(--accent-glow)]
+                                        shadow-[0_0_40px_var(--accent-glow)]
                                     "
                                 >
                                     <TopGenreIcon className="size-7" />
@@ -302,16 +654,23 @@ const ForYou = () => {
                                     <p
                                         className="
                                             text-[10px]
-                                            font-bold
+                                            font-black
                                             uppercase
-                                            tracking-[0.2em]
-                                            text-white/35
+                                            tracking-[0.25em]
+                                            text-white/30
                                         "
                                     >
                                         Your #1 genre
                                     </p>
 
-                                    <h2 className="text-3xl font-black">
+                                    <h2
+                                        className="
+                                            mt-1
+                                            text-3xl
+                                            font-black
+                                            sm:text-4xl
+                                        "
+                                    >
                                         {topGenre.name}
                                     </h2>
 
@@ -321,67 +680,37 @@ const ForYou = () => {
 
                             <p
                                 className="
-                                    mt-6
-                                    max-w-xl
+                                    mt-7
+                                    max-w-2xl
                                     text-lg
                                     leading-8
-                                    text-white/60
+                                    text-white/55
+                                    sm:text-xl
                                 "
                             >
-                                You don't watch movies
-                                quietly. Explosions,
-                                impossible missions and
-                                characters who refuse to stay
+                                You don't watch movies quietly.
+                                Explosions, impossible missions
+                                and characters who refuse to stay
                                 down — that's your territory.
                             </p>
 
                             <div className="mt-8 flex flex-wrap gap-3">
 
-                                {/* Movies analyzed */}
+                                <InfoPill
+                                    icon={FilmIcon}
+                                    text={`${topGenre.count} movies`}
+                                    accent
+                                />
 
-                                <div
-                                    className="
-                                        flex
-                                        items-center
-                                        gap-2
-                                        rounded-full
-                                        border
-                                        border-(--accent-primary)/20
-                                        bg-(--accent-primary)/10
-                                        px-4
-                                        py-2
-                                        text-xs
-                                        font-bold
-                                        text-(--accent-primary)
-                                    "
-                                >
-                                    <FilmIcon className="size-3.5" />
+                                <InfoPill
+                                    icon={DnaIcon}
+                                    text={`${totalMovies} analyzed`}
+                                />
 
-                                    {topGenre.count} movies
-                                </div>
-
-                                {/* Total */}
-
-                                <div
-                                    className="
-                                        flex
-                                        items-center
-                                        gap-2
-                                        rounded-full
-                                        border
-                                        border-white/10
-                                        bg-white/5
-                                        px-4
-                                        py-2
-                                        text-xs
-                                        font-bold
-                                        text-white/60
-                                    "
-                                >
-                                    <DnaIcon className="size-3.5" />
-
-                                    {totalMovies} movies analyzed
-                                </div>
+                                <InfoPill
+                                    icon={FlameIcon}
+                                    text="High energy"
+                                />
 
                             </div>
 
@@ -389,13 +718,13 @@ const ForYou = () => {
 
                         {/* Percentage */}
 
-                        <div className="relative flex justify-center">
+                        <div className="flex justify-center">
 
                             <div
                                 className="
                                     relative
                                     flex
-                                    size-56
+                                    size-60
                                     flex-col
                                     items-center
                                     justify-center
@@ -403,15 +732,12 @@ const ForYou = () => {
                                     border
                                     border-(--accent-primary)/20
                                     bg-(--accent-primary)/5
-                                    shadow-[0_0_80px_var(--accent-glow)]
+                                    shadow-[0_0_100px_var(--accent-glow)]
                                 "
                             >
 
-                                {/* Inner ring */}
-
                                 <div
                                     className="
-                                        pointer-events-none
                                         absolute
                                         inset-3
                                         rounded-full
@@ -420,7 +746,25 @@ const ForYou = () => {
                                     "
                                 />
 
-                                <span className="relative text-6xl font-black">
+                                <div
+                                    className="
+                                        absolute
+                                        inset-7
+                                        rounded-full
+                                        border
+                                        border-white/5
+                                    "
+                                />
+
+                                <span
+                                    className="
+                                        relative
+                                        text-6xl
+                                        font-black
+                                        tracking-tighter
+                                        text-(--accent-primary)
+                                    "
+                                >
                                     {topGenre.percentage}%
                                 </span>
 
@@ -429,10 +773,10 @@ const ForYou = () => {
                                         relative
                                         mt-1
                                         text-[10px]
-                                        font-bold
+                                        font-black
                                         uppercase
-                                        tracking-[0.2em]
-                                        text-white/35
+                                        tracking-[0.25em]
+                                        text-white/30
                                     "
                                 >
                                     of your taste
@@ -448,20 +792,20 @@ const ForYou = () => {
 
             </section>
 
-            {/* ================================================================== */}
-            {/* Top Genres                                                         */}
-            {/* ================================================================== */}
+            {/* =================================================================
+                TOP GENRES
+            ================================================================= */}
 
-            <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+            <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
 
                 <SectionHeading
-                    eyebrow="Your taste"
-                    title="Top Genres"
+                    eyebrow="The algorithm sees"
+                    title="Your Top Genres"
                 />
 
                 <div
                     className="
-                        mt-7
+                        mt-8
                         grid
                         gap-4
                         sm:grid-cols-2
@@ -479,22 +823,23 @@ const ForYou = () => {
 
             </section>
 
-            {/* ================================================================== */}
-            {/* Personality                                                        */}
-            {/* ================================================================== */}
+            {/* =================================================================
+                PERSONALITY
+            ================================================================= */}
 
-            <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+            <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
 
                 <div
                     className="
                         relative
                         overflow-hidden
-                        rounded-3xl
+                        rounded-4xl
                         border
                         border-white/10
-                        bg-white/[0.035]
+                        bg-white/2.5
                         p-7
                         sm:p-10
+                        lg:p-12
                     "
                 >
 
@@ -502,61 +847,75 @@ const ForYou = () => {
                         className="
                             pointer-events-none
                             absolute
-                            right-0
-                            top-0
-                            size-64
+                            -right-20
+                            -top-20
+                            size-80
                             rounded-full
-                            bg-(--accent-primary)/5
-                            blur-3xl
+                            bg-(--accent-primary)/10
+                            blur-[100px]
                         "
                     />
 
                     <div className="relative">
 
                         <SectionHeading
-                            eyebrow="Your personality"
+                            eyebrow="Your movie personality"
                             title="The Adrenaline Seeker"
                         />
 
-                        <div className="mt-6 flex items-start gap-4">
+                        <div
+                            className="
+                                mt-8
+                                flex
+                                flex-col
+                                gap-6
+                                lg:flex-row
+                                lg:items-center
+                                lg:justify-between
+                            "
+                        >
 
-                            <div
-                                className="
-                                    mt-1
-                                    flex
-                                    size-11
-                                    shrink-0
-                                    items-center
-                                    justify-center
-                                    rounded-xl
-                                    border
-                                    border-(--accent-primary)/20
-                                    bg-(--accent-primary)/10
-                                    text-(--accent-primary)
-                                "
-                            >
-                                <BrainIcon className="size-5" />
+                            <div className="flex items-start gap-5">
+
+                                <div
+                                    className="
+                                        flex
+                                        size-14
+                                        shrink-0
+                                        items-center
+                                        justify-center
+                                        rounded-2xl
+                                        border
+                                        border-(--accent-primary)/20
+                                        bg-(--accent-primary)/10
+                                        text-(--accent-primary)
+                                        shadow-[0_0_30px_var(--accent-glow)]
+                                    "
+                                >
+                                    <BrainIcon className="size-7" />
+                                </div>
+
+                                <p
+                                    className="
+                                        max-w-3xl
+                                        text-xl
+                                        font-medium
+                                        leading-8
+                                        text-white/60
+                                        sm:text-2xl
+                                        sm:leading-10
+                                    "
+                                >
+                                    You like movies that move fast,
+                                    hit hard and keep you guessing.
+                                    Slow burns aren't really your thing.
+                                </p>
+
                             </div>
-
-                            <p
-                                className="
-                                    max-w-3xl
-                                    text-xl
-                                    font-medium
-                                    leading-9
-                                    text-white/65
-                                    sm:text-2xl
-                                "
-                            >
-                                You like movies that move
-                                fast, hit hard and keep you
-                                guessing. Slow burns aren't
-                                really your thing.
-                            </p>
 
                         </div>
 
-                        <div className="mt-8 flex flex-wrap gap-2">
+                        <div className="mt-9 flex flex-wrap gap-2">
 
                             <PreferenceTag
                                 icon={FlameIcon}
@@ -586,18 +945,23 @@ const ForYou = () => {
 
             </section>
 
-            {/* ================================================================== */}
-            {/* Genre Combinations                                                 */}
-            {/* ================================================================== */}
+            {/* =================================================================
+                COMBINATIONS
+            ================================================================= */}
 
-            <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+            <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
 
                 <SectionHeading
                     eyebrow="The interesting part"
                     title="Your Favorite Combos"
                 />
 
-                <div className="mt-7 grid gap-4 lg:grid-cols-3">
+                <p className="mt-3 max-w-xl text-sm leading-6 text-white/30">
+                    Your strongest genre combinations reveal what
+                    makes a movie especially irresistible to you.
+                </p>
+
+                <div className="mt-8 grid gap-4 lg:grid-cols-3">
 
                     {COMBINATIONS.map((combo, index) => (
                         <ComboCard
@@ -611,16 +975,38 @@ const ForYou = () => {
 
             </section>
 
-            {/* ================================================================== */}
-            {/* Movies                                                              */}
-            {/* ================================================================== */}
+            {/* =================================================================
+                MOVIES
+            ================================================================= */}
 
-            <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
+            <section className="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
 
-                <SectionHeading
-                    eyebrow="Your collection"
-                    title="Movies That Shaped Your Taste"
-                />
+                <div className="flex items-end justify-between">
+
+                    <SectionHeading
+                        eyebrow="Your collection"
+                        title="Movies That Shaped Your Taste"
+                    />
+
+                    <button
+                        type="button"
+                        className="
+                            hidden
+                            items-center
+                            gap-2
+                            text-xs
+                            font-bold
+                            text-white/30
+                            transition-colors
+                            hover:text-(--accent-primary)
+                            sm:flex
+                        "
+                    >
+                        View collection
+                        <ArrowRightIcon className="size-4" />
+                    </button>
+
+                </div>
 
                 <div className="mt-3 flex items-center gap-2">
 
@@ -631,16 +1017,15 @@ const ForYou = () => {
                         "
                     />
 
-                    <p className="text-sm text-white/35">
-                        These movies made the algorithm
-                        suspicious.
+                    <p className="text-sm text-white/30">
+                        These movies helped build your Movie DNA.
                     </p>
 
                 </div>
 
                 <div
                     className="
-                        mt-7
+                        mt-8
                         grid
                         grid-cols-2
                         gap-4
@@ -649,7 +1034,7 @@ const ForYou = () => {
                     "
                 >
                     {MOVIES.map((movie) => (
-                        <MoviePlaceholder
+                        <MovieCard
                             key={movie.id}
                             movie={movie}
                         />
@@ -662,9 +1047,9 @@ const ForYou = () => {
     );
 };
 
-/* ========================================================================== */
-/* Section Heading                                                             */
-/* ========================================================================== */
+/* ==========================================================================
+   Section Heading
+   ========================================================================== */
 
 interface SectionHeadingProps {
     eyebrow: string;
@@ -685,16 +1070,16 @@ const SectionHeading = ({
                         size-1.5
                         rounded-full
                         bg-(--accent-primary)
-                        shadow-[0_0_10px_var(--accent-glow)]
+                        shadow-[0_0_12px_var(--accent-glow)]
                     "
                 />
 
                 <span
                     className="
                         text-[10px]
-                        font-bold
+                        font-black
                         uppercase
-                        tracking-[0.25em]
+                        tracking-[0.3em]
                         text-(--accent-primary)
                     "
                 >
@@ -710,6 +1095,7 @@ const SectionHeading = ({
                     font-black
                     tracking-tight
                     text-white
+                    sm:text-4xl
                 "
             >
                 {title}
@@ -719,9 +1105,104 @@ const SectionHeading = ({
     );
 };
 
-/* ========================================================================== */
-/* Preference Tag                                                              */
-/* ========================================================================== */
+/* ==========================================================================
+   Stat Pill
+   ========================================================================== */
+
+interface StatPillProps {
+    icon: IconComponent;
+    value: string;
+    label: string;
+}
+
+const StatPill = ({
+    icon: Icon,
+    value,
+    label,
+}: StatPillProps) => {
+    return (
+        <div
+            className="
+                inline-flex
+                items-center
+                gap-3
+                rounded-xl
+                border
+                border-white/10
+                bg-white/[0.035]
+                px-4
+                py-3
+            "
+        >
+
+            <Icon className="size-4 text-(--accent-primary)" />
+
+            <div className="flex items-baseline gap-1.5">
+
+                <span className="text-sm font-black text-white">
+                    {value}
+                </span>
+
+                <span className="text-[10px] font-medium text-white/30">
+                    {label}
+                </span>
+
+            </div>
+
+        </div>
+    );
+};
+
+/* ==========================================================================
+   Info Pill
+   ========================================================================== */
+
+interface InfoPillProps {
+    icon: IconComponent;
+    text: string;
+    accent?: boolean;
+}
+
+const InfoPill = ({
+    icon: Icon,
+    text,
+    accent = false,
+}: InfoPillProps) => {
+    return (
+        <div
+            className={`
+                inline-flex
+                items-center
+                gap-2
+                rounded-full
+                border
+                px-4
+                py-2
+                text-xs
+                font-bold
+                ${accent
+                    ? `
+                            border-(--accent-primary)/20
+                            bg-(--accent-primary)/10
+                            text-(--accent-primary)
+                        `
+                    : `
+                            border-white/10
+                            bg-white/5
+                            text-white/45
+                        `
+                }
+            `}
+        >
+            <Icon className="size-3.5" />
+            {text}
+        </div>
+    );
+};
+
+/* ==========================================================================
+   Preference Tag
+   ========================================================================== */
 
 interface PreferenceTagProps {
     icon: IconComponent;
@@ -746,9 +1227,10 @@ const PreferenceTag = ({
                 py-2
                 text-xs
                 font-semibold
-                text-white/60
+                text-white/50
                 transition-all
                 duration-300
+                hover:-translate-y-0.5
                 hover:border-(--accent-primary)/30
                 hover:bg-(--accent-primary)/10
                 hover:text-(--accent-primary)
@@ -760,9 +1242,9 @@ const PreferenceTag = ({
     );
 };
 
-/* ========================================================================== */
-/* Genre Card                                                                  */
-/* ========================================================================== */
+/* ==========================================================================
+   Genre Card
+   ========================================================================== */
 
 interface GenreCardProps {
     genre: (typeof GENRES)[number];
@@ -785,29 +1267,29 @@ const GenreCard = ({
                 rounded-2xl
                 border
                 border-white/10
-                bg-(--accent-primary)/5
+                bg-white/2.5
                 p-5
                 transition-all
                 duration-500
-                hover:-translate-y-1
+                hover:-translate-y-1.5
                 hover:border-(--accent-primary)/30
-                hover:bg-(--accent-primary)/10
-                hover:shadow-[0_20px_60px_var(--accent-glow)]
+                hover:bg-(--accent-primary)/5
+                hover:shadow-[0_20px_70px_var(--accent-glow)]
             "
         >
 
-            {/* Decorative glow */}
+            {/* Glow */}
 
             <div
                 className="
                     pointer-events-none
                     absolute
-                    -right-12
-                    -top-12
-                    size-28
+                    -right-16
+                    -top-16
+                    size-32
                     rounded-full
                     bg-(--accent-primary)/10
-                    blur-2xl
+                    blur-3xl
                     opacity-0
                     transition-opacity
                     duration-500
@@ -833,7 +1315,7 @@ const GenreCard = ({
                             transition-all
                             duration-500
                             group-hover:scale-110
-                            group-hover:shadow-[0_0_25px_var(--accent-glow)]
+                            group-hover:shadow-[0_0_30px_var(--accent-glow)]
                         "
                     >
                         <GenreIcon className="size-5" />
@@ -849,7 +1331,7 @@ const GenreCard = ({
                             py-1
                             text-[9px]
                             font-black
-                            text-white/40
+                            text-white/30
                         "
                     >
                         #{rank}
@@ -861,7 +1343,7 @@ const GenreCard = ({
                     {genre.name}
                 </h3>
 
-                <p className="mt-1 text-[10px] text-white/35">
+                <p className="mt-1 text-[10px] text-white/30">
                     {genre.description}
                 </p>
 
@@ -877,13 +1359,11 @@ const GenreCard = ({
                         {genre.percentage}%
                     </span>
 
-                    <span className="text-[10px] font-medium text-white/30">
+                    <span className="text-[10px] font-bold text-white/25">
                         {genre.count} movies
                     </span>
 
                 </div>
-
-                {/* Progress */}
 
                 <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
 
@@ -892,7 +1372,7 @@ const GenreCard = ({
                             h-full
                             rounded-full
                             bg-(--accent-primary)
-                            shadow-[0_0_10px_var(--accent-glow)]
+                            shadow-[0_0_12px_var(--accent-glow)]
                             transition-all
                             duration-1000
                         "
@@ -909,9 +1389,9 @@ const GenreCard = ({
     );
 };
 
-/* ========================================================================== */
-/* Combination Card                                                           */
-/* ========================================================================== */
+/* ==========================================================================
+   Combination Card
+   ========================================================================== */
 
 interface ComboCardProps {
     combo: (typeof COMBINATIONS)[number];
@@ -935,14 +1415,14 @@ const ComboCard = ({
                 rounded-2xl
                 border
                 border-white/10
-                bg-white/[0.035]
+                bg-white/2.5
                 p-6
                 transition-all
                 duration-500
                 hover:-translate-y-1
                 hover:border-(--accent-primary)/30
                 hover:bg-(--accent-primary)/5
-                hover:shadow-[0_20px_60px_var(--accent-glow)]
+                hover:shadow-[0_20px_70px_var(--accent-glow)]
             "
         >
 
@@ -950,11 +1430,11 @@ const ComboCard = ({
 
                 <span
                     className="
-                        text-[10px]
+                        text-[9px]
                         font-black
                         uppercase
                         tracking-[0.2em]
-                        text-white/25
+                        text-white/20
                     "
                 >
                     #{rank} combination
@@ -962,7 +1442,7 @@ const ComboCard = ({
 
                 <span
                     className="
-                        text-xs
+                        text-sm
                         font-black
                         text-(--accent-primary)
                     "
@@ -974,82 +1454,21 @@ const ComboCard = ({
 
             <div className="mt-7">
 
-                {/* First genre */}
+                <ComboGenre
+                    icon={FirstIcon}
+                    name={combo.first}
+                />
 
-                <div className="flex items-center gap-3">
+                <div className="my-3 ml-5 h-5 border-l border-dashed border-(--accent-primary)/20" />
 
-                    <div
-                        className="
-                            flex
-                            size-10
-                            items-center
-                            justify-center
-                            rounded-xl
-                            border
-                            border-(--accent-primary)/20
-                            bg-(--accent-primary)/10
-                            text-(--accent-primary)
-                            transition-transform
-                            duration-300
-                            group-hover:scale-105
-                        "
-                    >
-                        <FirstIcon className="size-4.5" />
-                    </div>
-
-                    <h3 className="text-lg font-black">
-                        {combo.first}
-                    </h3>
-
-                </div>
-
-                {/* Connection */}
-
-                <div className="my-3 ml-5 flex h-5 items-center">
-
-                    <span
-                        className="
-                            h-full
-                            border-l
-                            border-dashed
-                            border-(--accent-primary)/20
-                        "
-                    />
-
-                </div>
-
-                {/* Second genre */}
-
-                <div className="flex items-center gap-3">
-
-                    <div
-                        className="
-                            flex
-                            size-10
-                            items-center
-                            justify-center
-                            rounded-xl
-                            border
-                            border-(--accent-primary)/20
-                            bg-(--accent-primary)/10
-                            text-(--accent-primary)
-                            transition-transform
-                            duration-300
-                            group-hover:scale-105
-                        "
-                    >
-                        <SecondIcon className="size-4.5" />
-                    </div>
-
-                    <h3 className="text-lg font-black">
-                        {combo.second}
-                    </h3>
-
-                </div>
+                <ComboGenre
+                    icon={SecondIcon}
+                    name={combo.second}
+                />
 
             </div>
 
-            <p className="mt-6 text-xs leading-5 text-white/35">
+            <p className="mt-6 text-xs leading-5 text-white/30">
                 {combo.description}
             </p>
 
@@ -1057,17 +1476,60 @@ const ComboCard = ({
     );
 };
 
-/* ========================================================================== */
-/* Movie Placeholder                                                          */
-/* ========================================================================== */
+/* ==========================================================================
+   Combo Genre
+   ========================================================================== */
 
-interface MoviePlaceholderProps {
+interface ComboGenreProps {
+    icon: IconComponent;
+    name: string;
+}
+
+const ComboGenre = ({
+    icon: Icon,
+    name,
+}: ComboGenreProps) => {
+    return (
+        <div className="flex items-center gap-3">
+
+            <div
+                className="
+                    flex
+                    size-10
+                    items-center
+                    justify-center
+                    rounded-xl
+                    border
+                    border-(--accent-primary)/20
+                    bg-(--accent-primary)/10
+                    text-(--accent-primary)
+                    transition-all
+                    duration-300
+                    group-hover:scale-105
+                "
+            >
+                <Icon className="size-4.5" />
+            </div>
+
+            <h3 className="text-lg font-black">
+                {name}
+            </h3>
+
+        </div>
+    );
+};
+
+/* ==========================================================================
+   Movie Card
+   ========================================================================== */
+
+interface MovieCardProps {
     movie: (typeof MOVIES)[number];
 }
 
-const MoviePlaceholder = ({
+const MovieCard = ({
     movie,
-}: MoviePlaceholderProps) => {
+}: MovieCardProps) => {
     return (
         <article className="group cursor-pointer">
 
@@ -1082,8 +1544,9 @@ const MoviePlaceholder = ({
                     bg-white/5
                     transition-all
                     duration-500
+                    group-hover:-translate-y-1
                     group-hover:border-(--accent-primary)/30
-                    group-hover:shadow-[0_20px_50px_var(--accent-glow)]
+                    group-hover:shadow-[0_25px_60px_var(--accent-glow)]
                 "
             >
 
@@ -1101,17 +1564,74 @@ const MoviePlaceholder = ({
                     "
                 />
 
+                {/* Gradient */}
+
                 <div
                     className="
                         absolute
                         inset-0
-                        bg-linear-to
+                        bg-linear-to-t
                         from-black
-                        via-transparent
+                        via-black/20
                         to-transparent
-                        opacity-70
+                        opacity-90
                     "
                 />
+
+                {/* Rating */}
+
+                <div
+                    className="
+                        absolute
+                        right-3
+                        top-3
+                        flex
+                        items-center
+                        gap-1.5
+                        rounded-full
+                        border
+                        border-white/10
+                        bg-black/60
+                        px-2.5
+                        py-1.5
+                        backdrop-blur-md
+                    "
+                >
+                    <StarIcon className="size-3 text-(--accent-primary)" />
+
+                    <span className="text-[10px] font-black text-white">
+                        {movie.rating}
+                    </span>
+                </div>
+
+                {/* Play */}
+
+                <div
+                    className="
+                        absolute
+                        left-1/2
+                        top-1/2
+                        flex
+                        size-12
+                        -translate-x-1/2
+                        -translate-y-1/2
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-(--accent-primary)
+                        text-black
+                        opacity-0
+                        shadow-[0_0_35px_var(--accent-glow)]
+                        transition-all
+                        duration-300
+                        group-hover:scale-110
+                        group-hover:opacity-100
+                    "
+                >
+                    <PlayIcon className="ml-0.5 size-5" />
+                </div>
+
+                {/* Info */}
 
                 <div
                     className="
@@ -1132,11 +1652,15 @@ const MoviePlaceholder = ({
                             "
                         />
 
-                        <h3 className="truncate text-sm font-bold text-white">
+                        <h3 className="truncate text-sm font-black text-white">
                             {movie.title}
                         </h3>
 
                     </div>
+
+                    <p className="mt-1 text-[10px] font-medium text-white/35">
+                        {movie.genre}
+                    </p>
 
                 </div>
 

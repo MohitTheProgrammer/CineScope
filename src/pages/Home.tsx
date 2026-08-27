@@ -125,7 +125,7 @@ const Hero = () => {
 
             if (backdrop) {
                 setHeroBackdrop(backdrop);
-            } else setHeroBackdrop("https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg")
+            }
 
         };
 
@@ -146,7 +146,7 @@ const Hero = () => {
             {/* Background */}
             <div className="absolute inset-0">
                 <img
-                    src={heroBackdrop}
+                    src={heroBackdrop || "https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg"}
                     alt=""
                     aria-hidden="true"
                     className="
