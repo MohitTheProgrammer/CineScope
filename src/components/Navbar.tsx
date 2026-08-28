@@ -86,7 +86,7 @@ const Navbar = () => {
 
           {user && <>
             <NavItem to="/my-list">
-              Watch List
+              My List
             </NavItem>
 
             <NavItem to="/for-you">
@@ -408,7 +408,7 @@ const MobileMenu = ({
               to="/my-list"
               onClick={onClose}
             >
-              Watch List
+              My List
             </MobileNavItem>
 
             <MobileNavItem

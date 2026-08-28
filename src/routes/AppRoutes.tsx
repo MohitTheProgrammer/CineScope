@@ -28,6 +28,8 @@ const Profile = lazy(() => import("../pages/Profile"));
 const MyList = lazy(() => import("../pages/MyList"));
 const ForYou = lazy(() => import("../pages/ForYou"));
 const HowItWorks = lazy(() => import("../pages/HowItWorks"));
+const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"))
+const Recommend = lazy(() => import("../pages/Recommend"))
 
 /* -------------------------------------------------------------------------- */
 /* Protected Route                                                             */
@@ -162,6 +164,14 @@ const AppRoutes = () => {
                                 </ProtectedRoute>
                             }
                         />
+                        <Route
+                            path="/for-you/recommend-movie"
+                            element={
+                                <ProtectedRoute>
+                                    <Recommend />
+                                </ProtectedRoute>
+                            }
+                        />
 
                         {/* -------------------------------------------------- */}
                         {/* Authentication                                    */}
@@ -175,6 +185,11 @@ const AppRoutes = () => {
                         <Route
                             path="/register"
                             element={<AuthPage />}
+                        />
+
+                        <Route
+                            path="/forgot-password"
+                            element={<ForgotPassword />}
                         />
 
                         {/* -------------------------------------------------- */}

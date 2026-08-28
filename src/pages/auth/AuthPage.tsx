@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+    Link,
     NavLink,
     useLocation,
     useNavigate,
@@ -674,18 +675,18 @@ const AuthPage = () => {
                                         />
 
                                         <div className="flex justify-end">
-                                            <button
-                                                type="button"
+                                            <Link
+                                                to="/forgot-password"
                                                 className="
-                                                    text-[11px]
-                                                    font-semibold
-                                                    text-white/35
-                                                    transition-colors
-                                                    hover:text-(--accent-primary)
-                                                "
+        text-[11px]
+        font-semibold
+        text-white/35
+        transition-colors
+        hover:text-(--accent-primary)
+    "
                                             >
                                                 Forgot password?
-                                            </button>
+                                            </Link>
                                         </div>
 
                                         <AuthButton

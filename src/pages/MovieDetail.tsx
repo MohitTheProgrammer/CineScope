@@ -421,27 +421,7 @@ const MovieDetail = () => {
      */
 
     if (loading) {
-        return (
-            <main className="flex min-h-screen items-center justify-center bg-(--bg-primary)">
-                <div className="text-center">
-                    <div
-                        className="
-                            mx-auto
-                            size-8
-                            animate-spin
-                            rounded-full
-                            border-2
-                            border-white/10
-                            border-t-(--accent-primary)
-                        "
-                    />
-
-                    <p className="mt-4 text-sm text-white/40">
-                        Loading movie...
-                    </p>
-                </div>
-            </main>
-        );
+        return <MovieDetailSkeleton />;
     }
 
     /*
@@ -504,25 +484,7 @@ const MovieDetail = () => {
             {/* ============================================================ */}
 
             <div className="mx-auto max-w-7xl px-6 pt-28 lg:px-8">
-                <button
-                    type="button"
-                    onClick={() => navigate(-1)}
-                    className="
-                        group
-                        flex
-                        items-center
-                        gap-2
-                        text-sm
-                        font-medium
-                        text-white/50
-                        transition-colors
-                        hover:text-white
-                    "
-                >
-                    <ArrowLeftIcon />
 
-                    Back
-                </button>
             </div>
 
             {/* ============================================================ */}
@@ -1377,20 +1339,6 @@ const CastCard = ({ person }: CastCardProps) => {
 /* Icons                                                                      */
 /* ========================================================================== */
 
-const ArrowLeftIcon = () => (
-    <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="size-4 transition-transform group-hover:-translate-x-1"
-    >
-        <path d="M19 12H5" />
-        <path d="m12 19-7-7 7-7" />
-    </svg>
-);
 
 const StarIcon = () => (
     <svg
@@ -1400,6 +1348,71 @@ const StarIcon = () => (
     >
         <path d="m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z" />
     </svg>
+);
+
+const MovieDetailSkeleton = () => (
+    <main
+        aria-busy="true"
+        aria-label="Loading movie details"
+        className="min-h-screen bg-(--bg-primary)"
+    >
+        <div className="mx-auto max-w-7xl px-6 pt-28 lg:px-8">
+            <div className="h-5 w-20 animate-pulse rounded bg-white/10" />
+        </div>
+
+        <section className="mx-auto max-w-7xl px-6 pb-16 pt-8 lg:px-8">
+            <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:gap-12">
+                <div className="mx-auto w-full max-w-70 lg:mx-0">
+                    <div className="aspect-2/3 animate-pulse rounded-2xl border border-white/10 bg-white/5 shadow-[0_20px_60px_rgba(0,0,0,0.4)]" />
+                </div>
+
+                <div className="flex flex-col justify-center">
+                    <div className="mb-4 flex gap-2">
+                        {[72, 88, 64].map((width) => (
+                            <div
+                                key={width}
+                                className="h-6 animate-pulse rounded-full bg-white/10"
+                                style={{ width: `${width}px` }}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="h-12 w-4/5 animate-pulse rounded-xl bg-white/10 sm:h-15" />
+                    <div className="mt-5 h-5 w-52 animate-pulse rounded bg-white/10" />
+
+                    <div className="mt-8">
+                        <div className="h-3 w-20 animate-pulse rounded bg-white/10" />
+                        <div className="mt-4 space-y-3">
+                            <div className="h-4 w-full animate-pulse rounded bg-white/10" />
+                            <div className="h-4 w-11/12 animate-pulse rounded bg-white/10" />
+                            <div className="h-4 w-3/4 animate-pulse rounded bg-white/10" />
+                        </div>
+
+                        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:flex">
+                            {[0, 1, 2].map((index) => (
+                                <div
+                                    key={index}
+                                    className="h-12 w-full animate-pulse rounded-xl border border-white/10 bg-white/5 lg:w-40"
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+            <div className="h-6 w-44 animate-pulse rounded bg-white/10" />
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {[0, 1, 2, 3].map((index) => (
+                    <div
+                        key={index}
+                        className="h-28 animate-pulse rounded-2xl border border-white/10 bg-white/5"
+                    />
+                ))}
+            </div>
+        </section>
+    </main>
 );
 
 const Dot = () => (

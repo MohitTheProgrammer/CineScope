@@ -10,6 +10,9 @@ import {
 
 import { db } from "../services/firebase";
 
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "./firebase";
+
 export interface CineScopeUser {
     uid: string;
     displayName: string;
@@ -38,6 +41,21 @@ export const createUserDocument = async (
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     });
+};
+
+export const sendPasswordReset = async (
+    email: string
+): Promise<void> => {
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+        throw new Error("Email address is required.");
+    }
+
+    await sendPasswordResetEmail(
+        auth,
+        trimmedEmail
+    );
 };
 
 export const updateUserProfile = async (
@@ -181,3 +199,4 @@ export const getUserMovieIds = async (
         return [];
     }
 };
+

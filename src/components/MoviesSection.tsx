@@ -82,7 +82,7 @@ const MoviesSection = ({
                 <button
                     type="button"
                     className="
-                        hidden
+                        inline-flex
                         items-center
                         gap-2
                         text-xs
