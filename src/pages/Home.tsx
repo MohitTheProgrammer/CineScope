@@ -1,87 +1,27 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import MoviesSection from "../components/MoviesSection";
-import { getTrendingMovies, getPopularMovies } from "../services/tmdb";
-import type { Movie } from "../types/movie";
-import { ArrowIcon } from "../assets/icons/Icons";
-import Stat from "../components/Stat";
-import { getRandomHeroBackdrop } from "../services/heroBackdrop";
+import Hero from "../components/home/Hero";
+
 import { useUser } from "../context/UserContext";
 
-const HERO_TEXTS = [
-    {
-        first: "Discover",
-        accent: "something",
-        last: "unforgettable.",
-    },
-    {
-        first: "Explore",
-        accent: "incredible",
-        last: "adventures.",
-    },
-    {
-        first: "Uncover",
-        accent: "captivating",
-        last: "storylines.",
-    },
-    {
-        first: "Experience",
-        accent: "extraordinary",
-        last: "masterpieces.",
-    },
-];
+import useHomeMovies from "../hooks/home/useHomeMovies";
 
 const Home = () => {
-    const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
-    const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
-    const [trendingLoading, setTrendingLoading] = useState(true);
-    const [trendingError, setTrendingError] = useState<string | null>(null);
-    const [popularLoading, setPopularLoading] = useState(true);
-    const [popularError, setPopularError] = useState<string | null>(null);
+    const { user } = useUser();
 
+    const {
+        trendingMovies,
+        popularMovies,
 
+        trendingLoading,
+        popularLoading,
 
-    useEffect(() => {
-        const loadTrendingMovies = async () => {
-            try {
-                setTrendingLoading(true);
-                setTrendingError(null);
-
-                const data = await getTrendingMovies();
-
-                setTrendingMovies(data.results);
-            } catch (error) {
-                console.error("Failed to load movies:", error);
-                setTrendingError("Unable to load movies right now.");
-            } finally {
-                setTrendingLoading(false);
-            }
-        };
-        const loadPopularMovies = async () => {
-            try {
-                setPopularLoading(true);
-                setPopularError(null);
-
-                const data = await getPopularMovies();
-
-                setPopularMovies(data.results);
-            } catch (error) {
-                console.error("Failed to load movies:", error);
-                setPopularError("Unable to load movies right now.");
-            } finally {
-                setPopularLoading(false);
-            }
-        };
-
-        loadTrendingMovies();
-        loadPopularMovies()
-    }, []);
-
-
+        trendingError,
+        popularError,
+    } = useHomeMovies();
 
     return (
-        <div className="min-h-screen bg-(--bg-primary)">
-            <Hero />
+        <main className="min-h-screen bg-(--bg-primary)">
+            <Hero uid={user?.uid} />
 
             <MoviesSection
                 movies={trendingMovies}
@@ -92,6 +32,7 @@ const Home = () => {
                 subtitle="right now"
                 id="trending"
             />
+
             <MoviesSection
                 movies={popularMovies}
                 loading={popularLoading}
@@ -101,243 +42,8 @@ const Home = () => {
                 subtitle="among people"
                 id="popular"
             />
-        </div>
+        </main>
     );
 };
 
 export default Home;
-
-/* -------------------------------------------------------------------------- */
-/* Hero                                                                       */
-/* -------------------------------------------------------------------------- */
-
-const Hero = () => {
-    const { user } = useUser()
-    const [heroTextIndex, setHeroTextIndex] = useState(() =>
-        Math.floor(Math.random() * HERO_TEXTS.length)
-    );
-
-    const [heroBackdrop, setHeroBackdrop] =
-        useState("");
-
-    useEffect(() => {
-        const loadBackdrop = async () => {
-            const backdrop =
-                await getRandomHeroBackdrop(user?.uid || "");
-
-            if (backdrop) {
-                setHeroBackdrop(backdrop);
-            }
-
-        };
-
-        loadBackdrop();
-
-        const interval = setInterval(() => {
-            setHeroTextIndex((previous) =>
-                (previous + 1) % HERO_TEXTS.length
-            );
-        }, 5000);
-
-        return () => clearInterval(interval);
-
-
-    }, []);
-    return (
-        <section className="relative min-h-180 overflow-hidden">
-            {/* Background */}
-            <div className="absolute inset-0">
-                <img
-                    src={heroBackdrop || "https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg"}
-                    alt=""
-                    aria-hidden="true"
-                    className="
-                        h-full
-                        w-full
-                        object-cover
-                        object-center
-                        opacity-40
-                    "
-                />
-
-                {/* Left gradient */}
-                <div
-                    className="
-                        absolute inset-0
-                        bg-linear-to-r
-                        from-(--bg-primary)
-                        via-(--bg-primary)/85
-                        to-transparent
-                    "
-                />
-
-                {/* Bottom gradient */}
-                <div
-                    className="
-                        absolute inset-0
-                        bg-linear-to-t
-                        from-(--bg-primary)
-                        via-transparent
-                        to-transparent
-                    "
-                />
-            </div>
-
-            {/* Accent glow */}
-            <div
-                className="
-                    absolute
-                    -left-40
-                    top-1/3
-                    size-96
-                    rounded-full
-                    bg-(--accent-primary)/15
-                    blur-[120px]
-                "
-            />
-
-            {/* Content */}
-            <div
-                className="
-                    relative
-                    z-10
-                    mx-auto
-                    flex
-                    min-h-180
-                    max-w-7xl
-                    items-center
-                    px-6
-                    pb-16
-                    pt-28
-                    lg:px-8
-                "
-            >
-                <div className="max-w-2xl">
-                    {/* Eyebrow */}
-                    <div className="mb-5 flex items-center gap-3">
-                        <span
-                            className="
-                                h-px
-                                w-8
-                                bg-(--accent-primary)
-                                shadow-[0_0_10px_var(--accent-glow)]
-                            "
-                        />
-
-                        <span
-                            className="
-                                text-xs
-                                font-bold
-                                uppercase
-                                tracking-[0.25em]
-                                text-(--accent-primary)
-                            "
-                        >
-                            Your next obsession
-                        </span>
-                    </div>
-
-                    {/* Heading */}
-                    <h1
-                        key={heroTextIndex}
-                        className="
-        animate-[fadeIn_500ms_ease-in-out]
-        text-5xl
-        font-black
-        leading-[0.92]
-        tracking-tighter
-        text-white
-        sm:text-6xl
-        lg:text-8xl
-    "
-                    >
-                        {HERO_TEXTS[heroTextIndex].first}
-                        <br />
-
-                        <span className="text-(--accent-primary)">
-                            {HERO_TEXTS[heroTextIndex].accent}
-                        </span>
-
-                        <br />
-
-                        {HERO_TEXTS[heroTextIndex].last}
-                    </h1>
-
-                    {/* Description */}
-                    <p
-                        className="
-                            mt-7
-                            max-w-xl
-                            text-sm
-                            leading-6
-                            text-white/60
-                            sm:text-base
-                        "
-                    >
-                        Stop scrolling endlessly. Discover movies worth
-                        watching and find your next favorite based on
-                        what you already love.
-                    </p>
-
-                    {/* Actions */}
-                    <div className="mt-8 flex flex-wrap gap-3">
-                        <Link
-                            to="/trending"
-                            className="
-                                flex
-                                items-center
-                                gap-2
-                                rounded-full
-                                bg-(--accent-primary)
-                                px-6
-                                py-3
-                                text-sm
-                                font-bold
-                                text-white
-                                shadow-[0_0_25px_var(--accent-glow)]
-                                transition-all
-                                duration-300
-                                hover:scale-105
-                                hover:shadow-[0_0_40px_var(--accent-glow)]
-                            "
-                        >
-                            Explore Movies
-
-                            <ArrowIcon />
-                        </Link>
-
-                        <Link
-                            to="/how-it-works"
-                            className="
-                                rounded-full
-                                border
-                                border-white/15
-                                bg-white/5
-                                px-6
-                                py-3
-                                text-sm
-                                font-semibold
-                                text-white/80
-                                backdrop-blur-md
-                                transition-all
-                                duration-300
-                                hover:border-white/30
-                                hover:bg-white/10
-                                hover:text-white
-                            "
-                        >
-                            How it works
-                        </Link>
-                    </div>
-
-                    {/* Stats */}
-                    <div className="mt-12 flex items-center gap-8">
-                        <Stat value="10K+" label="Movies" />
-                        <Stat value="500K+" label="Ratings" />
-                        <Stat value="AI" label="Recommendations" />
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-};

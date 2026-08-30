@@ -39,7 +39,7 @@ const ShowAllMovies = ({
     };
 
     return (
-        <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
+        <section className="mx-auto max-w-7xl px-1 pb-24 lg:px-8">
 
             {/* ---------------------------------------------------------------- */}
             {/* Header                                                           */}

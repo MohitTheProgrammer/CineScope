@@ -1,149 +1,120 @@
 import { signOut, updateProfile } from "firebase/auth";
-import {
-    doc,
-    getDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { auth, db } from "../services/firebase";
 import { updateUserProfile } from "../services/userService";
 
-const AVATARS = [
-    {
-        id: "avatar-1",
-        src: "/avatars/avatar-1.png",
-    },
-    {
-        id: "avatar-2",
-        src: "/avatars/avatar-2.png",
-    },
-    {
-        id: "avatar-3",
-        src: "/avatars/avatar-3.png",
-    },
-    {
-        id: "avatar-4",
-        src: "/avatars/avatar-4.png",
-    },
-    {
-        id: "avatar-5",
-        src: "/avatars/avatar-5.png",
-    },
-    {
-        id: "avatar-6",
-        src: "/avatars/avatar-6.png",
-    },
-];
+import ProfileHeader from "../components/profile/ProfileHeader";
+import ProfileEditor from "../components/profile/ProfileEditor";
+import ProfileSkeleton from "../components/profile/ProfileSkeleton";
+import type { UserData } from "../types/user";
+import { AVATARS } from "../constent/file";
 
-interface UserData {
-    uid: string;
-    displayName: string;
-    email: string;
-    avatarId: string;
-}
+const DEFAULT_AVATAR = "avatar-1";
 
 const ProfilePage = () => {
     const navigate = useNavigate();
 
-    const [userData, setUserData] = useState<UserData | null>(null);
+    const [userData, setUserData] =
+        useState<UserData | null>(null);
 
-    const [loading, setLoading] = useState(true);
-
-    const [displayName, setDisplayName] = useState("");
+    const [displayName, setDisplayName] =
+        useState("");
 
     const [selectedAvatar, setSelectedAvatar] =
-        useState("avatar-1");
+        useState(DEFAULT_AVATAR);
 
-    const [saving, setSaving] = useState(false);
-    const [loggingOut, setLoggingOut] = useState(false);
+    const [loading, setLoading] =
+        useState(true);
 
-    // -------------------------------------------------------------------------
-    // Load user profile
-    // -------------------------------------------------------------------------
+    const [saving, setSaving] =
+        useState(false);
+
+    const [loggingOut, setLoggingOut] =
+        useState(false);
 
     useEffect(() => {
+        let cancelled = false;
+
         const loadProfile = async () => {
             const user = auth.currentUser;
 
             if (!user) {
-                navigate("/login");
+                navigate("/login", {
+                    replace: true,
+                });
+
                 return;
             }
 
             try {
-                const userRef = doc(db, "users", user.uid);
-                const snapshot = await getDoc(userRef);
+                const userRef = doc(
+                    db,
+                    "users",
+                    user.uid
+                );
 
-                if (snapshot.exists()) {
-                    const data = snapshot.data();
+                const snapshot =
+                    await getDoc(userRef);
 
-                    const profile: UserData = {
-                        uid: user.uid,
-                        displayName:
-                            data.displayName ||
-                            user.displayName ||
-                            "CineScope User",
-                        email:
-                            data.email ||
-                            user.email ||
-                            "",
-                        avatarId:
-                            data.avatarId ||
-                            "avatar-1",
-                    };
+                if (cancelled) return;
 
-                    setUserData(profile);
-                    setDisplayName(profile.displayName);
-                    setSelectedAvatar(profile.avatarId);
-                } else {
-                    // Fallback if Firestore document doesn't exist.
-                    const profile: UserData = {
-                        uid: user.uid,
-                        displayName:
-                            user.displayName ||
-                            "CineScope User",
-                        email: user.email || "",
-                        avatarId: "avatar-1",
-                    };
+                const data = snapshot.exists()
+                    ? snapshot.data()
+                    : {};
 
-                    setUserData(profile);
-                    setDisplayName(profile.displayName);
-                    setSelectedAvatar(profile.avatarId);
-                }
+                const profile: UserData = {
+                    uid: user.uid,
+
+                    displayName:
+                        data.displayName ??
+                        user.displayName ??
+                        "CineScope User",
+
+                    email:
+                        data.email ??
+                        user.email ??
+                        "",
+
+                    avatarId:
+                        data.avatarId ??
+                        DEFAULT_AVATAR,
+                };
+
+                setUserData(profile);
+                setDisplayName(profile.displayName);
+                setSelectedAvatar(profile.avatarId);
             } catch (error) {
                 console.error(
                     "Failed to load profile:",
                     error
                 );
             } finally {
-                setLoading(false);
+                if (!cancelled) {
+                    setLoading(false);
+                }
             }
         };
 
-        loadProfile();
+        void loadProfile();
+
+        return () => {
+            cancelled = true;
+        };
     }, [navigate]);
-
-    // -------------------------------------------------------------------------
-    // Load liked movies
-    // -------------------------------------------------------------------------
-
-
-    // -------------------------------------------------------------------------
-    // Save profile
-    // -------------------------------------------------------------------------
-
 
     const handleSaveProfile = async () => {
         const user = auth.currentUser;
 
-        if (!user || !userData) {
+        if (!user || !userData || saving) {
             return;
         }
 
-        const trimmedName = displayName.trim();
+        const name = displayName.trim();
 
-        if (!trimmedName) {
+        if (!name) {
             return;
         }
 
@@ -152,24 +123,23 @@ const ProfilePage = () => {
 
             await updateUserProfile(
                 user.uid,
-                trimmedName,
+                name,
                 selectedAvatar
             );
 
             await updateProfile(user, {
-                displayName: trimmedName,
+                displayName: name,
             });
 
             setUserData((previous) =>
                 previous
                     ? {
                         ...previous,
-                        displayName: trimmedName,
+                        displayName: name,
                         avatarId: selectedAvatar,
                     }
                     : previous
             );
-
         } catch (error) {
             console.error(
                 "Failed to update profile:",
@@ -180,11 +150,9 @@ const ProfilePage = () => {
         }
     };
 
-    // -------------------------------------------------------------------------
-    // Logout
-    // -------------------------------------------------------------------------
-
     const handleLogout = async () => {
+        if (loggingOut) return;
+
         try {
             setLoggingOut(true);
 
@@ -198,27 +166,13 @@ const ProfilePage = () => {
                 "Failed to logout:",
                 error
             );
-        } finally {
+
             setLoggingOut(false);
         }
     };
 
-    // -------------------------------------------------------------------------
-    // Loading
-    // -------------------------------------------------------------------------
-
     if (loading) {
-        return (
-            <main className="min-h-screen bg-black px-6 pb-20 pt-32">
-                <div className="mx-auto max-w-7xl">
-                    <div className="h-10 w-48 animate-pulse rounded-lg bg-white/10" />
-
-                    <div className="mt-8 h-64 animate-pulse rounded-3xl border border-white/10 bg-white/5" />
-
-                    <div className="mt-12 h-8 w-52 animate-pulse rounded-lg bg-white/10" />
-                </div>
-            </main>
-        );
+        return <ProfileSkeleton />;
     }
 
     if (!userData) {
@@ -229,245 +183,43 @@ const ProfilePage = () => {
         AVATARS.find(
             (avatar) =>
                 avatar.id === userData.avatarId
-        ) || AVATARS[0];
+        ) ?? AVATARS[0];
 
     return (
-        <main className="min-h-screen bg-black px-5 pb-20 pt-28 sm:px-6 lg:px-8">
+        <main
+            className="
+                min-h-screen
+                bg-(--bg-primary)
+                px-5
+                pb-20
+                pt-28
+                sm:px-6
+                lg:px-8
+            "
+        >
             <div className="mx-auto max-w-7xl">
+                <ProfileHeader
+                    user={userData}
+                    avatar={currentAvatar}
+                    loggingOut={loggingOut}
+                    onLogout={handleLogout}
+                />
 
-                {/* ---------------------------------------------------------------- */}
-                {/* Profile Header */}
-                {/* ---------------------------------------------------------------- */}
-
-                <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] p-6 shadow-[0_20px_80px_rgba(0,0,0,0.35)] sm:p-8 lg:p-10">
-
-                    {/* Background glow */}
-
-                    <div className="pointer-events-none absolute -right-32 -top-32 size-72 rounded-full bg-(--accent-primary)/10 blur-3xl" />
-
-                    <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-
-                        {/* User */}
-
-                        <div className="flex items-center gap-5 sm:gap-7">
-
-                            {/* Avatar */}
-
-                            <div className="relative shrink-0">
-
-                                <div className="size-24 overflow-hidden rounded-full border-2 border-(--accent-primary)/60 bg-white/5 shadow-[0_0_35px_var(--accent-glow)] sm:size-28">
-
-                                    <img
-                                        src={currentAvatar.src}
-                                        alt={userData.displayName}
-                                        className="h-full w-full object-cover"
-                                    />
-
-                                </div>
-
-                                <span className="absolute bottom-1 right-1 size-4 rounded-full border-2 border-black bg-emerald-400" />
-
-                            </div>
-
-                            {/* Details */}
-
-                            <div className="min-w-0">
-
-                                <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.25em] text-(--accent-primary)">
-                                    CineScope Member
-                                </p>
-
-                                <h1 className="truncate text-2xl font-black tracking-tight text-white sm:text-3xl">
-                                    {userData.displayName}
-                                </h1>
-
-                                <p className="mt-1 truncate text-sm text-white/45">
-                                    {userData.email}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        {/* Actions */}
-
-                        <div className="flex flex-wrap gap-3">
-
-
-                            <button
-                                type="button"
-                                onClick={handleLogout}
-                                disabled={loggingOut}
-                                className="rounded-full border border-red-500/20 bg-red-500/5 px-5 py-2.5 text-sm font-semibold text-red-400 transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                {loggingOut
-                                    ? "Logging out..."
-                                    : "Log out"}
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                    {/* ---------------------------------------------------------------- */}
-                    {/* Stats */}
-                    {/* ---------------------------------------------------------------- */}
-
-
-                </section>
-
-                {/* ---------------------------------------------------------------- */}
-                {/* Edit Profile */}
-                {/* ---------------------------------------------------------------- */}
-
-
-                <section className="mt-6 rounded-3xl border border-white/10 bg-white/[0.035] p-6 sm:p-8">
-
-                    <div className="mb-6">
-
-                        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-(--accent-primary)">
-                            Profile Settings
-                        </p>
-
-                        <h2 className="mt-2 text-2xl font-black text-white">
-                            Customize your profile
-                        </h2>
-
-                    </div>
-
-                    {/* Display name */}
-
-                    <div className="max-w-xl">
-
-                        <label
-                            htmlFor="displayName"
-                            className="mb-2 block text-xs font-semibold text-white/60"
-                        >
-                            Display name
-                        </label>
-
-                        <input
-                            id="displayName"
-                            type="text"
-                            value={displayName}
-                            onChange={(event) =>
-                                setDisplayName(
-                                    event.target
-                                        .value
-                                )
-                            }
-                            className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-(--accent-primary)/60 focus:ring-1 focus:ring-(--accent-primary)/30"
-                        />
-
-                    </div>
-
-                    {/* Avatar selection */}
-
-                    <div className="mt-7">
-
-                        <p className="mb-4 text-xs font-semibold text-white/60">
-                            Choose your avatar
-                        </p>
-
-                        <div className="flex flex-wrap gap-4">
-
-                            {AVATARS.map(
-                                (avatar) => {
-                                    const active =
-                                        selectedAvatar ===
-                                        avatar.id;
-
-                                    return (
-                                        <button
-                                            key={
-                                                avatar.id
-                                            }
-                                            type="button"
-                                            onClick={() =>
-                                                setSelectedAvatar(
-                                                    avatar.id
-                                                )
-                                            }
-                                            className={`relative size-16 overflow-hidden rounded-full border-2 transition-all duration-300 sm:size-20 ${active
-                                                ? "scale-105 border-(--accent-primary) shadow-[0_0_25px_var(--accent-glow)]"
-                                                : "border-white/10 opacity-60 hover:scale-105 hover:border-white/30 hover:opacity-100"
-                                                }`}
-                                        >
-                                            <img
-                                                src={
-                                                    avatar.src
-                                                }
-                                                alt="Avatar"
-                                                className="h-full w-full object-cover"
-                                            />
-
-                                            {active && (
-                                                <span className="absolute inset-0 flex items-center justify-center bg-black/30">
-                                                    <CheckIcon />
-                                                </span>
-                                            )}
-                                        </button>
-                                    );
-                                }
-                            )}
-
-                        </div>
-
-                    </div>
-
-                    {/* Save */}
-
-                    <button
-                        type="button"
-                        onClick={
-                            handleSaveProfile
-                        }
-                        disabled={saving}
-                        className="mt-8 rounded-xl bg-(--accent-primary) px-6 py-3 text-sm font-bold text-white shadow-[0_0_25px_var(--accent-glow)] transition-all duration-300 hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        {saving
-                            ? "Saving..."
-                            : "Save Changes"}
-                    </button>
-
-                </section>
-
-
-                {/* ---------------------------------------------------------------- */}
-                {/* Liked Movies */}
-                {/* ---------------------------------------------------------------- */}
-
-
+                <ProfileEditor
+                    displayName={displayName}
+                    selectedAvatar={selectedAvatar}
+                    saving={saving}
+                    onDisplayNameChange={
+                        setDisplayName
+                    }
+                    onAvatarChange={
+                        setSelectedAvatar
+                    }
+                    onSave={handleSaveProfile}
+                />
             </div>
         </main>
     );
 };
-
-// -----------------------------------------------------------------------------
-// Stat
-// -----------------------------------------------------------------------------
-
-
-
-
-// -----------------------------------------------------------------------------
-// Icons
-// -----------------------------------------------------------------------------
-
-const CheckIcon = () => (
-    <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="size-5 text-white"
-        aria-hidden="true"
-    >
-        <path d="m5 12 4 4L19 6" />
-    </svg>
-);
-
 
 export default ProfilePage;
