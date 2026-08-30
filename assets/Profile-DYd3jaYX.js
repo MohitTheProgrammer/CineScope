@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,K as r,N as i,O as a,R as o,T as s,U as c,o as l,z as u}from"./index-RwEwEn6K.js";import{i as d}from"./userService-COMCTrao.js";var f=e(r(),1),p=s(),m=({user:e,avatar:t,loggingOut:n,onLogout:r})=>(0,p.jsxs)(`section`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,K as r,N as i,O as a,R as o,T as s,U as c,o as l,z as u}from"./index-Cx3crzKy.js";import{i as d}from"./userService-C9_7lx_f.js";var f=e(r(),1),p=s(),m=({user:e,avatar:t,loggingOut:n,onLogout:r})=>(0,p.jsxs)(`section`,{className:`
                 relative
                 overflow-hidden
                 rounded-3xl
@@ -84,7 +84,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,K as r,N
                         hover:bg-red-500/10
                         disabled:cursor-not-allowed
                         disabled:opacity-50
-                    `,children:n?`Logging out...`:`Log out`})]})]}),h=[{id:`avatar-1`,src:`/avatars/avatar-1.png`},{id:`avatar-2`,src:`/avatars/avatar-2.png`},{id:`avatar-3`,src:`/avatars/avatar-3.png`},{id:`avatar-4`,src:`/avatars/avatar-4.png`},{id:`avatar-5`,src:`/avatars/avatar-5.png`},{id:`avatar-6`,src:`/avatars/avatar-6.png`}],g=({selectedAvatar:e,onChange:t})=>(0,p.jsxs)(`div`,{className:`mt-7`,children:[(0,p.jsx)(`p`,{className:`
+                    `,children:n?`Logging out...`:`Log out`})]})]}),h=[{id:`avatar-1`,src:`../../public/avatars/avatar-1.png`},{id:`avatar-2`,src:`../../public/avatars/avatar-2.png`},{id:`avatar-3`,src:`../../public/avatars/avatar-3.png`},{id:`avatar-4`,src:`../../public/avatars/avatar-4.png`},{id:`avatar-5`,src:`../../public/avatars/avatar-5.png`},{id:`avatar-6`,src:`../../public/avatars/avatar-6.png`}],g=({selectedAvatar:e,onChange:t})=>(0,p.jsxs)(`div`,{className:`mt-7`,children:[(0,p.jsx)(`p`,{className:`
                     mb-4
                     text-xs
                     font-semibold
@@ -238,7 +238,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,K as r,N
                                         rounded-full
                                         bg-white/10
                                         sm:size-20
-                                    `},t))}),(0,p.jsx)(`div`,{className:`mt-8 h-11 w-32 rounded-xl bg-white/10`})]})]})}),y=[{id:`avatar-1`,src:`/avatars/avatar-1.png`},{id:`avatar-2`,src:`/avatars/avatar-2.png`},{id:`avatar-3`,src:`/avatars/avatar-3.png`},{id:`avatar-4`,src:`/avatars/avatar-4.png`},{id:`avatar-5`,src:`/avatars/avatar-5.png`},{id:`avatar-6`,src:`/avatars/avatar-6.png`}],b=`avatar-1`,x=()=>{let e=c(),[r,s]=(0,f.useState)(null),[l,h]=(0,f.useState)(``),[g,x]=(0,f.useState)(b),[S,C]=(0,f.useState)(!0),[w,T]=(0,f.useState)(!1),[E,D]=(0,f.useState)(!1);(0,f.useEffect)(()=>{let r=!1;return(async()=>{let o=n.currentUser;if(!o){e(`/login`,{replace:!0});return}try{let e=i(t,`users`,o.uid),n=await a(e);if(r)return;let c=n.exists()?n.data():{},l={uid:o.uid,displayName:c.displayName??o.displayName??`CineScope User`,email:c.email??o.email??``,avatarId:c.avatarId??b};s(l),h(l.displayName),x(l.avatarId)}catch{return}finally{r||C(!1)}})(),()=>{r=!0}},[e]);let O=async()=>{let e=n.currentUser;if(!e||!r||w)return;let t=l.trim();if(t)try{T(!0),await d(e.uid,t,g),await u(e,{displayName:t}),s(e=>e&&{...e,displayName:t,avatarId:g})}catch{return}finally{T(!1)}},k=async()=>{if(!E)try{D(!0),await o(n),e(`/login`,{replace:!0})}catch{D(!1)}};if(S)return(0,p.jsx)(v,{});if(!r)return null;let A=y.find(e=>e.id===r.avatarId)??y[0];return(0,p.jsx)(`main`,{className:`
+                                    `},t))}),(0,p.jsx)(`div`,{className:`mt-8 h-11 w-32 rounded-xl bg-white/10`})]})]})}),y=`avatar-1`,b=()=>{let e=c(),[r,s]=(0,f.useState)(null),[l,g]=(0,f.useState)(``),[b,x]=(0,f.useState)(y),[S,C]=(0,f.useState)(!0),[w,T]=(0,f.useState)(!1),[E,D]=(0,f.useState)(!1);(0,f.useEffect)(()=>{let r=!1;return(async()=>{let o=n.currentUser;if(!o){e(`/login`,{replace:!0});return}try{let e=i(t,`users`,o.uid),n=await a(e);if(r)return;let c=n.exists()?n.data():{},l={uid:o.uid,displayName:c.displayName??o.displayName??`CineScope User`,email:c.email??o.email??``,avatarId:c.avatarId??y};s(l),g(l.displayName),x(l.avatarId)}catch{return}finally{r||C(!1)}})(),()=>{r=!0}},[e]);let O=async()=>{let e=n.currentUser;if(!e||!r||w)return;let t=l.trim();if(t)try{T(!0),await d(e.uid,t,b),await u(e,{displayName:t}),s(e=>e&&{...e,displayName:t,avatarId:b})}catch{return}finally{T(!1)}},k=async()=>{if(!E)try{D(!0),await o(n),e(`/login`,{replace:!0})}catch{D(!1)}};if(S)return(0,p.jsx)(v,{});if(!r)return null;let A=h.find(e=>e.id===r.avatarId)??h[0];return(0,p.jsx)(`main`,{className:`
                 min-h-screen
                 bg-(--bg-primary)
                 px-5
@@ -246,4 +246,4 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,K as r,N
                 pt-28
                 sm:px-6
                 lg:px-8
-            `,children:(0,p.jsxs)(`div`,{className:`mx-auto max-w-7xl`,children:[(0,p.jsx)(m,{user:r,avatar:A,loggingOut:E,onLogout:k}),(0,p.jsx)(_,{displayName:l,selectedAvatar:g,saving:w,onDisplayNameChange:h,onAvatarChange:x,onSave:O})]})})};export{x as default};
+            `,children:(0,p.jsxs)(`div`,{className:`mx-auto max-w-7xl`,children:[(0,p.jsx)(m,{user:r,avatar:A,loggingOut:E,onLogout:k}),(0,p.jsx)(_,{displayName:l,selectedAvatar:b,saving:w,onDisplayNameChange:g,onAvatarChange:x,onSave:O})]})})};export{b as default};
