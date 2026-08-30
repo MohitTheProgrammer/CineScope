@@ -1,5 +1,5 @@
 import {
-    BrowserRouter,
+    HashRouter,
     Navigate,
     Route,
     Routes,
@@ -63,7 +63,7 @@ const ProtectedRoute = ({
 
 const AppRoutes = () => {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Suspense
                 fallback={
                     <main className="min-h-screen bg-(--bg-primary)" />
@@ -184,7 +184,7 @@ const AppRoutes = () => {
 
                 </Routes>
             </Suspense>
-        </BrowserRouter>
+        </HashRouter>
     );
 };
 
