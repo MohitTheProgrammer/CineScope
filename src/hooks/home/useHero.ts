@@ -66,11 +66,8 @@ const useHero = (
                 ) {
                     setHeroBackdrop(backdrop);
                 }
-            } catch (error) {
-                console.error(
-                    "Failed to load hero backdrop:",
-                    error
-                );
+            } catch {
+                return;
             }
         };
 

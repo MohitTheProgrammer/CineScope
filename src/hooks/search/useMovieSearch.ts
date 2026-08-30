@@ -46,11 +46,7 @@ const useMovieSearch = (
                 if (!active) return;
 
                 setMovies(results);
-            } catch (error) {
-                console.error(
-                    "Failed to search movies:",
-                    error
-                );
+            } catch {
 
                 if (!active) return;
 

@@ -52,11 +52,8 @@ export const useMovieWatched = (
                 if (!cancelled) {
                     setWatched(exists);
                 }
-            } catch (error) {
-                console.error(
-                    "Failed to check watched status:",
-                    error
-                );
+            } catch {
+                return;
             } finally {
                 if (!cancelled) {
                     setCheckingWatched(false);
@@ -92,13 +89,8 @@ export const useMovieWatched = (
             );
 
             setWatched(true);
-        } catch (error) {
-            console.error(
-                "Failed to mark movie as watched:",
-                error
-            );
-
-            throw error;
+        } catch {
+            return;
         } finally {
             setAddingWatched(false);
         }

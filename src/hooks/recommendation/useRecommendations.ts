@@ -35,39 +35,29 @@ const useRecommendations = () => {
                 throw new Error("You must be logged in.");
             }
 
-            // 1. Get user's saved movies
             const userMovies = await getUserMovies(user.uid);
 
-            // 2. Apply CineScope priority system
             const filteredMovies =
                 filterUserMoviesByPriority(userMovies);
 
-            // 3. Calculate genre scores
             const genreScores =
                 getGenreScores(filteredMovies);
 
-            // 4. Combine genre scores
             const finalGenreScores =
                 getFinalGenreScores(genreScores);
 
-            // 5. Generate recommendations
             const recommended =
                 await getRecommendedMovies(
                     finalGenreScores,
                     userMovies
                 );
 
-            // Keep the intentional reveal delay
             await new Promise((resolve) =>
                 setTimeout(resolve, 1800)
             );
 
             setMovies(recommended.slice(0, 3));
-        } catch (err) {
-            console.error(
-                "Failed to generate recommendations:",
-                err
-            );
+        } catch {
 
             setError(
                 "We couldn't build your recommendations."

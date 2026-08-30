@@ -73,18 +73,13 @@ export const updateUserProfile = async (
     };
 
     if (snapshot.exists()) {
-        // User document exists → update it
         await updateDoc(userRef, data);
     } else {
-        // User document doesn't exist → create it
         await setDoc(userRef, data);
     }
 };
 
 
-/* -------------------------------------------------------------------------- */
-/* Types                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export interface UserMovie {
     movieId: number;
@@ -104,9 +99,6 @@ export interface UserMovie {
     updatedAt: unknown;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Get User Movies                                                            */
-/* -------------------------------------------------------------------------- */
 
 export const getUserMovies = async (
     userId: string
@@ -152,19 +144,12 @@ export const getUserMovies = async (
                     data.updatedAt ?? null,
             };
         });
-    } catch (error) {
-        console.error(
-            "Failed to get user movies:",
-            error
-        );
+    } catch {
 
         return [];
     }
 };
 
-/* -------------------------------------------------------------------------- */
-/* Get Random User Movie IDs                                                  */
-/* -------------------------------------------------------------------------- */
 
 export const getUserMovieIds = async (
     userId: string,
@@ -180,21 +165,12 @@ export const getUserMovieIds = async (
                     typeof id === "number"
             );
 
-        /*
-         * Shuffle the complete list first.
-         * This means every visit can produce a different
-         * selection of personalized movies.
-         */
         const shuffled = [...movieIds].sort(
             () => Math.random() - 0.5
         );
 
         return shuffled.slice(0, limit);
-    } catch (error) {
-        console.error(
-            "Failed to get user movie IDs:",
-            error
-        );
+    } catch {
 
         return [];
     }

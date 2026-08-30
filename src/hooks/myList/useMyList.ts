@@ -65,9 +65,6 @@ const useMyList = (): UseMyListResult => {
     const [selectedGroup, setSelectedGroup] =
         useState<MovieGroup | null>(null);
 
-    /* ---------------------------------------------------------------------- */
-    /* Load movies                                                             */
-    /* ---------------------------------------------------------------------- */
 
     const loadMovies = useCallback(
         async () => {
@@ -96,11 +93,7 @@ const useMyList = (): UseMyListResult => {
                     );
 
                 setMovies(saved);
-            } catch (loadError) {
-                console.error(
-                    "Failed to load saved movies:",
-                    loadError
-                );
+            } catch {
 
                 setError(
                     "We couldn't load your saved movies. Please try again."
@@ -112,9 +105,6 @@ const useMyList = (): UseMyListResult => {
         [user]
     );
 
-    /* ---------------------------------------------------------------------- */
-    /* Initial load                                                            */
-    /* ---------------------------------------------------------------------- */
 
     useEffect(() => {
         if (userLoading) {
@@ -128,9 +118,6 @@ const useMyList = (): UseMyListResult => {
         loadMovies,
     ]);
 
-    /* ---------------------------------------------------------------------- */
-    /* Movie groups                                                            */
-    /* ---------------------------------------------------------------------- */
 
     const movieGroups = useMemo(() => {
         const query =
@@ -201,9 +188,6 @@ const useMyList = (): UseMyListResult => {
         searchQuery,
     ]);
 
-    /* ---------------------------------------------------------------------- */
-    /* Return                                                                  */
-    /* ---------------------------------------------------------------------- */
 
     return {
         user,

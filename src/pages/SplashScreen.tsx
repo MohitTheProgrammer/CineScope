@@ -16,7 +16,6 @@ const SplashScreen = () => {
                 text-white
             "
         >
-            {/* Background glow */}
             <div
                 className="
                     pointer-events-none
@@ -40,7 +39,6 @@ const SplashScreen = () => {
                     items-center
                 "
             >
-                {/* Logo */}
                 <div
                     className="
                         flex
@@ -59,7 +57,6 @@ const SplashScreen = () => {
                     <FilmReelIcon className="size-10" />
                 </div>
 
-                {/* Brand */}
                 <h1
                     className="
                         mt-6
@@ -84,7 +81,6 @@ const SplashScreen = () => {
                     Discover your movie world
                 </p>
 
-                {/* Loading indicator */}
                 <div
                     className="
                         mt-10

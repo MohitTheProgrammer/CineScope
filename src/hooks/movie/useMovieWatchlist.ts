@@ -52,11 +52,8 @@ export const useMovieWatchlist = (
                 if (!cancelled) {
                     setWatchlistAdded(exists);
                 }
-            } catch (error) {
-                console.error(
-                    "Failed to check watchlist:",
-                    error
-                );
+            } catch {
+                return;
             } finally {
                 if (!cancelled) {
                     setCheckingWatchlist(false);
@@ -92,13 +89,8 @@ export const useMovieWatchlist = (
             );
 
             setWatchlistAdded(true);
-        } catch (error) {
-            console.error(
-                "Failed to add movie to watchlist:",
-                error
-            );
-
-            throw error;
+        } catch {
+            return;
         } finally {
             setAddingToWatchlist(false);
         }

@@ -25,9 +25,6 @@ const MovieDetail = () => {
 
     const id = Number(movieId);
 
-    /* ---------------------------------------------------------------------- */
-    /* Movie data                                                              */
-    /* ---------------------------------------------------------------------- */
 
     const {
         movie,
@@ -38,9 +35,6 @@ const MovieDetail = () => {
         error,
     } = useMovie(id);
 
-    /* ---------------------------------------------------------------------- */
-    /* Movie actions                                                           */
-    /* ---------------------------------------------------------------------- */
 
     const watchlist =
         useMovieWatchlist(movie);
@@ -51,18 +45,12 @@ const MovieDetail = () => {
     const rating =
         useMovieRating(movie);
 
-    /* ---------------------------------------------------------------------- */
-    /* Watch provider state                                                    */
-    /* ---------------------------------------------------------------------- */
 
     const [
         showWatchSources,
         setShowWatchSources,
     ] = useState(false);
 
-    /* ---------------------------------------------------------------------- */
-    /* Watch options state                                                     */
-    /* ---------------------------------------------------------------------- */
 
     const [
         showCineScopePlayer,
@@ -74,19 +62,12 @@ const MovieDetail = () => {
         setShowTrailer,
     ] = useState(false);
 
-    /* ---------------------------------------------------------------------- */
-    /* Find trailer                                                            */
-    /* ---------------------------------------------------------------------- */
 
     const trailer = useMemo(() => {
         if (!videos?.length) {
             return null;
         }
 
-        /*
-         * First preference:
-         * Official YouTube trailer
-         */
 
         const officialTrailer =
             videos.find(
@@ -100,10 +81,6 @@ const MovieDetail = () => {
             return officialTrailer;
         }
 
-        /*
-         * Second preference:
-         * Any YouTube trailer
-         */
 
         const youtubeTrailer =
             videos.find(
@@ -116,10 +93,6 @@ const MovieDetail = () => {
             return youtubeTrailer;
         }
 
-        /*
-         * Last fallback:
-         * Any YouTube video
-         */
 
         return (
             videos.find(
@@ -129,17 +102,11 @@ const MovieDetail = () => {
         );
     }, [videos]);
 
-    /* ---------------------------------------------------------------------- */
-    /* Loading                                                                 */
-    /* ---------------------------------------------------------------------- */
 
     if (loading) {
         return <MovieDetailSkeleton />;
     }
 
-    /* ---------------------------------------------------------------------- */
-    /* Error                                                                   */
-    /* ---------------------------------------------------------------------- */
 
     if (
         error ||
@@ -217,9 +184,6 @@ const MovieDetail = () => {
         );
     }
 
-    /* ---------------------------------------------------------------------- */
-    /* Released                                                                */
-    /* ---------------------------------------------------------------------- */
 
     const hasBeenReleased = Boolean(
         movie.release_date &&
@@ -227,9 +191,6 @@ const MovieDetail = () => {
                 new Date()
     );
 
-    /* ---------------------------------------------------------------------- */
-    /* Render                                                                  */
-    /* ---------------------------------------------------------------------- */
 
     return (
         <main
@@ -239,17 +200,11 @@ const MovieDetail = () => {
                 text-white
             "
         >
-            {/* ================================================================= */}
-            {/* Movie Hero                                                         */}
-            {/* ================================================================= */}
 
             <MovieHero
                 movie={movie}
             />
 
-            {/* ================================================================= */}
-            {/* User Movie Actions                                                 */}
-            {/* ================================================================= */}
 
             {user && (
                 <MovieActions
@@ -319,9 +274,6 @@ const MovieDetail = () => {
                 />
             )}
 
-            {/* ================================================================= */}
-            {/* Watch Providers                                                    */}
-            {/* ================================================================= */}
 
             {watchProviders && (
                 <WatchProviders
@@ -341,22 +293,12 @@ const MovieDetail = () => {
                 />
             )}
 
-            {/* ================================================================= */}
-            {/* Watch Options                                                      */}
-            {/* ================================================================= */}
 
             <WatchOptions
                 movie={movie}
 
                 trailer={trailer}
 
-                /*
-                 * The movie is already loaded by the time
-                 * WatchOptions is rendered.
-                 *
-                 * Trailer availability is determined
-                 * through the trailer value itself.
-                 */
                 loadingTrailer={false}
 
                 showCineScopePlayer={
@@ -368,21 +310,10 @@ const MovieDetail = () => {
                 }
 
                 onToggleCineScopePlayer={() => {
-                    /*
-                     * CineScope movie playback requires
-                     * authentication.
-                     */
                     if (!user) {
                         return;
                     }
 
-                    /*
-                     * If opening CineScope,
-                     * close the trailer.
-                     *
-                     * This prevents both players
-                     * from being active at once.
-                     */
                     setShowTrailer(false);
 
                     setShowCineScopePlayer(
@@ -391,13 +322,6 @@ const MovieDetail = () => {
                 }}
 
                 onToggleTrailer={() => {
-                    /*
-                     * If opening trailer,
-                     * close CineScope player.
-                     *
-                     * This also causes VidRockPlayer
-                     * to unmount and stop playback.
-                     */
                     setShowCineScopePlayer(false);
 
                     setShowTrailer(
@@ -405,13 +329,6 @@ const MovieDetail = () => {
                     );
                 }}
 
-                /*
-                 * Only create/pass the CineScope player
-                 * when a user is logged in.
-                 *
-                 * WatchOptions itself will only render
-                 * this option when isLoggedIn === true.
-                 */
                 player={
                     user ? (
                         <VidRockPlayer
@@ -426,17 +343,11 @@ const MovieDetail = () => {
                 }
             />
 
-            {/* ================================================================= */}
-            {/* Movie Information                                                 */}
-            {/* ================================================================= */}
 
             <MovieInfo
                 movie={movie}
             />
 
-            {/* ================================================================= */}
-            {/* Cast                                                               */}
-            {/* ================================================================= */}
 
             {cast.length > 0 && (
                 <CastSection

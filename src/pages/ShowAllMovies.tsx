@@ -6,9 +6,6 @@ import {
     ArrowRightIcon,
 } from "../assets/icons/Icons";
 
-/* -------------------------------------------------------------------------- */
-/* Types                                                                      */
-/* -------------------------------------------------------------------------- */
 
 interface Movie {
     id: number;
@@ -24,9 +21,6 @@ interface ShowAllMoviesProps {
     title: string;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Component                                                                  */
-/* -------------------------------------------------------------------------- */
 
 const ShowAllMovies = ({
     movielist,
@@ -41,9 +35,6 @@ const ShowAllMovies = ({
     return (
         <section className="mx-auto max-w-7xl px-1 pb-24 lg:px-8">
 
-            {/* ---------------------------------------------------------------- */}
-            {/* Header                                                           */}
-            {/* ---------------------------------------------------------------- */}
 
             <div className="flex items-end justify-between gap-4">
 
@@ -107,9 +98,6 @@ const ShowAllMovies = ({
 
             </div>
 
-            {/* ---------------------------------------------------------------- */}
-            {/* Empty state                                                      */}
-            {/* ---------------------------------------------------------------- */}
 
             {movielist.length === 0 ? (
                 <div
@@ -153,9 +141,6 @@ const ShowAllMovies = ({
                 </div>
             ) : (
 
-                /* ---------------------------------------------------------------- */
-                /* Movie Grid                                                        */
-                /* ---------------------------------------------------------------- */
 
                 <div
                     className="
@@ -182,7 +167,6 @@ const ShowAllMovies = ({
                             "
                         >
 
-                            {/* Poster */}
                             <div
                                 className="
                                     relative
@@ -230,7 +214,6 @@ const ShowAllMovies = ({
                                     </div>
                                 )}
 
-                                {/* Gradient */}
                                 <div
                                     className="
                                         pointer-events-none
@@ -244,7 +227,6 @@ const ShowAllMovies = ({
                                     "
                                 />
 
-                                {/* Rating */}
                                 {typeof movie.vote_average === "number" &&
                                     movie.vote_average > 0 && (
                                         <div
@@ -284,7 +266,6 @@ const ShowAllMovies = ({
                                         </div>
                                     )}
 
-                                {/* Hover action */}
                                 <div
                                     className="
                                         absolute
@@ -330,7 +311,6 @@ const ShowAllMovies = ({
 
                             </div>
 
-                            {/* Title */}
                             <div className="mt-3 px-1">
 
                                 <h3

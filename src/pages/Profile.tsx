@@ -86,11 +86,8 @@ const ProfilePage = () => {
                 setUserData(profile);
                 setDisplayName(profile.displayName);
                 setSelectedAvatar(profile.avatarId);
-            } catch (error) {
-                console.error(
-                    "Failed to load profile:",
-                    error
-                );
+            } catch {
+                return;
             } finally {
                 if (!cancelled) {
                     setLoading(false);
@@ -140,11 +137,8 @@ const ProfilePage = () => {
                     }
                     : previous
             );
-        } catch (error) {
-            console.error(
-                "Failed to update profile:",
-                error
-            );
+        } catch {
+            return;
         } finally {
             setSaving(false);
         }
@@ -161,11 +155,7 @@ const ProfilePage = () => {
             navigate("/login", {
                 replace: true,
             });
-        } catch (error) {
-            console.error(
-                "Failed to logout:",
-                error
-            );
+        } catch {
 
             setLoggingOut(false);
         }

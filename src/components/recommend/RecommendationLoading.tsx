@@ -19,7 +19,6 @@ const RecommendationLoading = () => {
                     bg-white/2.5
                 "
             >
-                {/* Ambient background */}
 
                 <div
                     className="
@@ -76,7 +75,6 @@ const RecommendationLoading = () => {
                         text-center
                     "
                 >
-                    {/* DNA Orb */}
 
                     <div className="relative flex size-28 items-center justify-center">
                         <div
@@ -130,7 +128,6 @@ const RecommendationLoading = () => {
                         </div>
                     </div>
 
-                    {/* Status */}
 
                     <div className="mt-8 flex items-center gap-2">
                         <span
@@ -187,7 +184,6 @@ const RecommendationLoading = () => {
                         matches your taste.
                     </p>
 
-                    {/* Processing */}
 
                     <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                         <ProcessItem
@@ -214,7 +210,6 @@ const RecommendationLoading = () => {
                         />
                     </div>
 
-                    {/* Loading dots */}
 
                     <div className="mt-7 flex items-center gap-1.5">
                         <LoadingDot />

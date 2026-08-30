@@ -36,7 +36,6 @@ const WatchProviders = ({
                 lg:px-8
             "
         >
-            {/* Heading */}
 
             <div>
                 <div className="flex items-center gap-2">
@@ -76,7 +75,6 @@ const WatchProviders = ({
                 </h2>
             </div>
 
-            {/* Expand / Collapse */}
 
             <button
                 type="button"
@@ -138,7 +136,6 @@ const WatchProviders = ({
                 <ChevronIcon open={open} />
             </button>
 
-            {/* Providers */}
 
             <div
                 className={`
@@ -185,7 +182,6 @@ const WatchProviders = ({
                             </div>
                         ) : (
                             <div className="space-y-7">
-                                {/* Free with Ads */}
 
                                 {providers.ads?.length ? (
                                     <ProviderGroup
@@ -196,7 +192,6 @@ const WatchProviders = ({
                                     />
                                 ) : null}
 
-                                {/* Free */}
 
                                 {providers.free?.length ? (
                                     <ProviderGroup
@@ -207,7 +202,6 @@ const WatchProviders = ({
                                     />
                                 ) : null}
 
-                                {/* Subscription */}
 
                                 {providers.flatrate?.length ? (
                                     <ProviderGroup
@@ -218,7 +212,6 @@ const WatchProviders = ({
                                     />
                                 ) : null}
 
-                                {/* Rent */}
 
                                 {providers.rent?.length ? (
                                     <ProviderGroup
@@ -229,7 +222,6 @@ const WatchProviders = ({
                                     />
                                 ) : null}
 
-                                {/* Buy */}
 
                                 {providers.buy?.length ? (
                                     <ProviderGroup
@@ -240,7 +232,6 @@ const WatchProviders = ({
                                     />
                                 ) : null}
 
-                                {/* TMDB provider link */}
 
                                 {providers.link && (
                                     <a
@@ -271,9 +262,6 @@ const WatchProviders = ({
     );
 };
 
-/* -------------------------------------------------------------------------- */
-/* Provider Group                                                             */
-/* -------------------------------------------------------------------------- */
 
 interface ProviderGroupProps {
     title: string;
@@ -346,9 +334,6 @@ const ProviderGroup = ({
     );
 };
 
-/* -------------------------------------------------------------------------- */
-/* Icons                                                                      */
-/* -------------------------------------------------------------------------- */
 
 
 export default WatchProviders;

@@ -33,23 +33,11 @@ const VidRockPlayer = ({
         };
     }, [tmdbId]);
 
-    /*
-     * ------------------------------------------------------------
-     * VidRock source
-     * ------------------------------------------------------------
-     *
-     * The source is only created for authenticated users.
-     */
     const playerUrl =
         !authLoading && user
             ? `https://vidrock.net/movie/${tmdbId}?autoplay=true&download=true`
             : undefined;
 
-    /*
-     * ------------------------------------------------------------
-     * Player loading state
-     * ------------------------------------------------------------
-     */
 
     useEffect(() => {
         if (!user || authLoading) {
@@ -60,11 +48,6 @@ const VidRockPlayer = ({
         setIsLoading(true);
     }, [user, authLoading, tmdbId]);
 
-    /*
-     * ------------------------------------------------------------
-     * Authentication state
-     * ------------------------------------------------------------
-     */
 
     if (authLoading) {
         return (
@@ -82,16 +65,10 @@ const VidRockPlayer = ({
         );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * Player
-     * ------------------------------------------------------------
-     */
 
     return (
         <PlayerSection>
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-                {/* Top accent line */}
 
                 <div
                     className="
@@ -107,7 +84,6 @@ const VidRockPlayer = ({
                     "
                 />
 
-                {/* Player */}
 
                 <div className="relative aspect-video w-full bg-black">
                     {isLoading && (
@@ -194,7 +170,6 @@ const VidRockPlayer = ({
                 </div>
             </div>
 
-            {/* Small player information */}
 
             <div className="mt-3 flex items-center justify-between px-1">
                 <div className="flex items-center gap-2">
@@ -229,9 +204,6 @@ const VidRockPlayer = ({
     );
 };
 
-/* ========================================================================== */
-/* Player Section                                                              */
-/* ========================================================================== */
 
 interface PlayerSectionProps {
     children: React.ReactNode;
@@ -242,7 +214,6 @@ const PlayerSection = ({
 }: PlayerSectionProps) => {
     return (
         <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-8">
-            {/* Section heading */}
 
             <div className="mb-6">
                 <div className="flex items-center gap-2">
@@ -287,9 +258,6 @@ const PlayerSection = ({
     );
 };
 
-/* ========================================================================== */
-/* Loading                                                                     */
-/* ========================================================================== */
 
 const PlayerLoading = () => {
     return (
@@ -351,9 +319,6 @@ const PlayerLoading = () => {
     );
 };
 
-/* ========================================================================== */
-/* Login Required                                                              */
-/* ========================================================================== */
 
 interface LoginRequiredProps {
     title: string;
@@ -382,7 +347,6 @@ const LoginRequired = ({
                 text-center
             "
         >
-            {/* Subtle accent glow */}
 
             <div
                 className="
@@ -399,7 +363,6 @@ const LoginRequired = ({
                 "
             />
 
-            {/* Icon */}
 
             <div
                 className="
@@ -418,7 +381,6 @@ const LoginRequired = ({
                 <FilmIcon className="size-7" />
             </div>
 
-            {/* Text */}
 
             <div className="relative">
                 <p
@@ -456,7 +418,6 @@ const LoginRequired = ({
                 </p>
             </div>
 
-            {/* Login button */}
 
             <button
                 type="button"
@@ -494,7 +455,6 @@ const LoginRequired = ({
                 />
             </button>
 
-            {/* Small hint */}
 
             <div
                 className="

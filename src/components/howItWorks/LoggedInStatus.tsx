@@ -35,7 +35,6 @@ const LoggedInStatus = ({
                     sm:p-8
                 "
             >
-                {/* Icon */}
 
                 <div
                     className="
@@ -54,7 +53,6 @@ const LoggedInStatus = ({
                     <SparklesIcon className="size-7" />
                 </div>
 
-                {/* Content */}
 
                 <div className="min-w-0 flex-1">
                     <p
@@ -96,7 +94,6 @@ const LoggedInStatus = ({
                     </p>
                 </div>
 
-                {/* Action */}
 
                 <button
                     type="button"

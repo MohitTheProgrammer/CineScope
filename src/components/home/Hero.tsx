@@ -25,7 +25,6 @@ const Hero = ({ uid }: HeroProps) => {
 
     return (
         <section className="relative min-h-180 overflow-hidden">
-            {/* Background */}
 
             <div className="absolute inset-0">
                 <img
@@ -44,7 +43,6 @@ const Hero = ({ uid }: HeroProps) => {
                     "
                 />
 
-                {/* Left gradient */}
 
                 <div
                     className="
@@ -57,7 +55,6 @@ const Hero = ({ uid }: HeroProps) => {
                     "
                 />
 
-                {/* Bottom gradient */}
 
                 <div
                     className="
@@ -71,7 +68,6 @@ const Hero = ({ uid }: HeroProps) => {
                 />
             </div>
 
-            {/* Accent glow */}
 
             <div
                 className="
@@ -86,7 +82,6 @@ const Hero = ({ uid }: HeroProps) => {
                 "
             />
 
-            {/* Content */}
 
             <div
                 className="
@@ -104,7 +99,6 @@ const Hero = ({ uid }: HeroProps) => {
                 "
             >
                 <div className="max-w-2xl">
-                    {/* Eyebrow */}
 
                     <div className="mb-5 flex items-center gap-3">
                         <span
@@ -129,7 +123,6 @@ const Hero = ({ uid }: HeroProps) => {
                         </span>
                     </div>
 
-                    {/* Heading */}
 
                     <h1
                         key={heroTextIndex}
@@ -157,7 +150,6 @@ const Hero = ({ uid }: HeroProps) => {
                         {heroText.last}
                     </h1>
 
-                    {/* Description */}
 
                     <p
                         className="
@@ -176,7 +168,6 @@ const Hero = ({ uid }: HeroProps) => {
                         what you already love.
                     </p>
 
-                    {/* Actions */}
 
                     <div className="mt-8 flex flex-wrap gap-3">
                         <Link
@@ -228,7 +219,6 @@ const Hero = ({ uid }: HeroProps) => {
                         </Link>
                     </div>
 
-                    {/* Stats */}
 
                     <div
                         className="

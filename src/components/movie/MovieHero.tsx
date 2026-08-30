@@ -26,7 +26,6 @@ const MovieHero = ({
                     lg:gap-12
                 "
             >
-                {/* Poster */}
 
                 <div
                     className="
@@ -73,11 +72,9 @@ const MovieHero = ({
                     </div>
                 </div>
 
-                {/* Information */}
 
                 <div className="flex flex-col justify-center">
 
-                    {/* Genres */}
 
                     <div className="mb-4 flex flex-wrap gap-2">
                         {movie.genres?.map((genre) => (
@@ -100,7 +97,6 @@ const MovieHero = ({
                         ))}
                     </div>
 
-                    {/* Title */}
 
                     <h1
                         className="
@@ -114,7 +110,6 @@ const MovieHero = ({
                         {movie.title}
                     </h1>
 
-                    {/* Metadata */}
 
                     <div
                         className="
@@ -181,7 +176,6 @@ const MovieHero = ({
                         )}
                     </div>
 
-                    {/* Synopsis */}
 
                     <div className="mt-8">
 

@@ -13,9 +13,6 @@ const defaultProps: IconProps = {
     "aria-hidden": true,
 };
 
-/* -------------------------------------------------------------------------- */
-/* Film                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export const FilmIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -29,9 +26,6 @@ export const FilmIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Heart                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export const HeartIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -39,9 +33,6 @@ export const HeartIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Target                                                                     */
-/* -------------------------------------------------------------------------- */
 
 export const TargetIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -55,9 +46,6 @@ export const TargetIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* DNA / Movie DNA                                                            */
-/* -------------------------------------------------------------------------- */
 
 export const DnaIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -70,9 +58,6 @@ export const DnaIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Star                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export const StarIcon = (props: IconProps) => (
     <svg
@@ -85,9 +70,6 @@ export const StarIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Flame                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export const FlameIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -96,9 +78,6 @@ export const FlameIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Eye                                                                        */
-/* -------------------------------------------------------------------------- */
 
 export const EyeIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -107,9 +86,6 @@ export const EyeIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Palette                                                                    */
-/* -------------------------------------------------------------------------- */
 
 export const PaletteIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -121,9 +97,6 @@ export const PaletteIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Brain / Algorithm                                                          */
-/* -------------------------------------------------------------------------- */
 
 export const BrainIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -137,9 +110,6 @@ export const BrainIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Sparkles                                                                   */
-/* -------------------------------------------------------------------------- */
 
 export const SparklesIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -149,9 +119,6 @@ export const SparklesIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Chart                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export const ChartIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -163,9 +130,6 @@ export const ChartIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Users                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export const UsersIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -176,9 +140,6 @@ export const UsersIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Check                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export const CheckIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -186,9 +147,6 @@ export const CheckIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Arrow Right                                                                */
-/* -------------------------------------------------------------------------- */
 
 export const ArrowRightIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -197,9 +155,6 @@ export const ArrowRightIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Arrow Left                                                                 */
-/* -------------------------------------------------------------------------- */
 
 export const ArrowLeftIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -208,9 +163,6 @@ export const ArrowLeftIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Play                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export const PlayIcon = (props: IconProps) => (
     <svg
@@ -223,9 +175,6 @@ export const PlayIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Plus                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export const PlusIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -234,9 +183,6 @@ export const PlusIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Search                                                                     */
-/* -------------------------------------------------------------------------- */
 
 export const SearchIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -245,9 +191,6 @@ export const SearchIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Lock                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export const LockIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -256,9 +199,6 @@ export const LockIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* User                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export const UserIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -267,9 +207,6 @@ export const UserIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Clock                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export const ClockIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -278,9 +215,6 @@ export const ClockIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Film Reel                                                                  */
-/* -------------------------------------------------------------------------- */
 
 export const FilmReelIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -295,9 +229,6 @@ export const FilmReelIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Sliders / Preferences                                                      */
-/* -------------------------------------------------------------------------- */
 
 export const SlidersIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -310,9 +241,6 @@ export const SlidersIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Lightbulb / Insight                                                         */
-/* -------------------------------------------------------------------------- */
 
 export const LightbulbIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>
@@ -325,9 +253,6 @@ export const LightbulbIcon = (props: IconProps) => (
     </svg>
 );
 
-/* -------------------------------------------------------------------------- */
-/* Rocket Icon / Insight                                                         */
-/* -------------------------------------------------------------------------- */
 
 export const RocketIcon = (props: IconProps) => (
     <svg {...defaultProps} {...props}>

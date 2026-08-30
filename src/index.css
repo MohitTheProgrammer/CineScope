@@ -1,19 +1,4 @@
 @import "tailwindcss";
-/* :root {
-  --bg-primary: #05020a;
-  --bg-secondary: #0d0815;
-  --bg-glass: rgba(8, 5, 14, 0.82);
-
-  --text-primary: #f8f7fb;
-  --text-secondary: #aaa6b5;
-  --text-muted: #777282;
-
-  --accent-primary: #ff2da6;
-  --accent-secondary: #00e5ff;
-
-  --border: rgba(255, 255, 255, 0.1);
-  --accent-glow: rgba(255, 45, 166, 0.3);
-} */
 :root {
   --bg-primary: #05020a;
   --bg-secondary: #0d0815;
@@ -30,7 +15,6 @@
   --accent-glow: rgba(255, 45, 166, 0.3);
 }
 
-/* Purple */
 
 [data-theme="purple"] {
   --bg-primary: #06030b;
@@ -43,7 +27,6 @@
   --accent-glow: rgba(168, 85, 247, 0.3);
 }
 
-/* Cyan */
 
 [data-theme="cyan"] {
   --bg-primary: #020708;
@@ -56,7 +39,6 @@
   --accent-glow: rgba(0, 229, 255, 0.3);
 }
 
-/* Red */
 
 [data-theme="red"] {
   --bg-primary: #090202;
@@ -105,7 +87,6 @@ button {
   color: white;
 }
 
-/* Scrollbar */
 
 ::-webkit-scrollbar {
   width: 7px;
@@ -120,7 +101,6 @@ button {
   border-radius: 999px;
 }
 
-/* Reusable neon effects */
 
 button:focus-visible,
 a:focus-visible,
@@ -129,7 +109,6 @@ input:focus-visible {
   outline-offset: 3px;
 }
 
-/* Glass */
 
 .glass {
   background: rgba(13, 8, 21, 0.7);

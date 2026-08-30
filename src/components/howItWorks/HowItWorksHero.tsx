@@ -30,7 +30,6 @@ const HowItWorksHero = ({
                 lg:px-8
             "
         >
-            {/* Ambient glow */}
 
             <div
                 className="
@@ -59,7 +58,6 @@ const HowItWorksHero = ({
             />
 
             <div className="relative text-center">
-                {/* Eyebrow */}
 
                 <div className="flex items-center justify-center gap-2">
                     <span
@@ -86,7 +84,6 @@ const HowItWorksHero = ({
                     </span>
                 </div>
 
-                {/* Heading */}
 
                 <h1
                     className="
@@ -121,7 +118,6 @@ const HowItWorksHero = ({
                     )}
                 </h1>
 
-                {/* Description */}
 
                 <p
                     className="
@@ -139,7 +135,6 @@ const HowItWorksHero = ({
                         : "Every movie you like tells us something. CineScope turns those little signals into a picture of your unique movie taste."}
                 </p>
 
-                {/* CTA */}
 
                 {!isLoggedIn && (
                     <button
@@ -168,7 +163,6 @@ const HowItWorksHero = ({
                     </button>
                 )}
 
-                {/* Floating genre cards */}
 
                 <div
                     className="

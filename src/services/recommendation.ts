@@ -8,20 +8,9 @@ import { db } from "./firebase";
 import type { UserMovie } from "./userService";
 
 
-/**
- * Get every movie saved by a user.
- *
- * A movie can be:
- * - liked
- * - watchlisted
- * - watched
- * - rated
- * - or any combination of these
- */
 export const getUserMovies = async (
     userId: string
 ): Promise<UserMovie[]> => {
-    try {
         const moviesRef = collection(
             db,
             "users",
@@ -52,14 +41,6 @@ export const getUserMovies = async (
                 updatedAt: data.updatedAt,
             };
         });
-    } catch (error) {
-        console.error(
-            "Failed to get user movies:",
-            error
-        );
-
-        throw error;
-    }
 };
 
 
@@ -79,25 +60,21 @@ export const filterUserMoviesByPriority = (
     const watched: UserMovie[] = [];
 
     for (const movie of movies) {
-        // Priority 1 — Liked
         if (movie.liked === true) {
             liked.push(movie);
             continue;
         }
 
-        // Priority 2 — Rated
         if (movie.rated === true) {
             rated.push(movie);
             continue;
         }
 
-        // Priority 3 — Watchlisted
         if (movie.watchlisted === true) {
             watchlisted.push(movie);
             continue;
         }
 
-        // Priority 4 — Watched
         if (movie.watched === true) {
             watched.push(movie);
         }
@@ -134,8 +111,6 @@ export const getGenreScores = (
 
         for (const movie of movies) {
 
-            // Make sure a genre is counted only once
-            // for each movie.
             const uniqueGenreIds = new Set(
                 movie.genreIds ?? []
             );
@@ -237,15 +212,6 @@ export const getRecommendedMovies = async (
         throw new Error("TMDB API key is missing.");
     }
 
-    /*
-     * Take the user's highest-scoring genres.
-     *
-     * Example:
-     *
-     * Action  → 46
-     * Mystery → 19
-     * Comedy  → 12
-     */
 
     const topGenres = genreScores
         .slice(0, 3)
@@ -255,15 +221,6 @@ export const getRecommendedMovies = async (
         return [];
     }
 
-    /*
-     * "|" means OR in TMDB genre filtering.
-     *
-     * Example:
-     *
-     * 28|9648|35
-     *
-     * = Action OR Mystery OR Comedy
-     */
 
     const genreQuery = topGenres.join("|");
 
@@ -286,36 +243,21 @@ export const getRecommendedMovies = async (
         results: RecommendedMovie[];
     } = await response.json();
 
-    /*
-     * Get IDs of every movie already saved
-     * by the user.
-     */
 
     const userMovieIds = new Set(
         userMovies.map((movie) => movie.movieId)
     );
 
-    /*
-     * Remove movies that the user already has.
-     */
 
     const unseenMovies = (data.results ?? []).filter(
         (movie: RecommendedMovie) =>
             !userMovieIds.has(movie.id)
     );
 
-    /*
-     * Randomize the remaining movies so that
-     * every page reload can produce a different
-     * recommendation set.
-     */
 
     const shuffledMovies =
         shuffleArray(unseenMovies);
 
-    /*
-     * Return exactly 3 movies.
-     */
 
     return shuffledMovies.slice(0, 3);
 };

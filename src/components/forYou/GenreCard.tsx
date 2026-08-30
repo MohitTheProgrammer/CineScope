@@ -27,7 +27,6 @@ const GenreCard = ({
                 hover:bg-(--accent-primary)/5
             "
         >
-            {/* Glow */}
 
             <div
                 className="
@@ -46,7 +45,6 @@ const GenreCard = ({
                 "
             />
 
-            {/* Top */}
 
             <div
                 className="
@@ -85,7 +83,6 @@ const GenreCard = ({
                 </span>
             </div>
 
-            {/* Genre name */}
 
             <h3
                 className="
@@ -99,7 +96,6 @@ const GenreCard = ({
                 {genre.name}
             </h3>
 
-            {/* Description */}
 
             <p
                 className="
@@ -113,7 +109,6 @@ const GenreCard = ({
                 {genre.description}
             </p>
 
-            {/* Score */}
 
             <div
                 className="
@@ -147,7 +142,6 @@ const GenreCard = ({
                 </span>
             </div>
 
-            {/* Progress */}
 
             <div
                 className="

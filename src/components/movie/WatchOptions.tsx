@@ -38,7 +38,6 @@ const WatchOptions = ({
 }: WatchOptionsProps) => {
     return (
      isLoggedIn &&   <section className="mx-auto max-w-7xl px-6 pb-16 pt-11 lg:px-8">
-            {/* Section heading */}
 
             <div>
                 <div className="flex items-center gap-2">
@@ -78,10 +77,8 @@ const WatchOptions = ({
                 </h2>
             </div>
 
-            {/* Watch options */}
 
             <div className="mt-6 space-y-3">
-                {/* CineScope */}
 
                 <div>
                     <WatchOptionButton
@@ -98,7 +95,6 @@ const WatchOptions = ({
                         }
                     />
 
-                    {/* CineScope player */}
 
                     <div
                         className={`
@@ -131,7 +127,6 @@ const WatchOptions = ({
                     </div>
                 </div>
 
-                {/* Trailer */}
 
                 <div>
                     <WatchOptionButton
@@ -157,7 +152,6 @@ const WatchOptions = ({
                         onClick={onToggleTrailer}
                     />
 
-                    {/* Trailer */}
 
                     <div
                         className={`
@@ -198,9 +192,6 @@ const WatchOptions = ({
     );
 };
 
-/* -------------------------------------------------------------------------- */
-/* Watch Option Button                                                        */
-/* -------------------------------------------------------------------------- */
 
 interface WatchOptionButtonProps {
     icon: ReactNode;
@@ -251,7 +242,6 @@ const WatchOptionButton = ({
                 disabled:opacity-40
             "
         >
-            {/* Left */}
 
             <div className="flex min-w-0 items-center gap-4">
                 <div
@@ -287,7 +277,6 @@ const WatchOptionButton = ({
                 </div>
             </div>
 
-            {/* Right */}
 
             <div className="ml-4 flex shrink-0 items-center gap-3">
                 {loading && <LoadingIcon className="size-4" />}
@@ -306,9 +295,6 @@ const WatchOptionButton = ({
     );
 };
 
-/* -------------------------------------------------------------------------- */
-/* Trailer                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const TrailerFrame = ({
     trailer,

@@ -47,15 +47,12 @@ export interface UserMovie {
     posterPath: string | null;
     genreIds: number[];
 
-    // TMDB rating
     voteAverage: number;
 
-    // User's movie state
     liked: boolean;
     watchlisted: boolean;
     watched: boolean;
 
-    // Personal rating
     rated: boolean;
     rating: number | null;
 

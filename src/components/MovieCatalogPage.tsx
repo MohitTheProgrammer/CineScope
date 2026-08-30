@@ -19,11 +19,11 @@ const MovieCatalogPage = ({ title, description, emptyMessage, loadMovies }: Prop
         let active = true;
         void (async () => {
             try { setLoading(true); setError(""); const data = await loadMovies(page); if (active) { setMovies(data.results); setTotalPages(Math.min(data.total_pages, 500)); } }
-            catch (reason) { if (active) { console.error(`Failed to load ${title.toLowerCase()} movies:`, reason); setError("Unable to load movies right now."); } }
+            catch { if (active) { setError("Unable to load movies right now."); } }
             finally { if (active) setLoading(false); }
         })();
         return () => { active = false; };
-    }, [loadMovies, page, retryKey, title]);
+    }, [loadMovies, page, retryKey]);
 
     const changePage = (nextPage: number) => { if (nextPage < 1 || nextPage > totalPages || nextPage === page) return; setSearchParams({ page: String(nextPage) }); window.scrollTo({ top: 0, behavior: "smooth" }); };
 

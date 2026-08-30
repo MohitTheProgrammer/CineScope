@@ -14,9 +14,6 @@ import {
 import MainLayout from "../layout/MainLayout";
 import { useUser } from "../context/UserContext";
 
-/* -------------------------------------------------------------------------- */
-/* Pages                                                                       */
-/* -------------------------------------------------------------------------- */
 
 const Home = lazy(() => import("../pages/Home"));
 const Trending = lazy(() => import("../pages/Trending"));
@@ -31,9 +28,6 @@ const HowItWorks = lazy(() => import("../pages/HowItWorks"));
 const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"))
 const Recommend = lazy(() => import("../pages/Recommend"))
 
-/* -------------------------------------------------------------------------- */
-/* Protected Route                                                             */
-/* -------------------------------------------------------------------------- */
 
 interface ProtectedRouteProps {
     children: ReactNode;
@@ -44,16 +38,6 @@ const ProtectedRoute = ({
 }: ProtectedRouteProps) => {
     const { user, loading } = useUser();
 
-    /*
-     * Firebase is still checking the existing authentication
-     * session.
-     *
-     * IMPORTANT:
-     * Do not redirect while loading is true.
-     *
-     * This prevents the page from redirecting to /login
-     * for a moment when the browser is refreshed.
-     */
     if (loading) {
         return (
             <main className="flex min-h-screen items-center justify-center bg-(--bg-primary)">
@@ -64,10 +48,6 @@ const ProtectedRoute = ({
         );
     }
 
-    /*
-     * Firebase finished checking and there is no
-     * authenticated user.
-     */
     if (!user) {
         return (
             <Navigate
@@ -80,9 +60,6 @@ const ProtectedRoute = ({
     return <>{children}</>;
 };
 
-/* -------------------------------------------------------------------------- */
-/* App Routes                                                                  */
-/* -------------------------------------------------------------------------- */
 
 const AppRoutes = () => {
     return (
@@ -94,15 +71,9 @@ const AppRoutes = () => {
             >
                 <Routes>
 
-                    {/* ------------------------------------------------------ */}
-                    {/* Main application layout                               */}
-                    {/* ------------------------------------------------------ */}
 
                     <Route element={<MainLayout />}>
 
-                        {/* -------------------------------------------------- */}
-                        {/* Public routes                                     */}
-                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="/"
@@ -134,9 +105,6 @@ const AppRoutes = () => {
                             element={<HowItWorks />}
                         />
 
-                        {/* -------------------------------------------------- */}
-                        {/* Protected routes                                  */}
-                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="/my-list"
@@ -175,9 +143,6 @@ const AppRoutes = () => {
 
 
 
-                        {/* -------------------------------------------------- */}
-                        {/* Authentication                                    */}
-                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="/login"
@@ -194,9 +159,6 @@ const AppRoutes = () => {
                             element={<ForgotPassword />}
                         />
 
-                        {/* -------------------------------------------------- */}
-                        {/* 404                                                */}
-                        {/* -------------------------------------------------- */}
 
                         <Route
                             path="*"

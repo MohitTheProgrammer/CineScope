@@ -62,11 +62,7 @@ const useForYou = () => {
                     );
 
                 setMovies(userMovies);
-            } catch (loadError) {
-                console.error(
-                    "Failed to load movies for recommendation:",
-                    loadError
-                );
+            } catch {
 
                 setError(
                     "We couldn't analyze your movie taste right now."

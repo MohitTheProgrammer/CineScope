@@ -102,11 +102,7 @@ const MovieCard = (movie: MovieCardProps) => {
                 message: `${title} added to your liked list`,
                 type: "success",
             });
-        } catch (error) {
-            console.error(
-                "Failed to add movie:",
-                error
-            );
+        } catch {
             setToast({
                 message: "Failed to add movie",
                 type: "error",
@@ -132,7 +128,6 @@ const MovieCard = (movie: MovieCardProps) => {
                     : "group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52"
             }
         >
-            {/* Poster */}
 
             <div
                 className="
@@ -151,7 +146,6 @@ const MovieCard = (movie: MovieCardProps) => {
                     group-hover:shadow-[0_15px_45px_var(--accent-glow)]
                 "
             >
-                {/* Image */}
 
                 {poster_path ? (
                     <img
@@ -187,7 +181,6 @@ const MovieCard = (movie: MovieCardProps) => {
                     </div>
                 )}
 
-                {/* Bottom gradient */}
 
                 <div
                     className="
@@ -203,7 +196,6 @@ const MovieCard = (movie: MovieCardProps) => {
                     "
                 />
 
-                {/* Hover overlay */}
 
                 <div
                     className="
@@ -217,13 +209,11 @@ const MovieCard = (movie: MovieCardProps) => {
                     "
                 />
 
-                {/* Rating */}
 
                 {vote_average > 0 && (
                     <Rating value={vote_average} />
                 )}
 
-                {/* Add button */}
 
                 {id && shouldShowLikeButton && (
                     <button
@@ -262,7 +252,6 @@ const MovieCard = (movie: MovieCardProps) => {
                     </button>
                 )}
 
-                {/* Play button */}
 
                 {id && (
                     <button
@@ -302,7 +291,6 @@ const MovieCard = (movie: MovieCardProps) => {
                     </button>
                 )}
 
-                {/* Movie information */}
 
                 <div
                     className="
@@ -313,7 +301,6 @@ const MovieCard = (movie: MovieCardProps) => {
                         p-4
                     "
                 >
-                    {/* Title */}
 
                     {title && (
                         <h3
@@ -329,7 +316,6 @@ const MovieCard = (movie: MovieCardProps) => {
                         </h3>
                     )}
 
-                    {/* Meta */}
 
                     {(year || vote_average > 0) && (
                         <div
@@ -372,7 +358,6 @@ const MovieCard = (movie: MovieCardProps) => {
                 </div>
             </div>
 
-            {/* Genres */}
 
             {shouldShowLikeButton && genres.length > 0 && (
                 <div
@@ -419,9 +404,6 @@ const MovieCard = (movie: MovieCardProps) => {
     );
 };
 
-/* -------------------------------------------------------------------------- */
-/* Rating                                                                     */
-/* -------------------------------------------------------------------------- */
 
 interface RatingProps {
     value: number;
@@ -461,9 +443,6 @@ const Rating = ({ value }: RatingProps) => {
     );
 };
 
-/* -------------------------------------------------------------------------- */
-/* Icons                                                                      */
-/* -------------------------------------------------------------------------- */
 
 const PlayIcon = () => (
     <svg

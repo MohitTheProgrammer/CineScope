@@ -4,14 +4,9 @@ import { NavLink } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import MovieSearch from "./MovieSearch";
 import ThemeSwitcher from "./ThemeSwitcher";
-import type { User } from "firebase/auth";
-
-let isUser: User | null;
-
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useUser();
-  isUser = user
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
@@ -39,9 +34,6 @@ const Navbar = () => {
                 backdrop-blur-2xl
             "
     >
-      {/* ---------------------------------------------------------------- */}
-      {/* Main Navbar                                                       */}
-      {/* ---------------------------------------------------------------- */}
 
       <nav
         className="
@@ -56,13 +48,9 @@ const Navbar = () => {
                     lg:px-8
                 "
       >
-        {/* Logo */}
 
         <Logo />
 
-        {/* ------------------------------------------------------------ */}
-        {/* Desktop Navigation                                           */}
-        {/* ------------------------------------------------------------ */}
 
         <div
           className="
@@ -98,9 +86,6 @@ const Navbar = () => {
 
         </div>
 
-        {/* ------------------------------------------------------------ */}
-        {/* Right Side                                                     */}
-        {/* ------------------------------------------------------------ */}
 
         <div
           className="
@@ -111,7 +96,6 @@ const Navbar = () => {
                         sm:gap-3
                     "
         >
-          {/* Search - Desktop */}
           <div className="hidden lg:block">
             <MovieSearch />
           </div>
@@ -120,7 +104,6 @@ const Navbar = () => {
             <ThemeSwitcher />
           </div>}
 
-          {/* Profile - Desktop */}
           {user && <NavLink to="/profile">
             <IconButton
               label="Profile"
@@ -129,7 +112,6 @@ const Navbar = () => {
               <UserIcon />
             </IconButton>
           </NavLink>}
-          {/* Sign In - Desktop */}
           {!user && <NavLink to="/login">
             <button
               type="button"
@@ -156,9 +138,6 @@ const Navbar = () => {
             </button>
           </NavLink>}
 
-          {/* -------------------------------------------------------- */}
-          {/* Hamburger                                                 */}
-          {/* -------------------------------------------------------- */}
 
           <IconButton
             label={
@@ -180,9 +159,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Bottom Accent Line                                                */}
-      {/* ---------------------------------------------------------------- */}
 
       <div
         className="
@@ -197,9 +173,6 @@ const Navbar = () => {
                 "
       />
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Mobile Menu                                                       */}
-      {/* ---------------------------------------------------------------- */}
 
       <MobileMenu
         open={menuOpen}
@@ -210,9 +183,6 @@ const Navbar = () => {
   );
 };
 
-/* ========================================================================== */
-/* Logo                                                                       */
-/* ========================================================================== */
 
 const Logo = () => {
   return (
@@ -263,9 +233,6 @@ const Logo = () => {
   );
 };
 
-/* ========================================================================== */
-/* Desktop Navigation Item                                                    */
-/* ========================================================================== */
 
 interface NavItemProps {
   to: string;
@@ -305,7 +272,6 @@ const NavItem = ({
             {children}
           </span>
 
-          {/* Active indicator */}
 
           <span
             className={`
@@ -332,9 +298,6 @@ const NavItem = ({
   );
 };
 
-/* ========================================================================== */
-/* Mobile Menu                                                                */
-/* ========================================================================== */
 
 interface MobileMenuProps {
   open: boolean;
@@ -374,17 +337,11 @@ const MobileMenu = ({
                     sm:px-6
                 "
       >
-        {/* ------------------------------------------------------------ */}
-        {/* Search                                                         */}
-        {/* ------------------------------------------------------------ */}
 
         <div className="mb-5">
           <MovieSearch closeMenu={onClose} />
         </div>
 
-        {/* ------------------------------------------------------------ */}
-        {/* Navigation                                                     */}
-        {/* ------------------------------------------------------------ */}
 
         <div className="flex flex-col" aria-label="Mobile navigation">
           <MobileNavItem
@@ -402,7 +359,7 @@ const MobileMenu = ({
             Trending
           </MobileNavItem>
 
-          {isUser && <>
+          {signedIn && <>
 
             <MobileNavItem
               to="/my-list"
@@ -426,9 +383,6 @@ const MobileMenu = ({
 
         </div>
 
-        {/* ------------------------------------------------------------ */}
-        {/* Mobile Controls                                                */}
-        {/* ------------------------------------------------------------ */}
 
         <div
           className="
@@ -441,9 +395,8 @@ const MobileMenu = ({
                         pt-5
                     "
         >
-          {/* Theme */}
 
-          {isUser && <div
+          {signedIn && <div
             className="
                             flex
                             items-center
@@ -465,7 +418,6 @@ const MobileMenu = ({
             <ThemeSwitcher />
           </div>}
 
-          {/* Profile + Sign In */}
 
           <div
             className="
@@ -486,9 +438,6 @@ const MobileMenu = ({
   );
 };
 
-/* ========================================================================== */
-/* Mobile Navigation Item                                                     */
-/* ========================================================================== */
 
 interface MobileNavItemProps {
   to: string;
@@ -528,7 +477,6 @@ const MobileNavItem = ({
     >
       {({ isActive }) => (
         <>
-          {/* Active indicator */}
 
           <span
             className={`
@@ -556,9 +504,6 @@ const MobileNavItem = ({
   );
 };
 
-/* ========================================================================== */
-/* Icon Button                                                                */
-/* ========================================================================== */
 
 interface IconButtonProps {
   label: string;
@@ -605,9 +550,6 @@ const IconButton = ({
   );
 };
 
-/* ========================================================================== */
-/* Icons                                                                      */
-/* ========================================================================== */
 
 const UserIcon = () => {
   return (

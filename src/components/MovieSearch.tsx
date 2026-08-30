@@ -26,7 +26,7 @@ const MovieSearch = ({ closeMenu }: Props) => {
     ) => {
         if (event.key === "Enter") {
             handleSearch();
-            closeMenu && closeMenu()
+            closeMenu?.();
         }
     };
 

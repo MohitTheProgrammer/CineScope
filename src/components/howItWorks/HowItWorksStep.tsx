@@ -42,7 +42,6 @@ const HowItWorksStep = ({
                     }
                 `}
             >
-                {/* Text */}
 
                 <div>
                     <div className="flex items-center gap-3">
@@ -108,7 +107,6 @@ const HowItWorksStep = ({
                     </p>
                 </div>
 
-                {/* Demo */}
 
                 <div className="w-full">
                     {children}

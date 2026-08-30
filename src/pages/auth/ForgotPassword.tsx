@@ -37,13 +37,16 @@ const ForgotPassword = () => {
             await sendPasswordReset(trimmedEmail);
 
             setSent(true);
-        } catch (error: any) {
-            console.error(
-                "Failed to send password reset email:",
-                error
-            );
+        } catch (error: unknown) {
 
-            switch (error.code) {
+            const errorCode =
+                typeof error === "object" &&
+                error !== null &&
+                "code" in error
+                    ? String(error.code)
+                    : "";
+
+            switch (errorCode) {
                 case "auth/invalid-email":
                     setError(
                         "Please enter a valid email address."
@@ -72,9 +75,6 @@ const ForgotPassword = () => {
         }
     };
 
-    /* ---------------------------------------------------------------------- */
-    /* Success state                                                          */
-    /* ---------------------------------------------------------------------- */
 
     if (sent) {
         return (
@@ -91,7 +91,6 @@ const ForgotPassword = () => {
             >
                 <div className="w-full max-w-md text-center">
 
-                    {/* Logo */}
 
                     <div
                         className="
@@ -187,9 +186,6 @@ const ForgotPassword = () => {
         );
     }
 
-    /* ---------------------------------------------------------------------- */
-    /* Forgot password form                                                   */
-    /* ---------------------------------------------------------------------- */
 
     return (
         <main
@@ -207,7 +203,6 @@ const ForgotPassword = () => {
             "
         >
 
-            {/* Ambient glow */}
 
             <div
                 className="
@@ -232,7 +227,6 @@ const ForgotPassword = () => {
                 "
             >
 
-                {/* Back */}
 
                 <a
                     href="/login"
@@ -252,7 +246,6 @@ const ForgotPassword = () => {
                     Back to login
                 </a>
 
-                {/* Card */}
 
                 <div
                     className="
@@ -267,7 +260,6 @@ const ForgotPassword = () => {
                     "
                 >
 
-                    {/* Icon */}
 
                     <div
                         className="
@@ -286,7 +278,6 @@ const ForgotPassword = () => {
                         <LockIcon className="size-6" />
                     </div>
 
-                    {/* Heading */}
 
                     <div className="mt-7">
 
@@ -351,7 +342,6 @@ const ForgotPassword = () => {
 
                     </div>
 
-                    {/* Form */}
 
                     <form
                         onSubmit={handleSubmit}
@@ -425,7 +415,6 @@ const ForgotPassword = () => {
 
                         </div>
 
-                        {/* Error */}
 
                         {error && (
                             <div
@@ -446,7 +435,6 @@ const ForgotPassword = () => {
                             </div>
                         )}
 
-                        {/* Submit */}
 
                         <button
                             type="submit"
@@ -523,7 +511,6 @@ const ForgotPassword = () => {
 
                     </form>
 
-                    {/* Footer */}
 
                     <p
                         className="
@@ -541,7 +528,6 @@ const ForgotPassword = () => {
 
                 </div>
 
-                {/* Branding */}
 
                 <div
                     className="

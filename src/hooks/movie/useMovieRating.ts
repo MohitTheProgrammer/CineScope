@@ -67,11 +67,8 @@ export const useMovieRating = (
                     setUserRating(rating);
                     setRated(rating !== null);
                 }
-            } catch (error) {
-                console.error(
-                    "Failed to check movie rating:",
-                    error
-                );
+            } catch {
+                return;
             } finally {
                 if (!cancelled) {
                     setCheckingRated(false);
@@ -120,13 +117,8 @@ export const useMovieRating = (
             setUserRating(rating);
             setRated(true);
             setRatingOpen(false);
-        } catch (error) {
-            console.error(
-                "Failed to rate movie:",
-                error
-            );
-
-            throw error;
+        } catch {
+            return;
         } finally {
             setSavingRating(false);
         }

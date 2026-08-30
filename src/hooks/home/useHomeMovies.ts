@@ -53,11 +53,7 @@ const useHomeMovies = (): UseHomeMoviesResult => {
                 setTrendingMovies(
                     data.results ?? []
                 );
-            } catch (error) {
-                console.error(
-                    "Failed to load trending movies:",
-                    error
-                );
+            } catch {
 
                 if (!mounted) return;
 
@@ -84,11 +80,7 @@ const useHomeMovies = (): UseHomeMoviesResult => {
                 setPopularMovies(
                     data.results ?? []
                 );
-            } catch (error) {
-                console.error(
-                    "Failed to load popular movies:",
-                    error
-                );
+            } catch {
 
                 if (!mounted) return;
 

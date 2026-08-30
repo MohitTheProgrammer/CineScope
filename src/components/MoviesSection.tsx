@@ -39,7 +39,6 @@ const MoviesSection = ({
                 lg:px-8
             "
         >
-            {/* Heading */}
             <div className="mb-8 flex items-end justify-between">
                 <div>
                     <div className="mb-2 flex items-center gap-2">
@@ -99,10 +98,8 @@ const MoviesSection = ({
                 </button>
             </div>
 
-            {/* Loading */}
             {loading && <MovieSkeletons />}
 
-            {/* Error */}
             {!loading && error && (
                 <div
                     className="
@@ -134,7 +131,6 @@ const MoviesSection = ({
                 </div>
             )}
 
-            {/* Movies */}
             {!loading && !error && movies.length > 0 && (
                 <div
                     className="
@@ -156,7 +152,6 @@ const MoviesSection = ({
                 </div>
             )}
 
-            {/* Empty */}
             {!loading && !error && movies.length === 0 && (
                 <p className="py-10 text-center text-white/50">
                     No movies found.

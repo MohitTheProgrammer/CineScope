@@ -31,7 +31,6 @@ const RecommendationCTA = () => {
                     sm:p-10
                 "
             >
-                {/* Ambient glow */}
 
                 <div
                     className="
@@ -74,7 +73,6 @@ const RecommendationCTA = () => {
                         sm:min-h-52
                     "
                 >
-                    {/* Label */}
 
                     <div className="flex items-center gap-2">
                         <span
@@ -135,7 +133,6 @@ const RecommendationCTA = () => {
                         matches what you actually love.
                     </p>
 
-                    {/* CTA */}
 
                     <Link
                         to="/for-you/recommend-movie"
@@ -210,7 +207,6 @@ const RecommendationCTA = () => {
                         />
                     </Link>
 
-                    {/* Powered by */}
 
                     <div
                         className="

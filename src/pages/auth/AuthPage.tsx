@@ -76,7 +76,6 @@ const AuthPage = () => {
                 navigate("/");
             }
         } catch (error: unknown) {
-            console.error("Authentication error:", error);
 
             const errorCode = typeof error === "object" && error !== null && "code" in error
                 ? String(error.code)
@@ -132,9 +131,6 @@ const AuthPage = () => {
     return (
         <main className="relative min-h-screen overflow-hidden bg-black">
 
-            {/* ==========================================================
-                BACKGROUND
-            ========================================================== */}
 
             <div className="pointer-events-none absolute inset-0">
 
@@ -150,11 +146,9 @@ const AuthPage = () => {
                     "
                 />
 
-                {/* Overall darkness */}
 
                 <div className="absolute inset-0 bg-black/65" />
 
-                {/* Left cinematic gradient */}
 
                 <div
                     className="
@@ -167,7 +161,6 @@ const AuthPage = () => {
                     "
                 />
 
-                {/* Right gradient */}
 
                 <div
                     className="
@@ -180,7 +173,6 @@ const AuthPage = () => {
                     "
                 />
 
-                {/* Bottom fade */}
 
                 <div
                     className="
@@ -195,7 +187,6 @@ const AuthPage = () => {
                 />
             </div>
 
-            {/* Accent glow */}
 
             <div
                 className="
@@ -210,9 +201,6 @@ const AuthPage = () => {
                 "
             />
 
-            {/* ==========================================================
-                NAVBAR
-            ========================================================== */}
 
             <header className="absolute inset-x-0 top-0 z-30">
                 <div
@@ -283,9 +271,6 @@ const AuthPage = () => {
                 </div>
             </header>
 
-            {/* ==========================================================
-                MAIN CONTENT
-            ========================================================== */}
 
             <div
                 className="
@@ -312,13 +297,9 @@ const AuthPage = () => {
                     "
                 >
 
-                    {/* ==================================================
-                        LEFT CONTENT
-                    ================================================== */}
 
                     <div className="hidden max-w-2xl lg:block">
 
-                        {/* Eyebrow */}
 
                         <div
                             className="
@@ -350,7 +331,6 @@ const AuthPage = () => {
                             </span>
                         </div>
 
-                        {/* Heading */}
 
                         <h1
                             className="
@@ -389,7 +369,6 @@ const AuthPage = () => {
                                 : "Create your CineScope profile and start building a movie collection that actually reflects your taste."}
                         </p>
 
-                        {/* Features */}
 
                         <div
                             className="
@@ -407,9 +386,6 @@ const AuthPage = () => {
                         </div>
                     </div>
 
-                    {/* ==================================================
-                        AUTH CARD
-                    ================================================== */}
 
                     <section
                         className="
@@ -420,7 +396,6 @@ const AuthPage = () => {
                         "
                     >
 
-                        {/* Mobile heading */}
 
                         <div className="mb-7 lg:hidden">
                             <p
@@ -452,7 +427,6 @@ const AuthPage = () => {
                             </h1>
                         </div>
 
-                        {/* Fixed-size card */}
 
                         <div
                             className="
@@ -471,9 +445,6 @@ const AuthPage = () => {
                             "
                         >
 
-                            {/* ==================================================
-                                CARD HEADER
-                            ================================================== */}
 
                             <div className="mb-7">
 
@@ -505,9 +476,6 @@ const AuthPage = () => {
                                 </h2>
                             </div>
 
-                            {/* ==================================================
-                                AUTH TOGGLE
-                            ================================================== */}
 
                             <div
                                 className="
@@ -522,7 +490,6 @@ const AuthPage = () => {
                                     p-1
                                 "
                             >
-                                {/* Sliding active background */}
 
                                 <div
                                     className={`
@@ -544,7 +511,6 @@ const AuthPage = () => {
                                     `}
                                 />
 
-                                {/* Sign In */}
 
                                 <button
                                     type="button"
@@ -570,7 +536,6 @@ const AuthPage = () => {
                                     Sign In
                                 </button>
 
-                                {/* Sign Up */}
 
                                 <button
                                     type="button"
@@ -597,9 +562,6 @@ const AuthPage = () => {
                                 </button>
                             </div>
 
-                            {/* ==================================================
-                                ERROR
-                            ================================================== */}
 
                             {error && (
                                 <div
@@ -619,13 +581,9 @@ const AuthPage = () => {
                                 </div>
                             )}
 
-                            {/* ==================================================
-                                FORMS
-                            ================================================== */}
 
                             <div className="relative min-h-88.75">
 
-                                {/* ================= LOGIN ================= */}
 
                                 <div
                                     className={`
@@ -696,7 +654,6 @@ const AuthPage = () => {
                                     </form>
                                 </div>
 
-                                {/* ================= REGISTER =============== */}
 
                                 <div
                                     className={`
@@ -782,9 +739,6 @@ const AuthPage = () => {
                                 </div>
                             </div>
 
-                            {/* ==================================================
-                                TERMS
-                            ================================================== */}
 
                             <p
                                 className="
@@ -810,9 +764,6 @@ const AuthPage = () => {
     );
 };
 
-/* ========================================================================== */
-/* Feature                                                                    */
-/* ========================================================================== */
 
 interface FeatureProps {
     text: string;
@@ -845,9 +796,6 @@ const Feature = ({ text }: FeatureProps) => {
     );
 };
 
-/* ========================================================================== */
-/* Input                                                                      */
-/* ========================================================================== */
 
 interface InputProps {
     label: string;
@@ -939,9 +887,6 @@ const Input = ({
     );
 };
 
-/* ========================================================================== */
-/* Auth Button                                                                */
-/* ========================================================================== */
 
 interface AuthButtonProps {
     loading: boolean;

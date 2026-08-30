@@ -6,7 +6,6 @@ const TMDB_IMAGE_BASE_URL =
 const FALLBACK_BACKDROPS = [
     "https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg",
 
-    // Add your other fallback backdrop URLs here.
 ];
 
 interface TMDBBackdrop {
@@ -21,9 +20,6 @@ interface TMDBImagesResponse {
     backdrops: TMDBBackdrop[];
 }
 
-/* -------------------------------------------------------------------------- */
-/* Get Random Hero Backdrop                                                   */
-/* -------------------------------------------------------------------------- */
 
 export const getRandomHeroBackdrop = async (
     userId: string
@@ -33,30 +29,17 @@ export const getRandomHeroBackdrop = async (
             import.meta.env.VITE_TMDB_API_KEY;
 
         if (!apiKey) {
-            console.error(
-                "TMDB API key is missing"
-            );
 
             return getFallbackBackdrop();
         }
 
-        /*
-         * Get up to 15 movie IDs from the user's
-         * personal movie collection.
-         */
         const movieIds =
             await getUserMovieIds(userId, 15);
 
-        /*
-         * No movies yet → fallback.
-         */
         if (!movieIds.length) {
             return getFallbackBackdrop();
         }
 
-        /*
-         * Fetch backdrops only for those 15 movies.
-         */
         const responses =
             await Promise.allSettled(
                 movieIds.map(async (movieId) => {
@@ -75,9 +58,6 @@ export const getRandomHeroBackdrop = async (
                 })
             );
 
-        /*
-         * Keep only successful TMDB responses.
-         */
         const backdrops = responses
             .filter(
                 (
@@ -91,16 +71,10 @@ export const getRandomHeroBackdrop = async (
                     result.value.backdrops
             );
 
-        /*
-         * Nothing usable → fallback.
-         */
         if (!backdrops.length) {
             return getFallbackBackdrop();
         }
 
-        /*
-         * Prefer large cinematic backdrops.
-         */
         const cinematicBackdrops =
             backdrops.filter(
                 (backdrop) =>
@@ -113,9 +87,6 @@ export const getRandomHeroBackdrop = async (
                 ? cinematicBackdrops
                 : backdrops;
 
-        /*
-         * Sort the best TMDB images first.
-         */
         const sortedBackdrops =
             [...pool].sort(
                 (a, b) =>
@@ -123,10 +94,6 @@ export const getRandomHeroBackdrop = async (
                     a.vote_average
             );
 
-        /*
-         * Don't always use the #1 image.
-         * Pick randomly from the best 20.
-         */
         const topBackdrops =
             sortedBackdrops.slice(0, 20);
 
@@ -140,19 +107,12 @@ export const getRandomHeroBackdrop = async (
             TMDB_IMAGE_BASE_URL +
             topBackdrops[randomIndex].file_path
         );
-    } catch (error) {
-        console.error(
-            "Failed to load hero backdrop:",
-            error
-        );
+    } catch {
 
         return getFallbackBackdrop();
     }
 };
 
-/* -------------------------------------------------------------------------- */
-/* Fallback                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const getFallbackBackdrop = (): string | null => {
     if (!FALLBACK_BACKDROPS.length) {

@@ -6,10 +6,9 @@ export const getStream = async (tmdbId: string) => {
 
         const data = await response.json();
 
-        console.log(data);
 
         return data;
-    } catch (error) {
-        console.error("Failed to get stream:", error);
+    } catch {
+        return undefined;
     }
 };

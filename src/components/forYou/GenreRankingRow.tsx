@@ -27,7 +27,6 @@ const GenreRankingRow = ({
                 hover:bg-(--accent-primary)/5
             "
         >
-            {/* Rank */}
 
             <span
                 className="
@@ -41,7 +40,6 @@ const GenreRankingRow = ({
                 #{genre.rank}
             </span>
 
-            {/* Icon */}
 
             <div
                 className="
@@ -60,7 +58,6 @@ const GenreRankingRow = ({
                 <GenreIcon className="size-4.5" />
             </div>
 
-            {/* Content */}
 
             <div className="min-w-0 flex-1">
                 <div
@@ -86,7 +83,6 @@ const GenreRankingRow = ({
                     </span>
                 </div>
 
-                {/* Progress */}
 
                 <div
                     className="
@@ -113,7 +109,6 @@ const GenreRankingRow = ({
                 </div>
             </div>
 
-            {/* Percentage */}
 
             <span
                 className="

@@ -104,7 +104,6 @@ const MovieRevealCard = ({
                     lg:p-8
                 "
             >
-                {/* Poster */}
 
                 <div
                     className={`
@@ -169,7 +168,6 @@ const MovieRevealCard = ({
                     />
                 </div>
 
-                {/* Information */}
 
                 <div className="flex min-w-0 flex-col justify-center">
                     <div className="flex items-center gap-3">

@@ -39,7 +39,6 @@ const MovieDNAHero = ({
                     lg:p-10
                 "
             >
-                {/* Ambient glow */}
 
                 <div
                     className="
@@ -77,7 +76,6 @@ const MovieDNAHero = ({
                     "
                 >
                     <div>
-                        {/* Genre heading */}
 
                         <div className="flex items-center gap-4">
                             <div
@@ -116,7 +114,6 @@ const MovieDNAHero = ({
                             </div>
                         </div>
 
-                        {/* Description */}
 
                         <p
                             className="
@@ -134,7 +131,6 @@ const MovieDNAHero = ({
                             your next movie.
                         </p>
 
-                        {/* Stats */}
 
                         <div className="mt-8 flex flex-wrap gap-3">
                             <div
@@ -181,7 +177,6 @@ const MovieDNAHero = ({
                         </div>
                     </div>
 
-                    {/* Percentage */}
 
                     <div className="relative flex justify-center">
                         <div

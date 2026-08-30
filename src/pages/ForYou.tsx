@@ -23,13 +23,11 @@ const ForYou = () => {
         tasteMovies,
     } = useForYou();
 
-    // Loading state
 
     if (loading) {
         return <ForYouSkeleton />;
     }
 
-    // Error state
 
     if (error) {
         return (
@@ -39,7 +37,6 @@ const ForYou = () => {
         );
     }
 
-    // Empty state
 
     if (!movies.length) {
         return <ForYouEmpty />;
@@ -53,15 +50,12 @@ const ForYou = () => {
                 text-white
             "
         >
-            {/* Page header */}
 
             <ForYouHeader />
 
-            {/* Movie recommendation CTA */}
 
             <RecommendationCTA />
 
-            {/* Movie DNA */}
 
             {topGenre && (
                 <MovieDNAHero
@@ -70,19 +64,16 @@ const ForYou = () => {
                 />
             )}
 
-            {/* Top genres */}
 
             <TopGenres
                 genres={rankedGenres}
             />
 
-            {/* User activity */}
 
             <TasteBreakdown
                 activity={activity}
             />
 
-            {/* Personality */}
 
             {topGenre && (
                 <PersonalitySection
@@ -91,13 +82,11 @@ const ForYou = () => {
                 />
             )}
 
-            {/* Complete genre DNA */}
 
             <GenreRanking
                 genres={rankedGenres}
             />
 
-            {/* Movies that shaped the user's taste */}
 
             <TasteMovies
                 movies={tasteMovies}
