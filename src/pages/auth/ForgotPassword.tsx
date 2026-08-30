@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { Link } from "react-router-dom";
 
 
 import { sendPasswordReset } from "../../services/userService";
@@ -163,8 +164,8 @@ const ForgotPassword = () => {
                         safely close this page.
                     </p>
 
-                    <a
-                        href="/login"
+                    <Link
+                        to="/login"
                         className="
                             mt-8
                             inline-flex
@@ -179,7 +180,7 @@ const ForgotPassword = () => {
                     >
                         <ArrowLeftIcon className="size-4" />
                         Back to login
-                    </a>
+                    </Link>
 
                 </div>
             </main>
@@ -228,8 +229,8 @@ const ForgotPassword = () => {
             >
 
 
-                <a
-                    href="/login"
+                <Link
+                    to="/login"
                     className="
                         mb-8
                         inline-flex
@@ -244,7 +245,7 @@ const ForgotPassword = () => {
                 >
                     <ArrowLeftIcon className="size-4" />
                     Back to login
-                </a>
+                </Link>
 
 
                 <div

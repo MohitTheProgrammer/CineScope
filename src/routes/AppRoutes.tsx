@@ -1,5 +1,6 @@
 import {
     HashRouter,
+    Link,
     Navigate,
     Route,
     Routes,
@@ -169,12 +170,12 @@ const AppRoutes = () => {
                                             Page not found
                                         </h1>
 
-                                        <a
+                                        <Link
                                             className="mt-4 inline-block text-(--accent-primary)"
-                                            href="/"
+                                            to="/"
                                         >
                                             Return home
-                                        </a>
+                                        </Link>
                                     </div>
                                 </main>
                             }
