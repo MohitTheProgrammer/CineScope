@@ -1,0 +1,1 @@
+var e=e=>({id:e.movieId,title:e.title,poster_path:e.posterPath,genre_ids:e.genreIds,vote_average:e.voteAverage,adult:!1,backdrop_path:null,original_language:``,original_title:e.title,overview:``,popularity:0,release_date:``,video:!1,vote_count:0});export{e as t};
