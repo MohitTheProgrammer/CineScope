@@ -1,1 +1,0 @@
-import{T as e}from"./index-Cx3crzKy.js";import{i as t}from"./tmdb-CBdVkwx0.js";import{t as n}from"./MovieCatalogPage-MOMuLorb.js";var r=e(),i=()=>(0,r.jsx)(n,{title:`Popular`,description:`Explore the movies everyone is watching and find your next favourite.`,emptyMessage:`No popular movies found.`,loadMovies:t});export{i as default};
