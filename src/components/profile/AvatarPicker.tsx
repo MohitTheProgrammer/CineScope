@@ -1,31 +1,6 @@
 import { CheckIcon } from "../../assets/icons/Icons";
+import { AVATARS } from "../../constent/file";
 
-const AVATARS = [
-    {
-        id: "avatar-1",
-        src: "/avatars/avatar-1.png",
-    },
-    {
-        id: "avatar-2",
-        src: "/avatars/avatar-2.png",
-    },
-    {
-        id: "avatar-3",
-        src: "/avatars/avatar-3.png",
-    },
-    {
-        id: "avatar-4",
-        src: "/avatars/avatar-4.png",
-    },
-    {
-        id: "avatar-5",
-        src: "/avatars/avatar-5.png",
-    },
-    {
-        id: "avatar-6",
-        src: "/avatars/avatar-6.png",
-    },
-];
 
 interface AvatarPickerProps {
     selectedAvatar: string;
@@ -78,10 +53,9 @@ const AvatarPicker = ({
                                 transition-all
                                 duration-300
                                 sm:size-20
-                                ${
-                                    active
-                                        ? "scale-105 border-(--accent-primary) shadow-[0_0_25px_var(--accent-glow)]"
-                                        : "border-white/10 opacity-60 hover:scale-105 hover:border-white/30 hover:opacity-100"
+                                ${active
+                                    ? "scale-105 border-(--accent-primary) shadow-[0_0_25px_var(--accent-glow)]"
+                                    : "border-white/10 opacity-60 hover:scale-105 hover:border-white/30 hover:opacity-100"
                                 }
                             `}
                         >
