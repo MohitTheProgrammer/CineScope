@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
+
 import {
     ArrowRightIcon,
     BrainIcon,
@@ -21,7 +22,7 @@ const HowItWorks = () => {
     const navigate = useNavigate();
     const { user, loading } = useUser();
 
-    const [rating, setRating] = useState(8.5);
+    const [rating, setRating] = useState(4.5);
     const [liked, setLiked] = useState(false);
     const [activeGenre, setActiveGenre] = useState(0);
 
@@ -786,17 +787,17 @@ const HowItWorks = () => {
                                     border
                                     transition-all
                                     duration-300
-                                    ${rating >= 8
+                                    ${rating >= 3
                                         ? "border-(--accent-primary)/30 bg-(--accent-primary)/10"
-                                        : rating >= 6
+                                        : rating >= 2.5
                                             ? "border-yellow-400/20 bg-yellow-400/10"
                                             : "border-white/10 bg-white/5"
                                     }
                                 `}
                             >
-                                {rating >= 8 ? (
+                                {rating >= 3 ? (
                                     <StarIcon className="size-8 text-(--accent-secondary)" />
-                                ) : rating >= 6 ? (
+                                ) : rating >= 2.5 ? (
                                     <SparklesIcon className="size-8 text-yellow-400" />
                                 ) : (
                                     <TargetIcon className="size-8 text-white/40" />
@@ -815,7 +816,7 @@ const HowItWorks = () => {
                         <input
                             type="range"
                             min="1"
-                            max="10"
+                            max="5"
                             step="0.5"
                             value={rating}
                             onChange={(event) =>

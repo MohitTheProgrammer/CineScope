@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+
 import {
     addWatchedMovie,
     addWatchlistMovie,
@@ -11,18 +11,31 @@ import {
     rateMovie,
 } from "../services/movie";
 
-import type { Movie, WatchProvider, WatchProviders } from "../types/movie";
 import {
     getMovieById,
     getMovieCredits,
     getMovieVideos,
 } from "../services/tmdb";
+
 import { getMovieWatchProviders } from "../services/watch_source/api_provider";
 
-const IMAGE_BASE_URL =
-    "https://image.tmdb.org/t/p";
+import type {
+    Movie,
+    WatchProvider,
+    WatchProviders,
+} from "../types/movie";
 
+import VidRockPlayer from "../components/VidRockPlayer";
 
+/* -------------------------------------------------------------------------- */
+/* Constants                                                                  */
+/* -------------------------------------------------------------------------- */
+
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+
+/* -------------------------------------------------------------------------- */
+/* Types                                                                      */
+/* -------------------------------------------------------------------------- */
 
 interface Video {
     id: string;
@@ -53,22 +66,117 @@ interface TMDBMovieResponse extends Omit<Movie, "genres"> {
     genres?: TMDBGenre[];
 }
 
+/* ========================================================================== */
+/* Movie Detail                                                               */
+/* ========================================================================== */
+
 const MovieDetail = () => {
-    const { movieId } = useParams<{ movieId: string }>();
+    const { movieId } = useParams<{
+        movieId: string;
+    }>();
+
+    const navigate = useNavigate();
     const { user } = useUser();
 
+    const id = Number(movieId);
 
-    const [watchlistAdded, setWatchlistAdded] = useState(false);
-    const [checkingWatchlist, setCheckingWatchlist] = useState(true);
-    const [addingToWatchlist, setAddingToWatchlist] = useState(false);
-    const [watched, setWatched] = useState(false);
-    const [checkingWatched, setCheckingWatched] = useState(true);
-    const [addingWatched, setAddingWatched] = useState(false);
-    const [ratingOpen, setRatingOpen] = useState(false);
-    const [savingRating, setSavingRating] = useState(false);
-    const [userRating, setUserRating] = useState<number | null>(null);
-    const [rated, setRated] = useState(false);
-    const [checkingRated, setCheckingRated] = useState(true);
+    const isValidMovieId =
+        Number.isInteger(id) && id > 0;
+
+    /* ---------------------------------------------------------------------- */
+    /* Movie                                                                  */
+    /* ---------------------------------------------------------------------- */
+
+    const [movie, setMovie] =
+        useState<Movie | null>(null);
+
+    const [loading, setLoading] =
+        useState(isValidMovieId);
+
+    const [error, setError] =
+        useState<string | null>(null);
+
+    /* ---------------------------------------------------------------------- */
+    /* Videos / Cast                                                          */
+    /* ---------------------------------------------------------------------- */
+
+    const [videos, setVideos] =
+        useState<Video[]>([]);
+
+    const [cast, setCast] =
+        useState<CastMember[]>([]);
+
+    const [loadingVideos, setLoadingVideos] =
+        useState(true);
+
+    /* ---------------------------------------------------------------------- */
+    /* Watch Providers                                                        */
+    /* ---------------------------------------------------------------------- */
+
+    const [watchProviders, setWatchProviders] =
+        useState<WatchProviders | null>(null);
+
+    const [showWatchSources, setShowWatchSources] =
+        useState(false);
+
+    /* ---------------------------------------------------------------------- */
+    /* Watchlist                                                              */
+    /* ---------------------------------------------------------------------- */
+
+    const [watchlistAdded, setWatchlistAdded] =
+        useState(false);
+
+    const [checkingWatchlist, setCheckingWatchlist] =
+        useState(true);
+
+    const [addingToWatchlist, setAddingToWatchlist] =
+        useState(false);
+
+    /* ---------------------------------------------------------------------- */
+    /* Watched                                                                */
+    /* ---------------------------------------------------------------------- */
+
+    const [watched, setWatched] =
+        useState(false);
+
+    const [checkingWatched, setCheckingWatched] =
+        useState(true);
+
+    const [addingWatched, setAddingWatched] =
+        useState(false);
+
+    /* ---------------------------------------------------------------------- */
+    /* Rating                                                                 */
+    /* ---------------------------------------------------------------------- */
+
+    const [ratingOpen, setRatingOpen] =
+        useState(false);
+
+    const [savingRating, setSavingRating] =
+        useState(false);
+
+    const [userRating, setUserRating] =
+        useState<number | null>(null);
+
+    const [rated, setRated] =
+        useState(false);
+
+    const [checkingRated, setCheckingRated] =
+        useState(true);
+
+    /* ---------------------------------------------------------------------- */
+    /* Expandable Watch Sections                                              */
+    /* ---------------------------------------------------------------------- */
+
+    const [showCineScopePlayer, setShowCineScopePlayer] =
+        useState(false);
+
+    const [showTrailer, setShowTrailer] =
+        useState(false);
+
+    /* ====================================================================== */
+    /* Add To Watchlist                                                       */
+    /* ====================================================================== */
 
     const handleAddToWatchlist = async () => {
         if (!user) {
@@ -88,11 +196,8 @@ const MovieDetail = () => {
                 vote_average: movie.vote_average,
                 genre_ids: movie.genre_ids ?? [],
             });
-            setWatchlistAdded(true);
 
-            console.log(
-                "Movie added to watchlist"
-            );
+            setWatchlistAdded(true);
         } catch (error) {
             console.error(
                 "Failed to add movie to watchlist:",
@@ -102,6 +207,10 @@ const MovieDetail = () => {
             setAddingToWatchlist(false);
         }
     };
+
+    /* ====================================================================== */
+    /* Mark Watched                                                           */
+    /* ====================================================================== */
 
     const handleAddWatched = async () => {
         if (!user) {
@@ -113,6 +222,7 @@ const MovieDetail = () => {
 
         try {
             setAddingWatched(true);
+
             await addWatchedMovie(user.uid, {
                 id: movie.id,
                 title: movie.title,
@@ -120,15 +230,25 @@ const MovieDetail = () => {
                 vote_average: movie.vote_average,
                 genre_ids: movie.genre_ids ?? [],
             });
+
             setWatched(true);
         } catch (error) {
-            console.error("Failed to mark movie as watched:", error);
+            console.error(
+                "Failed to mark movie as watched:",
+                error
+            );
         } finally {
             setAddingWatched(false);
         }
     };
 
-    const handleRateMovie = async (rating: number) => {
+    /* ====================================================================== */
+    /* Rate Movie                                                             */
+    /* ====================================================================== */
+
+    const handleRateMovie = async (
+        rating: number
+    ) => {
         if (!user) {
             navigate("/login");
             return;
@@ -138,55 +258,39 @@ const MovieDetail = () => {
 
         try {
             setSavingRating(true);
-            await rateMovie(user.uid, {
-                id: movie.id,
-                title: movie.title,
-                poster_path: movie.poster_path,
-                vote_average: movie.vote_average,
-                genre_ids: movie.genre_ids ?? [],
-            }, rating);
+
+            await rateMovie(
+                user.uid,
+                {
+                    id: movie.id,
+                    title: movie.title,
+                    poster_path: movie.poster_path,
+                    vote_average: movie.vote_average,
+                    genre_ids: movie.genre_ids ?? [],
+                },
+                rating
+            );
+
             setUserRating(rating);
             setRated(true);
             setRatingOpen(false);
         } catch (error) {
-            console.error("Failed to rate movie:", error);
+            console.error(
+                "Failed to rate movie:",
+                error
+            );
         } finally {
             setSavingRating(false);
         }
     };
 
-    const id = Number(movieId);
-    const isValidMovieId = Number.isInteger(id) && id > 0;
-    const navigate = useNavigate();
-
-    const [movie, setMovie] =
-        useState<Movie | null>(null);
-
-    const [videos, setVideos] = useState<Video[]>([]);
-    const [cast, setCast] = useState<CastMember[]>([]);
-
-    const [watchProviders, setWatchProviders] = useState<WatchProviders | null>(null);
-    const [showWatchSources, setShowWatchSources] =
-        useState(false);
-
-    const [loading, setLoading] = useState(isValidMovieId);
-    const [loadingVideos, setLoadingVideos] =
-        useState(true);
-
-    const [error, setError] = useState<string | null>(
-        null
-    );
-
-
-
-    /*
-     * ============================================================
-     * Load full movie details
-     * ============================================================
-     */
+    /* ====================================================================== */
+    /* Load Movie                                                             */
+    /* ====================================================================== */
 
     useEffect(() => {
         if (!isValidMovieId) return;
+
         const loadMovie = async () => {
             try {
                 setLoading(true);
@@ -195,23 +299,10 @@ const MovieDetail = () => {
                 const data: TMDBMovieResponse =
                     await getMovieById(id);
 
-                const providers = await getMovieWatchProviders(
-                    id
-                );
+                const providers =
+                    await getMovieWatchProviders(id);
 
                 setWatchProviders(providers);
-                /*
-                 * TMDB detail endpoint returns genres as:
-                 *
-                 * genres: [
-                 *   { id: 28, name: "Action" },
-                 *   { id: 12, name: "Adventure" }
-                 * ]
-                 *
-                 * Your Movie type currently expects:
-                 *
-                 * genres: string[]
-                 */
 
                 const formattedMovie: Movie = {
                     ...data,
@@ -237,7 +328,11 @@ const MovieDetail = () => {
         };
 
         void loadMovie();
-    }, [user, id, isValidMovieId]);
+    }, [id, isValidMovieId]);
+
+    /* ====================================================================== */
+    /* Check Rating                                                           */
+    /* ====================================================================== */
 
     useEffect(() => {
         let cancelled = false;
@@ -246,23 +341,40 @@ const MovieDetail = () => {
             if (!user || !isValidMovieId) {
                 if (!cancelled) {
                     setRated(false);
+                    setUserRating(null);
                     setCheckingRated(false);
                 }
+
                 return;
             }
 
             try {
                 setCheckingRated(true);
-                const savedRating = await getMovieRating(user.uid, id);
+
+                const savedRating =
+                    await getMovieRating(
+                        user.uid,
+                        id
+                    );
+
                 if (!cancelled) {
                     setUserRating(savedRating);
                     setRated(savedRating !== null);
                 }
             } catch (error) {
-                console.error("Failed to check rated status:", error);
-                if (!cancelled) setRated(false);
+                console.error(
+                    "Failed to check rated status:",
+                    error
+                );
+
+                if (!cancelled) {
+                    setRated(false);
+                    setUserRating(null);
+                }
             } finally {
-                if (!cancelled) setCheckingRated(false);
+                if (!cancelled) {
+                    setCheckingRated(false);
+                }
             }
         };
 
@@ -273,6 +385,10 @@ const MovieDetail = () => {
         };
     }, [user, id, isValidMovieId]);
 
+    /* ====================================================================== */
+    /* Check Watched                                                          */
+    /* ====================================================================== */
+
     useEffect(() => {
         let cancelled = false;
 
@@ -282,18 +398,35 @@ const MovieDetail = () => {
                     setWatched(false);
                     setCheckingWatched(false);
                 }
+
                 return;
             }
 
             try {
                 setCheckingWatched(true);
-                const exists = await isMovieWatched(user.uid, id);
-                if (!cancelled) setWatched(exists);
+
+                const exists =
+                    await isMovieWatched(
+                        user.uid,
+                        id
+                    );
+
+                if (!cancelled) {
+                    setWatched(exists);
+                }
             } catch (error) {
-                console.error("Failed to check watched status:", error);
-                if (!cancelled) setWatched(false);
+                console.error(
+                    "Failed to check watched status:",
+                    error
+                );
+
+                if (!cancelled) {
+                    setWatched(false);
+                }
             } finally {
-                if (!cancelled) setCheckingWatched(false);
+                if (!cancelled) {
+                    setCheckingWatched(false);
+                }
             }
         };
 
@@ -304,12 +437,10 @@ const MovieDetail = () => {
         };
     }, [user, id, isValidMovieId]);
 
-    /*
-     * A watchlist entry's Firestore document ID is the TMDB movie ID, so the
-     * route ID is sufficient to determine membership. Keeping this separate
-     * from loading movie details also ensures it runs when either the user or
-     * the displayed movie changes.
-     */
+    /* ====================================================================== */
+    /* Check Watchlist                                                        */
+    /* ====================================================================== */
+
     useEffect(() => {
         let cancelled = false;
 
@@ -319,19 +450,35 @@ const MovieDetail = () => {
                     setWatchlistAdded(false);
                     setCheckingWatchlist(false);
                 }
+
                 return;
             }
 
             try {
                 setCheckingWatchlist(true);
-                const exists = await isMovieInWatchlist(user.uid, id);
 
-                if (!cancelled) setWatchlistAdded(exists);
+                const exists =
+                    await isMovieInWatchlist(
+                        user.uid,
+                        id
+                    );
+
+                if (!cancelled) {
+                    setWatchlistAdded(exists);
+                }
             } catch (error) {
-                console.error("Failed to check watchlist:", error);
-                if (!cancelled) setWatchlistAdded(false);
+                console.error(
+                    "Failed to check watchlist:",
+                    error
+                );
+
+                if (!cancelled) {
+                    setWatchlistAdded(false);
+                }
             } finally {
-                if (!cancelled) setCheckingWatchlist(false);
+                if (!cancelled) {
+                    setCheckingWatchlist(false);
+                }
             }
         };
 
@@ -342,11 +489,9 @@ const MovieDetail = () => {
         };
     }, [user, id, isValidMovieId]);
 
-    /*
-     * ============================================================
-     * Load trailer + cast
-     * ============================================================
-     */
+    /* ====================================================================== */
+    /* Load Trailer + Cast                                                    */
+    /* ====================================================================== */
 
     useEffect(() => {
         if (!isValidMovieId) return;
@@ -358,15 +503,14 @@ const MovieDetail = () => {
                 const data: MovieVideosResponse =
                     await getMovieVideos(id);
 
-                setVideos(data.results);
+                setVideos(data.results ?? []);
 
-                /*
-                 * TMDB's videos endpoint doesn't return cast.
-                 * We'll use the credits endpoint below.
-                 */
+                const credits =
+                    await getMovieCredits(id);
 
-                const credits = await getMovieCredits(id);
-                setCast(credits.cast?.slice(0, 10) ?? []);
+                setCast(
+                    credits.cast?.slice(0, 10) ?? []
+                );
             } catch (error) {
                 console.error(
                     "Failed to load movie extras:",
@@ -377,14 +521,12 @@ const MovieDetail = () => {
             }
         };
 
-        loadMovieExtras();
+        void loadMovieExtras();
     }, [id, isValidMovieId]);
 
-    /*
-     * ============================================================
-     * Trailer selection
-     * ============================================================
-     */
+    /* ====================================================================== */
+    /* Select Trailer                                                         */
+    /* ====================================================================== */
 
     const trailer = useMemo(() => {
         return (
@@ -406,42 +548,53 @@ const MovieDetail = () => {
         );
     }, [videos]);
 
+    /* ====================================================================== */
+    /* Release Date                                                           */
+    /* ====================================================================== */
+
     const releaseDate = movie?.release_date
-        ? new Date(`${movie.release_date}T00:00:00`)
+        ? new Date(
+              `${movie.release_date}T00:00:00`
+          )
         : null;
+
     const hasBeenReleased =
         releaseDate !== null &&
-        !Number.isNaN(releaseDate.getTime()) &&
+        !Number.isNaN(
+            releaseDate.getTime()
+        ) &&
         releaseDate <= new Date();
 
-    /*
-     * ============================================================
-     * Loading
-     * ============================================================
-     */
+    /* ====================================================================== */
+    /* Loading                                                                 */
+    /* ====================================================================== */
 
     if (loading) {
         return <MovieDetailSkeleton />;
     }
 
-    /*
-     * ============================================================
-     * Error / movie not found
-     * ============================================================
-     */
+    /* ====================================================================== */
+    /* Error                                                                   */
+    /* ====================================================================== */
 
-    if (!isValidMovieId || error || !movie) {
+    if (
+        !isValidMovieId ||
+        error ||
+        !movie
+    ) {
         return (
             <main className="flex min-h-screen items-center justify-center bg-(--bg-primary)">
-                <div className="text-center">
+                <div className="px-6 text-center">
+
                     <h1 className="text-2xl font-black text-white">
                         Movie not found
                     </h1>
 
                     <p className="mt-2 text-sm text-white/50">
-                        {error ?? (isValidMovieId
-                            ? "Unable to load this movie."
-                            : "This movie link is invalid.")}
+                        {error ??
+                            (isValidMovieId
+                                ? "Unable to load this movie."
+                                : "This movie link is invalid.")}
                     </p>
 
                     <Link
@@ -449,49 +602,48 @@ const MovieDetail = () => {
                         className="
                             mt-6
                             inline-flex
-                            rounded-full
+                            rounded-xl
                             bg-(--accent-primary)
                             px-6
                             py-3
                             text-sm
                             font-bold
                             text-white
+                            transition-all
+                            hover:scale-105
                         "
                     >
                         Browse Movies
                     </Link>
+
                 </div>
             </main>
         );
     }
 
-    /*
-     * ============================================================
-     * Movie metadata
-     * ============================================================
-     */
+    /* ====================================================================== */
+    /* Metadata                                                                */
+    /* ====================================================================== */
 
     const year = movie.release_date
         ? new Date(
-            movie.release_date
-        ).getFullYear()
+              movie.release_date
+          ).getFullYear()
         : null;
 
+    /* ====================================================================== */
+    /* Render                                                                  */
+    /* ====================================================================== */
+
     return (
-        <main className="min-h-screen bg-(--bg-primary)">
-            {/* ============================================================ */}
-            {/* Back button                                                   */}
-            {/* ============================================================ */}
+        <main className="min-h-screen bg-(--bg-primary) text-white">
 
-            <div className="mx-auto max-w-7xl px-6 pt-28 lg:px-8">
+            {/* ================================================================== */}
+            {/* Hero                                                               */}
+            {/* ================================================================== */}
 
-            </div>
+            <section className="mx-auto max-w-7xl px-6 pb-16 pt-28 lg:px-8">
 
-            {/* ============================================================ */}
-            {/* Hero / Movie information                                     */}
-            {/* ============================================================ */}
-
-            <section className="mx-auto max-w-7xl px-6 pb-16 pt-8 lg:px-8">
                 <div
                     className="
                         grid
@@ -500,6 +652,7 @@ const MovieDetail = () => {
                         lg:gap-12
                     "
                 >
+
                     {/* Poster */}
 
                     <div
@@ -550,9 +703,11 @@ const MovieDetail = () => {
                     {/* Information */}
 
                     <div className="flex flex-col justify-center">
+
                         {/* Genres */}
 
                         <div className="mb-4 flex flex-wrap gap-2">
+
                             {movie.genres?.map(
                                 (genre) => (
                                     <span
@@ -575,6 +730,7 @@ const MovieDetail = () => {
                                     </span>
                                 )
                             )}
+
                         </div>
 
                         {/* Title */}
@@ -584,7 +740,6 @@ const MovieDetail = () => {
                                 text-4xl
                                 font-black
                                 tracking-tight
-                                text-white
                                 sm:text-5xl
                                 lg:text-6xl
                             "
@@ -605,13 +760,17 @@ const MovieDetail = () => {
                                 text-white/50
                             "
                         >
+
                             {year && (
-                                <span>{year}</span>
+                                <span>
+                                    {year}
+                                </span>
                             )}
 
                             <Dot />
 
                             <span className="flex items-center gap-1.5">
+
                                 <StarIcon />
 
                                 <strong className="text-white">
@@ -621,6 +780,7 @@ const MovieDetail = () => {
                                 </strong>
 
                                 <span>/ 10</span>
+
                             </span>
 
                             {movie.vote_count && (
@@ -655,11 +815,13 @@ const MovieDetail = () => {
                                     )}
                                 </>
                             )}
+
                         </div>
 
                         {/* Synopsis */}
 
                         <div className="mt-8">
+
                             <h2
                                 className="
                                     text-xs
@@ -685,38 +847,57 @@ const MovieDetail = () => {
                                 {movie.overview ||
                                     "No synopsis available."}
                             </p>
-                            <div className="mt-6 grid w-full grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:flex-wrap">
+
+                            {/* Actions */}
+
+                            <div
+                                className="
+                                    mt-6
+                                    grid
+                                    w-full
+                                    grid-cols-1
+                                    gap-3
+                                    sm:grid-cols-2
+                                    lg:flex
+                                    lg:flex-wrap
+                                "
+                            >
+
+                                {/* Watchlist */}
+
                                 <button
                                     type="button"
-                                    onClick={handleAddToWatchlist}
+                                    onClick={
+                                        handleAddToWatchlist
+                                    }
                                     disabled={
                                         checkingWatchlist ||
                                         addingToWatchlist ||
                                         watchlistAdded
                                     }
                                     className="
-            inline-flex
-            items-center
-            justify-center
-            w-full
-            gap-2
-            rounded-xl
-            border
-            border-white/10
-            bg-white/5
-            px-5
-            py-3
-            text-sm
-            font-bold
-            text-white
-            transition-all
-            duration-300
-            hover:border-(--accent-primary)
-            hover:bg-(--accent-primary)
-            disabled:cursor-not-allowed
-            disabled:opacity-60
-            lg:w-auto
-        "
+                                        inline-flex
+                                        w-full
+                                        items-center
+                                        justify-center
+                                        gap-2
+                                        rounded-xl
+                                        border
+                                        border-white/10
+                                        bg-white/5
+                                        px-5
+                                        py-3
+                                        text-sm
+                                        font-bold
+                                        text-white
+                                        transition-all
+                                        duration-300
+                                        hover:border-(--accent-primary)
+                                        hover:bg-(--accent-primary)
+                                        disabled:cursor-not-allowed
+                                        disabled:opacity-60
+                                        lg:w-auto
+                                    "
                                 >
                                     {checkingWatchlist ? (
                                         <>
@@ -741,10 +922,14 @@ const MovieDetail = () => {
                                     )}
                                 </button>
 
+                                {/* Watched */}
+
                                 {hasBeenReleased && (
                                     <button
                                         type="button"
-                                        onClick={handleAddWatched}
+                                        onClick={
+                                            handleAddWatched
+                                        }
                                         disabled={
                                             checkingWatched ||
                                             addingWatched ||
@@ -752,9 +937,9 @@ const MovieDetail = () => {
                                         }
                                         className="
                                             inline-flex
+                                            w-full
                                             items-center
                                             justify-center
-                                            w-full
                                             gap-2
                                             rounded-xl
                                             border
@@ -798,22 +983,32 @@ const MovieDetail = () => {
                                     </button>
                                 )}
 
+                                {/* Rating */}
+
                                 {hasBeenReleased && (
                                     <div className="relative w-full sm:col-span-2 lg:w-auto">
+
                                         <button
                                             type="button"
-                                            onClick={() => setRatingOpen((open) => !open)}
+                                            onClick={() =>
+                                                setRatingOpen(
+                                                    (open) =>
+                                                        !open
+                                                )
+                                            }
                                             disabled={
                                                 checkingRated ||
                                                 savingRating ||
                                                 rated
                                             }
-                                            aria-expanded={ratingOpen}
+                                            aria-expanded={
+                                                ratingOpen
+                                            }
                                             className="
                                                 inline-flex
+                                                w-full
                                                 items-center
                                                 justify-center
-                                                w-full
                                                 gap-2
                                                 rounded-xl
                                                 border
@@ -841,6 +1036,7 @@ const MovieDetail = () => {
                                             ) : rated ? (
                                                 <>
                                                     <CheckIcon />
+
                                                     {userRating
                                                         ? `Your rating: ${userRating}/5`
                                                         : "Rated"}
@@ -853,226 +1049,598 @@ const MovieDetail = () => {
                                             )}
                                         </button>
 
-                                        {ratingOpen && !rated && (
-                                            <div className="absolute inset-x-0 top-full z-20 mt-2 flex justify-center gap-1 rounded-xl border border-white/10 bg-(--bg-primary) p-2 shadow-xl lg:left-0 lg:right-auto lg:min-w-max">
-                                                {[1, 2, 3, 4, 5].map((rating) => (
-                                                    <button
-                                                        key={rating}
-                                                        type="button"
-                                                        onClick={() => void handleRateMovie(rating)}
-                                                        disabled={savingRating}
-                                                        aria-label={`Rate ${rating} out of 5`}
-                                                        className="flex size-9 items-center justify-center rounded-lg text-sm font-bold text-white/70 transition-colors hover:bg-(--accent-primary) hover:text-white disabled:cursor-not-allowed"
-                                                    >
-                                                        {savingRating ? <LoadingIcon /> : rating}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
+                                        {ratingOpen &&
+                                            !rated && (
+                                                <div
+                                                    className="
+                                                        absolute
+                                                        inset-x-0
+                                                        top-full
+                                                        z-30
+                                                        mt-2
+                                                        flex
+                                                        justify-center
+                                                        gap-1
+                                                        rounded-xl
+                                                        border
+                                                        border-white/10
+                                                        bg-(--bg-primary)
+                                                        p-2
+                                                        shadow-2xl
+                                                        lg:left-0
+                                                        lg:right-auto
+                                                        lg:min-w-max
+                                                    "
+                                                >
+                                                    {[1, 2, 3, 4, 5].map(
+                                                        (
+                                                            rating
+                                                        ) => (
+                                                            <button
+                                                                key={
+                                                                    rating
+                                                                }
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    void handleRateMovie(
+                                                                        rating
+                                                                    )
+                                                                }
+                                                                disabled={
+                                                                    savingRating
+                                                                }
+                                                                className="
+                                                                    flex
+                                                                    size-9
+                                                                    items-center
+                                                                    justify-center
+                                                                    rounded-lg
+                                                                    text-sm
+                                                                    font-bold
+                                                                    text-white/70
+                                                                    transition-all
+                                                                    hover:bg-(--accent-primary)
+                                                                    hover:text-white
+                                                                "
+                                                            >
+                                                                {savingRating ? (
+                                                                    <LoadingIcon />
+                                                                ) : (
+                                                                    rating
+                                                                )}
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            )}
+
                                     </div>
                                 )}
+
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            {/* ============================================================ */}
-            {/* Watch Providers                                              */}
-            {/* ============================================================ */}
+
+            {/* ================================================================== */}
+            {/* WATCH PROVIDERS                                                    */}
+            {/* ================================================================== */}
 
             {watchProviders && (
-                <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-8">
+                <section className="mx-auto max-w-7xl px-6 pb-5 lg:px-8">
+
                     <SectionHeading
                         eyebrow="Where to watch"
                         title="Watch Providers"
                     />
 
-                    {/* View sources button */}
+                    {/* Provider Toggle */}
 
                     <button
                         type="button"
                         onClick={() =>
-                            setShowWatchSources((prev) => !prev)
+                            setShowWatchSources(
+                                (previous) =>
+                                    !previous
+                            )
+                        }
+                        aria-expanded={
+                            showWatchSources
                         }
                         className="
-                mt-6
-                flex
-                w-full
-                items-center
-                justify-between
-                rounded-2xl
-                border
-                border-white/10
-                bg-white/5
-                px-5
-                py-4
-                text-left
-                transition-all
-                duration-300
-                hover:border-white/20
-                hover:bg-white/10
-            "
+                            group
+                            mt-6
+                            flex
+                            w-full
+                            items-center
+                            justify-between
+                            rounded-2xl
+                            border
+                            border-white/10
+                            bg-white/[0.035]
+                            px-5
+                            py-5
+                            text-left
+                            transition-all
+                            duration-300
+                            hover:border-(--accent-primary)/30
+                            hover:bg-(--accent-primary)/5
+                        "
                     >
-                        <div>
-                            <p className="text-sm font-bold text-white">
-                                View Watch Sources
-                            </p>
 
-                            <p className="mt-1 text-xs text-white/40">
-                                See where this movie is available
-                            </p>
+                        <div className="flex items-center gap-4">
+
+                            <div
+                                className="
+                                    flex
+                                    size-11
+                                    shrink-0
+                                    items-center
+                                    justify-center
+                                    rounded-xl
+                                    border
+                                    border-white/10
+                                    bg-white/5
+                                    text-white/60
+                                    transition-all
+                                    duration-300
+                                    group-hover:border-(--accent-primary)/30
+                                    group-hover:bg-(--accent-primary)/10
+                                    group-hover:text-(--accent-primary)
+                                "
+                            >
+                                <ProviderIcon />
+                            </div>
+
+                            <div>
+
+                                <p className="text-sm font-bold text-white">
+                                    View Watch Sources
+                                </p>
+
+                                <p className="mt-1 text-xs text-white/35">
+                                    See where this movie is available
+                                </p>
+
+                            </div>
+
                         </div>
 
                         <ChevronIcon
-                            open={showWatchSources}
+                            open={
+                                showWatchSources
+                            }
                         />
+
                     </button>
 
-                    {/* Sources */}
+                    {/* Provider Content */}
 
                     <div
                         className={`
-                grid
-                transition-all
-                duration-300
-                ${showWatchSources
-                                ? "mt-6 grid-rows-[1fr] opacity-100"
-                                : "grid-rows-[0fr] opacity-0"
+                            grid
+                            transition-all
+                            duration-500
+                            ease-out
+                            ${
+                                showWatchSources
+                                    ? "mt-5 grid-rows-[1fr] opacity-100"
+                                    : "grid-rows-[0fr] opacity-0"
                             }
-            `}
+                        `}
                     >
+
                         <div className="overflow-hidden">
-                            <div className="space-y-6">
-                                {watchProviders.ads &&
-                                    watchProviders.ads.length > 0 && (
-                                        <ProviderGroup
-                                            title="Free with Ads"
-                                            providers={
-                                                watchProviders.ads
-                                            }
-                                        />
-                                    )}
 
-                                {watchProviders.free &&
-                                    watchProviders.free.length > 0 && (
-                                        <ProviderGroup
-                                            title="Free"
-                                            providers={
-                                                watchProviders.free
-                                            }
-                                        />
-                                    )}
+                            <div
+                                className="
+                                    rounded-2xl
+                                    border
+                                    border-white/10
+                                    bg-white/2.5
+                                    p-6
+                                "
+                            >
 
-                                {watchProviders.flatrate &&
-                                    watchProviders.flatrate.length > 0 && (
-                                        <ProviderGroup
-                                            title="Subscription"
-                                            providers={
-                                                watchProviders.flatrate
-                                            }
-                                        />
-                                    )}
+                                <div className="space-y-7">
 
-                                {watchProviders.rent &&
-                                    watchProviders.rent.length > 0 && (
-                                        <ProviderGroup
-                                            title="Rent"
-                                            providers={
-                                                watchProviders.rent
-                                            }
-                                        />
-                                    )}
+                                    {watchProviders.ads &&
+                                        watchProviders.ads.length >
+                                            0 && (
+                                            <ProviderGroup
+                                                title="Free with Ads"
+                                                providers={
+                                                    watchProviders.ads
+                                                }
+                                            />
+                                        )}
 
-                                {watchProviders.buy &&
-                                    watchProviders.buy.length > 0 && (
-                                        <ProviderGroup
-                                            title="Buy"
-                                            providers={
-                                                watchProviders.buy
-                                            }
-                                        />
-                                    )}
+                                    {watchProviders.free &&
+                                        watchProviders.free.length >
+                                            0 && (
+                                            <ProviderGroup
+                                                title="Free"
+                                                providers={
+                                                    watchProviders.free
+                                                }
+                                            />
+                                        )}
+
+                                    {watchProviders.flatrate &&
+                                        watchProviders.flatrate.length >
+                                            0 && (
+                                            <ProviderGroup
+                                                title="Subscription"
+                                                providers={
+                                                    watchProviders.flatrate
+                                                }
+                                            />
+                                        )}
+
+                                    {watchProviders.rent &&
+                                        watchProviders.rent.length >
+                                            0 && (
+                                            <ProviderGroup
+                                                title="Rent"
+                                                providers={
+                                                    watchProviders.rent
+                                                }
+                                            />
+                                        )}
+
+                                    {watchProviders.buy &&
+                                        watchProviders.buy.length >
+                                            0 && (
+                                            <ProviderGroup
+                                                title="Buy"
+                                                providers={
+                                                    watchProviders.buy
+                                                }
+                                            />
+                                        )}
+
+                                    {!watchProviders.ads?.length &&
+                                        !watchProviders.free?.length &&
+                                        !watchProviders.flatrate?.length &&
+                                        !watchProviders.rent?.length &&
+                                        !watchProviders.buy?.length && (
+                                            <div className="py-5 text-center">
+                                                <p className="text-sm text-white/40">
+                                                    No watch providers found for this movie.
+                                                </p>
+                                            </div>
+                                        )}
+
+                                </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </section>
             )}
 
-            {/* ============================================================ */}
-            {/* Trailer                                                       */}
-            {/* ============================================================ */}
+            {/* ================================================================== */}
+            {/* WATCH NOW                                                           */}
+            {/* ================================================================== */}
 
-            <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-8">
+            <section className="mx-auto max-w-7xl px-6 pb-16 pt-11 lg:px-8">
+
                 <SectionHeading
-                    eyebrow="Watch"
-                    title="Official Trailer"
+                    eyebrow="CineScope"
+                    title="Watch Now"
                 />
 
-                <div
-                    className="
-                        mt-6
-                        overflow-hidden
-                        rounded-2xl
-                        border
-                        border-white/10
-                        bg-black
-                        shadow-[0_20px_60px_rgba(0,0,0,0.35)]
-                    "
-                >
-                    {loadingVideos ? (
-                        <div
+                <div className="mt-6 space-y-3">
+
+                    {/* ========================================================== */}
+                    {/* WATCH MOVIE                                                  */}
+                    {/* ========================================================== */}
+
+                    <div>
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setShowCineScopePlayer(
+                                    (previous) =>
+                                        !previous
+                                )
+                            }
+                            aria-expanded={
+                                showCineScopePlayer
+                            }
                             className="
+                                group
                                 flex
-                                aspect-video
-                                animate-pulse
+                                w-full
                                 items-center
-                                justify-center
-                                bg-white/5
+                                justify-between
+                                rounded-2xl
+                                border
+                                border-(--accent-primary)/20
+                                bg-(--accent-primary)/5
+                                px-5
+                                py-5
+                                text-left
+                                transition-all
+                                duration-300
+                                hover:border-(--accent-primary)/40
+                                hover:bg-(--accent-primary)/10
                             "
                         >
-                            <span className="text-sm text-white/30">
-                                Loading trailer...
-                            </span>
-                        </div>
-                    ) : trailer ? (
-                        <iframe
-                            src={`https://www.youtube.com/embed/${trailer.key}`}
-                            title={trailer.name}
-                            className="aspect-video w-full"
-                            allow="
-                                accelerometer;
-                                autoplay;
-                                clipboard-write;
-                                encrypted-media;
-                                gyroscope;
-                                picture-in-picture;
-                                web-share
-                            "
-                            allowFullScreen
-                        />
-                    ) : (
+
+                            <div className="flex items-center gap-4">
+
+                                <div
+                                    className="
+                                        flex
+                                        size-11
+                                        shrink-0
+                                        items-center
+                                        justify-center
+                                        rounded-xl
+                                        bg-(--accent-primary)
+                                        text-white
+                                        shadow-[0_0_25px_var(--accent-glow)]
+                                        transition-transform
+                                        duration-300
+                                        group-hover:scale-105
+                                    "
+                                >
+                                    <FilmPlayIcon />
+                                </div>
+
+                                <div>
+
+                                    <p className="text-sm font-bold text-white">
+                                        Watch Movie on CineScope
+                                    </p>
+
+                                    <p className="mt-1 text-xs text-white/40">
+                                        {showCineScopePlayer
+                                            ? "Click to stop and close the player"
+                                            : "Start watching this movie directly on CineScope"}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <ChevronIcon
+                                open={
+                                    showCineScopePlayer
+                                }
+                            />
+
+                        </button>
+
+                        {/* ------------------------------------------------------ */}
+                        {/* IMPORTANT: Player is conditionally mounted            */}
+                        {/* ------------------------------------------------------ */}
+
                         <div
+                            className={`
+                                grid
+                                transition-all
+                                duration-500
+                                ease-out
+                                ${
+                                    showCineScopePlayer
+                                        ? "mt-5 grid-rows-[1fr] opacity-100"
+                                        : "grid-rows-[0fr] opacity-0"
+                                }
+                            `}
+                        >
+
+                            <div className="overflow-hidden">
+
+                                {showCineScopePlayer && (
+                                    <div
+                                        id="cinescope-player"
+                                        className="
+                                            overflow-hidden
+                                            rounded-2xl
+                                            border
+                                            border-(--accent-primary)/15
+                                            bg-black
+                                            shadow-[0_20px_70px_rgba(0,0,0,0.4)]
+                                        "
+                                    >
+                                        <VidRockPlayer
+                                            tmdbId={movie.id}
+                                            title={movie.title}
+                                        />
+                                    </div>
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {/* ========================================================== */}
+                    {/* TRAILER                                                       */}
+                    {/* ========================================================== */}
+
+                    <div>
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setShowTrailer(
+                                    (previous) =>
+                                        !previous
+                                )
+                            }
+                            disabled={
+                                loadingVideos ||
+                                !trailer
+                            }
+                            aria-expanded={
+                                showTrailer
+                            }
                             className="
+                                group
                                 flex
-                                aspect-video
+                                w-full
                                 items-center
-                                justify-center
-                                bg-white/5
+                                justify-between
+                                rounded-2xl
+                                border
+                                border-white/10
+                                bg-white/[0.035]
+                                px-5
+                                py-5
+                                text-left
+                                transition-all
+                                duration-300
+                                hover:border-white/20
+                                hover:bg-white/6
+                                disabled:cursor-not-allowed
+                                disabled:opacity-40
                             "
                         >
-                            <p className="text-sm text-white/40">
-                                No trailer available.
-                            </p>
+
+                            <div className="flex items-center gap-4">
+
+                                <div
+                                    className="
+                                        flex
+                                        size-11
+                                        shrink-0
+                                        items-center
+                                        justify-center
+                                        rounded-xl
+                                        border
+                                        border-white/10
+                                        bg-white/5
+                                        text-white/70
+                                        transition-all
+                                        duration-300
+                                        group-hover:border-(--accent-primary)/30
+                                        group-hover:bg-(--accent-primary)/10
+                                        group-hover:text-(--accent-primary)
+                                    "
+                                >
+                                    <PlayIcon />
+                                </div>
+
+                                <div>
+
+                                    <p className="text-sm font-bold text-white">
+                                        Watch Trailer
+                                    </p>
+
+                                    <p className="mt-1 text-xs text-white/40">
+                                        {loadingVideos
+                                            ? "Finding the official trailer..."
+                                            : !trailer
+                                              ? "No trailer available"
+                                              : showTrailer
+                                                ? "Click to stop and close the trailer"
+                                                : "Watch the official trailer"}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div className="flex items-center gap-3">
+
+                                {loadingVideos && (
+                                    <LoadingIcon />
+                                )}
+
+                                <ChevronIcon
+                                    open={
+                                        showTrailer
+                                    }
+                                />
+
+                            </div>
+
+                        </button>
+
+                        {/* ------------------------------------------------------ */}
+                        {/* IMPORTANT: iframe is conditionally mounted             */}
+                        {/* ------------------------------------------------------ */}
+
+                        <div
+                            className={`
+                                grid
+                                transition-all
+                                duration-500
+                                ease-out
+                                ${
+                                    showTrailer
+                                        ? "mt-5 grid-rows-[1fr] opacity-100"
+                                        : "grid-rows-[0fr] opacity-0"
+                                }
+                            `}
+                        >
+
+                            <div className="overflow-hidden">
+
+                                {showTrailer &&
+                                    trailer && (
+                                        <div
+                                            id="cinescope-trailer"
+                                            className="
+                                                overflow-hidden
+                                                rounded-2xl
+                                                border
+                                                border-white/10
+                                                bg-black
+                                                shadow-[0_20px_60px_rgba(0,0,0,0.35)]
+                                            "
+                                        >
+
+                                            <iframe
+                                                key={trailer.key}
+                                                src={`https://www.youtube.com/embed/${trailer.key}?rel=0`}
+                                                title={
+                                                    trailer.name
+                                                }
+                                                className="
+                                                    aspect-video
+                                                    w-full
+                                                "
+                                                allow="
+                                                    accelerometer;
+                                                    autoplay;
+                                                    clipboard-write;
+                                                    encrypted-media;
+                                                    gyroscope;
+                                                    picture-in-picture;
+                                                    web-share
+                                                "
+                                                allowFullScreen
+                                            />
+
+                                        </div>
+                                    )}
+
+                            </div>
+
                         </div>
-                    )}
+
+                    </div>
+
                 </div>
+
             </section>
 
-            {/* ============================================================ */}
-            {/* Movie Info                                                    */}
-            {/* ============================================================ */}
+            {/* ================================================================== */}
+            {/* Movie Information                                                  */}
+            {/* ================================================================== */}
 
             <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-8">
+
                 <SectionHeading
                     eyebrow="Details"
                     title="Movie Information"
@@ -1087,6 +1655,7 @@ const MovieDetail = () => {
                         lg:grid-cols-4
                     "
                 >
+
                     <InfoCard
                         label="Release Date"
                         value={
@@ -1117,15 +1686,18 @@ const MovieDetail = () => {
                             "—"
                         }
                     />
+
                 </div>
+
             </section>
 
-            {/* ============================================================ */}
-            {/* Cast                                                          */}
-            {/* ============================================================ */}
+            {/* ================================================================== */}
+            {/* Cast                                                               */}
+            {/* ================================================================== */}
 
             {cast.length > 0 && (
                 <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+
                     <SectionHeading
                         eyebrow="The cast"
                         title="Cast"
@@ -1142,15 +1714,19 @@ const MovieDetail = () => {
                             lg:grid-cols-6
                         "
                     >
+
                         {cast.map((person) => (
                             <CastCard
                                 key={person.id}
                                 person={person}
                             />
                         ))}
+
                     </div>
+
                 </section>
             )}
+
         </main>
     );
 };
@@ -1170,7 +1746,9 @@ const SectionHeading = ({
 }: SectionHeadingProps) => {
     return (
         <div>
+
             <div className="flex items-center gap-2">
+
                 <span
                     className="
                         size-1.5
@@ -1191,6 +1769,7 @@ const SectionHeading = ({
                 >
                     {eyebrow}
                 </span>
+
             </div>
 
             <h2
@@ -1205,6 +1784,92 @@ const SectionHeading = ({
             >
                 {title}
             </h2>
+
+        </div>
+    );
+};
+
+/* ========================================================================== */
+/* Provider Group                                                             */
+/* ========================================================================== */
+
+interface ProviderGroupProps {
+    title: string;
+    providers: WatchProvider[];
+}
+
+const ProviderGroup = ({
+    title,
+    providers,
+}: ProviderGroupProps) => {
+    return (
+        <div>
+
+            <h3
+                className="
+                    mb-3
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-[0.15em]
+                    text-white/40
+                "
+            >
+                {title}
+            </h3>
+
+            <div className="flex flex-wrap gap-3">
+
+                {providers.map((provider) => (
+                    <div
+                        key={provider.provider_id}
+                        className="
+                            flex
+                            items-center
+                            gap-3
+                            rounded-xl
+                            border
+                            border-white/10
+                            bg-white/5
+                            px-3
+                            py-2
+                            transition-all
+                            duration-300
+                            hover:border-white/20
+                            hover:bg-white/10
+                        "
+                    >
+
+                        <img
+                            src={`${IMAGE_BASE_URL}/w92${provider.logo_path}`}
+                            alt={
+                                provider.provider_name
+                            }
+                            className="
+                                size-9
+                                rounded-lg
+                                object-cover
+                            "
+                            loading="lazy"
+                        />
+
+                        <span
+                            className="
+                                text-sm
+                                font-medium
+                                text-white
+                            "
+                        >
+                            {
+                                provider.provider_name
+                            }
+                        </span>
+
+                    </div>
+                ))}
+
+            </div>
+
         </div>
     );
 };
@@ -1232,6 +1897,7 @@ const InfoCard = ({
                 p-5
             "
         >
+
             <p
                 className="
                     text-[10px]
@@ -1254,6 +1920,7 @@ const InfoCard = ({
             >
                 {value}
             </p>
+
         </div>
     );
 };
@@ -1266,9 +1933,12 @@ interface CastCardProps {
     person: CastMember;
 }
 
-const CastCard = ({ person }: CastCardProps) => {
+const CastCard = ({
+    person,
+}: CastCardProps) => {
     return (
         <article className="min-w-0">
+
             <div
                 className="
                     aspect-3/4
@@ -1279,6 +1949,7 @@ const CastCard = ({ person }: CastCardProps) => {
                     bg-white/5
                 "
             >
+
                 {person.profile_path ? (
                     <img
                         src={`${IMAGE_BASE_URL}/w342${person.profile_path}`}
@@ -1307,6 +1978,7 @@ const CastCard = ({ person }: CastCardProps) => {
                         No image
                     </div>
                 )}
+
             </div>
 
             <h3
@@ -1331,6 +2003,7 @@ const CastCard = ({ person }: CastCardProps) => {
             >
                 {person.character}
             </p>
+
         </article>
     );
 };
@@ -1339,6 +2012,69 @@ const CastCard = ({ person }: CastCardProps) => {
 /* Icons                                                                      */
 /* ========================================================================== */
 
+const ProviderIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5"
+    >
+        <rect
+            x="3"
+            y="4"
+            width="18"
+            height="16"
+            rx="2"
+        />
+
+        <path d="M7 8h10" />
+        <path d="M7 12h6" />
+        <path d="M7 16h4" />
+    </svg>
+);
+
+const FilmPlayIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5"
+    >
+        <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            rx="2"
+        />
+
+        <path d="M7 3v4" />
+        <path d="M17 3v4" />
+        <path d="M7 17v4" />
+        <path d="M17 17v4" />
+
+        <path d="M3 7h18" />
+        <path d="M3 17h18" />
+
+        <path d="m10 10 4 2-4 2v-4Z" />
+    </svg>
+);
+
+const PlayIcon = () => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="size-5"
+    >
+        <path d="M8 5.14v13.72a1 1 0 0 0 1.53.85l10.29-6.86a1 1 0 0 0 0-1.66L9.53 4.29A1 1 0 0 0 8 5.14Z" />
+    </svg>
+);
 
 const StarIcon = () => (
     <svg
@@ -1348,75 +2084,6 @@ const StarIcon = () => (
     >
         <path d="m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z" />
     </svg>
-);
-
-const MovieDetailSkeleton = () => (
-    <main
-        aria-busy="true"
-        aria-label="Loading movie details"
-        className="min-h-screen bg-(--bg-primary)"
-    >
-        <div className="mx-auto max-w-7xl px-6 pt-28 lg:px-8">
-            <div className="h-5 w-20 animate-pulse rounded bg-white/10" />
-        </div>
-
-        <section className="mx-auto max-w-7xl px-6 pb-16 pt-8 lg:px-8">
-            <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:gap-12">
-                <div className="mx-auto w-full max-w-70 lg:mx-0">
-                    <div className="aspect-2/3 animate-pulse rounded-2xl border border-white/10 bg-white/5 shadow-[0_20px_60px_rgba(0,0,0,0.4)]" />
-                </div>
-
-                <div className="flex flex-col justify-center">
-                    <div className="mb-4 flex gap-2">
-                        {[72, 88, 64].map((width) => (
-                            <div
-                                key={width}
-                                className="h-6 animate-pulse rounded-full bg-white/10"
-                                style={{ width: `${width}px` }}
-                            />
-                        ))}
-                    </div>
-
-                    <div className="h-12 w-4/5 animate-pulse rounded-xl bg-white/10 sm:h-15" />
-                    <div className="mt-5 h-5 w-52 animate-pulse rounded bg-white/10" />
-
-                    <div className="mt-8">
-                        <div className="h-3 w-20 animate-pulse rounded bg-white/10" />
-                        <div className="mt-4 space-y-3">
-                            <div className="h-4 w-full animate-pulse rounded bg-white/10" />
-                            <div className="h-4 w-11/12 animate-pulse rounded bg-white/10" />
-                            <div className="h-4 w-3/4 animate-pulse rounded bg-white/10" />
-                        </div>
-
-                        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:flex">
-                            {[0, 1, 2].map((index) => (
-                                <div
-                                    key={index}
-                                    className="h-12 w-full animate-pulse rounded-xl border border-white/10 bg-white/5 lg:w-40"
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
-            <div className="h-6 w-44 animate-pulse rounded bg-white/10" />
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {[0, 1, 2, 3].map((index) => (
-                    <div
-                        key={index}
-                        className="h-28 animate-pulse rounded-2xl border border-white/10 bg-white/5"
-                    />
-                ))}
-            </div>
-        </section>
-    </main>
-);
-
-const Dot = () => (
-    <span className="size-1 rounded-full bg-white/20" />
 );
 
 const PlusIcon = () => (
@@ -1462,82 +2129,9 @@ const LoadingIcon = () => (
             className="opacity-25"
         />
 
-        <path
-            d="M21 12a9 9 0 0 0-9-9"
-        />
+        <path d="M21 12a9 9 0 0 0-9-9" />
     </svg>
 );
-
-interface ProviderGroupProps {
-    title: string;
-    providers: WatchProvider[];
-}
-
-const ProviderGroup = ({
-    title,
-    providers,
-}: ProviderGroupProps) => {
-    return (
-        <div>
-            <h3
-                className="
-                    mb-3
-                    text-xs
-                    font-bold
-                    uppercase
-                    tracking-[0.15em]
-                    text-white/40
-                "
-            >
-                {title}
-            </h3>
-
-            <div className="flex flex-wrap gap-3">
-                {providers.map((provider) => (
-                    <div
-                        key={provider.provider_id}
-                        className="
-                            flex
-                            items-center
-                            gap-3
-                            rounded-xl
-                            border
-                            border-white/10
-                            bg-white/5
-                            px-3
-                            py-2
-                            transition-all
-                            duration-300
-                            hover:border-white/20
-                            hover:bg-white/10
-                        "
-                    >
-                        <img
-                            src={`https://image.tmdb.org/t/p/w92${provider.logo_path}`}
-                            alt={provider.provider_name}
-                            className="
-                                size-9
-                                rounded-lg
-                                object-cover
-                            "
-                            loading="lazy"
-                        />
-
-                        <span
-                            className="
-                                text-sm
-                                font-medium
-                                text-white
-                            "
-                        >
-                            {provider.provider_name}
-                        </span>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
 
 const ChevronIcon = ({
     open,
@@ -1553,7 +2147,8 @@ const ChevronIcon = ({
         strokeLinejoin="round"
         className={`
             size-5
-            text-white/40
+            shrink-0
+            text-white/35
             transition-transform
             duration-300
             ${open ? "rotate-180" : ""}
@@ -1561,6 +2156,223 @@ const ChevronIcon = ({
     >
         <path d="m6 9 6 6 6-6" />
     </svg>
+);
+
+const Dot = () => (
+    <span className="size-1 rounded-full bg-white/20" />
+);
+
+/* ========================================================================== */
+/* Skeleton                                                                   */
+/* ========================================================================== */
+
+const MovieDetailSkeleton = () => (
+    <main
+        aria-busy="true"
+        aria-label="Loading movie details"
+        className="
+            min-h-screen
+            bg-(--bg-primary)
+        "
+    >
+
+        <section
+            className="
+                mx-auto
+                max-w-7xl
+                px-6
+                pb-16
+                pt-28
+                lg:px-8
+            "
+        >
+
+            <div
+                className="
+                    grid
+                    gap-8
+                    lg:grid-cols-[280px_1fr]
+                    lg:gap-12
+                "
+            >
+
+                <div
+                    className="
+                        mx-auto
+                        w-full
+                        max-w-70
+                        lg:mx-0
+                    "
+                >
+                    <div
+                        className="
+                            aspect-2/3
+                            animate-pulse
+                            rounded-2xl
+                            border
+                            border-white/10
+                            bg-white/5
+                        "
+                    />
+                </div>
+
+                <div className="flex flex-col justify-center">
+
+                    <div className="mb-4 flex gap-2">
+
+                        {[72, 88, 64].map(
+                            (width) => (
+                                <div
+                                    key={width}
+                                    className="
+                                        h-6
+                                        animate-pulse
+                                        rounded-full
+                                        bg-white/10
+                                    "
+                                    style={{
+                                        width: `${width}px`,
+                                    }}
+                                />
+                            )
+                        )}
+
+                    </div>
+
+                    <div
+                        className="
+                            h-12
+                            w-4/5
+                            animate-pulse
+                            rounded-xl
+                            bg-white/10
+                            sm:h-15
+                        "
+                    />
+
+                    <div
+                        className="
+                            mt-5
+                            h-5
+                            w-52
+                            animate-pulse
+                            rounded
+                            bg-white/10
+                        "
+                    />
+
+                    <div className="mt-8">
+
+                        <div
+                            className="
+                                h-3
+                                w-20
+                                animate-pulse
+                                rounded
+                                bg-white/10
+                            "
+                        />
+
+                        <div className="mt-4 space-y-3">
+
+                            <div className="h-4 w-full animate-pulse rounded bg-white/10" />
+
+                            <div className="h-4 w-11/12 animate-pulse rounded bg-white/10" />
+
+                            <div className="h-4 w-3/4 animate-pulse rounded bg-white/10" />
+
+                        </div>
+
+                        <div
+                            className="
+                                mt-6
+                                grid
+                                grid-cols-1
+                                gap-3
+                                sm:grid-cols-2
+                                lg:flex
+                            "
+                        >
+
+                            {[0, 1, 2].map(
+                                (index) => (
+                                    <div
+                                        key={index}
+                                        className="
+                                            h-12
+                                            w-full
+                                            animate-pulse
+                                            rounded-xl
+                                            border
+                                            border-white/10
+                                            bg-white/5
+                                            lg:w-40
+                                        "
+                                    />
+                                )
+                            )}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section
+            className="
+                mx-auto
+                max-w-7xl
+                px-6
+                pb-20
+                lg:px-8
+            "
+        >
+
+            <div
+                className="
+                    h-6
+                    w-44
+                    animate-pulse
+                    rounded
+                    bg-white/10
+                "
+            />
+
+            <div
+                className="
+                    mt-6
+                    grid
+                    gap-4
+                    sm:grid-cols-2
+                    lg:grid-cols-4
+                "
+            >
+
+                {[0, 1, 2, 3].map(
+                    (index) => (
+                        <div
+                            key={index}
+                            className="
+                                h-28
+                                animate-pulse
+                                rounded-2xl
+                                border
+                                border-white/10
+                                bg-white/5
+                            "
+                        />
+                    )
+                )}
+
+            </div>
+
+        </section>
+
+    </main>
 );
 
 export default MovieDetail;

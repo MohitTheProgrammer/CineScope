@@ -418,6 +418,7 @@ const MobileMenu = ({
               For You
             </MobileNavItem>
 
+
           </>}
 
 
@@ -442,7 +443,7 @@ const MobileMenu = ({
         >
           {/* Theme */}
 
-          {isUser &&<div
+          {isUser && <div
             className="
                             flex
                             items-center
