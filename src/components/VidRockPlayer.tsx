@@ -68,8 +68,7 @@ const VidRockPlayer = ({
 
     return (
         <PlayerSection>
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-
+            <div className="relative left-1/2 w-[calc(100%+3rem)] -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:left-auto sm:w-full sm:translate-x-0">
                 <div
                     className="
                         absolute

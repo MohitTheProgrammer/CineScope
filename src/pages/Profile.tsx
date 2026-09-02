@@ -11,6 +11,7 @@ import ProfileEditor from "../components/profile/ProfileEditor";
 import ProfileSkeleton from "../components/profile/ProfileSkeleton";
 import type { UserData } from "../types/user";
 import { AVATARS } from "../constent/file";
+import ThemeSwitcher from "../components/ThemeSwitcher";
 
 const DEFAULT_AVATAR = "avatar-1";
 
@@ -207,6 +208,27 @@ const ProfilePage = () => {
                     }
                     onSave={handleSaveProfile}
                 />
+
+
+                <div className="rounded-2xl border border-white/10 bg-white/2.5 p-5 sm:p-6 mt-6">
+                    <div className="mb-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-(--accent-primary)">
+                            Appearance
+                        </p>
+
+                        <h3 className="mt-1 text-lg font-bold tracking-tight text-white">
+                            Choose your theme
+                        </h3>
+
+                        <p className="mt-1 text-xs text-white/35">
+                            Personalize the look and feel of CineScope.
+                        </p>
+                    </div>
+
+                    <div className="rounded-xl border border-white/8 bg-black/20 p-3 sm:p-4">
+                        <ThemeSwitcher />
+                    </div>
+                </div>
             </div>
         </main>
     );

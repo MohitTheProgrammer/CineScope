@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 
 import { useUser } from "../context/UserContext";
 import MovieSearch from "./MovieSearch";
-import ThemeSwitcher from "./ThemeSwitcher";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useUser();
@@ -101,7 +100,7 @@ const Navbar = () => {
           </div>
 
           {user && <div className="hidden lg:block">
-            <ThemeSwitcher />
+
           </div>}
 
           {user && <NavLink to="/profile">
@@ -403,19 +402,7 @@ const MobileMenu = ({
                             gap-3
                         "
           >
-            <span
-              className="
-                                text-xs
-                                font-semibold
-                                uppercase
-                                tracking-wider
-                                text-white/40
-                            "
-            >
-              Theme
-            </span>
 
-            <ThemeSwitcher />
           </div>}
 
 
