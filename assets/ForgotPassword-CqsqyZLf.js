@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h as i,n as a,o}from"./index-Bla7ApB1.js";import{r as s}from"./userService-2bG7E7tC.js";var c=e(t(),1),l=n(),u=()=>{let[e,t]=(0,c.useState)(``),[n,u]=(0,c.useState)(!1),[d,f]=(0,c.useState)(!1),[p,m]=(0,c.useState)(``);return d?(0,l.jsx)(`main`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,V as n,d as r,h as i,n as a,o,q as s}from"./index-BqLEZ1aM.js";import{r as c}from"./userService-DF4F0PRh.js";var l=e(s(),1),u=t(),d=()=>{let[e,t]=(0,l.useState)(``),[s,d]=(0,l.useState)(!1),[f,p]=(0,l.useState)(!1),[m,h]=(0,l.useState)(``);return f?(0,u.jsx)(`main`,{className:`
                     flex
                     min-h-screen
                     items-center
@@ -6,7 +6,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                     bg-(--bg-primary)
                     px-6
                     text-white
-                `,children:(0,l.jsxs)(`div`,{className:`w-full max-w-md text-center`,children:[(0,l.jsx)(`div`,{className:`
+                `,children:(0,u.jsxs)(`div`,{className:`w-full max-w-md text-center`,children:[(0,u.jsx)(`div`,{className:`
                             mx-auto
                             flex
                             size-16
@@ -18,33 +18,33 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                             bg-(--accent-primary)/10
                             text-(--accent-primary)
                             shadow-[0_0_40px_var(--accent-glow)]
-                        `,children:(0,l.jsx)(o,{className:`size-8`})}),(0,l.jsx)(`h1`,{className:`
+                        `,children:(0,u.jsx)(o,{className:`size-8`})}),(0,u.jsx)(`h1`,{className:`
                             mt-7
                             text-3xl
                             font-black
                             tracking-tight
                             sm:text-4xl
-                        `,children:`Check your email`}),(0,l.jsx)(`p`,{className:`
+                        `,children:`Check your email`}),(0,u.jsx)(`p`,{className:`
                             mx-auto
                             mt-4
                             max-w-sm
                             text-sm
                             leading-6
                             text-white/40
-                        `,children:`We've sent a secure password reset link to`}),(0,l.jsx)(`p`,{className:`
+                        `,children:`We've sent a secure password reset link to`}),(0,u.jsx)(`p`,{className:`
                             mt-2
                             break-all
                             text-sm
                             font-bold
                             text-(--accent-primary)
-                        `,children:e}),(0,l.jsx)(`p`,{className:`
+                        `,children:e}),(0,u.jsx)(`p`,{className:`
                             mx-auto
                             mt-5
                             max-w-sm
                             text-xs
                             leading-5
                             text-white/25
-                        `,children:`Open the email and follow the link to create a new password. You can safely close this page.`}),(0,l.jsxs)(`a`,{href:`/login`,className:`
+                        `,children:`Open the email and follow the link to create a new password. You can safely close this page.`}),(0,u.jsxs)(n,{to:`/login`,className:`
                             mt-8
                             inline-flex
                             items-center
@@ -54,7 +54,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                             text-white/60
                             transition-colors
                             hover:text-(--accent-primary)
-                        `,children:[(0,l.jsx)(a,{className:`size-4`}),`Back to login`]})]})}):(0,l.jsxs)(`main`,{className:`
+                        `,children:[(0,u.jsx)(a,{className:`size-4`}),`Back to login`]})]})}):(0,u.jsxs)(`main`,{className:`
                 relative
                 flex
                 min-h-screen
@@ -65,7 +65,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                 px-6
                 py-12
                 text-white
-            `,children:[(0,l.jsx)(`div`,{className:`
+            `,children:[(0,u.jsx)(`div`,{className:`
                     pointer-events-none
                     absolute
                     left-1/2
@@ -76,11 +76,11 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                     rounded-full
                     bg-(--accent-primary)/5
                     blur-3xl
-                `}),(0,l.jsxs)(`div`,{className:`
+                `}),(0,u.jsxs)(`div`,{className:`
                     relative
                     w-full
                     max-w-md
-                `,children:[(0,l.jsxs)(`a`,{href:`/login`,className:`
+                `,children:[(0,u.jsxs)(n,{to:`/login`,className:`
                         mb-8
                         inline-flex
                         items-center
@@ -90,7 +90,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                         text-white/35
                         transition-colors
                         hover:text-white
-                    `,children:[(0,l.jsx)(a,{className:`size-4`}),`Back to login`]}),(0,l.jsxs)(`div`,{className:`
+                    `,children:[(0,u.jsx)(a,{className:`size-4`}),`Back to login`]}),(0,u.jsxs)(`div`,{className:`
                         overflow-hidden
                         rounded-3xl
                         border
@@ -99,7 +99,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                         p-7
                         shadow-[0_30px_100px_rgba(0,0,0,0.25)]
                         sm:p-9
-                    `,children:[(0,l.jsx)(`div`,{className:`
+                    `,children:[(0,u.jsx)(`div`,{className:`
                             flex
                             size-14
                             items-center
@@ -110,41 +110,41 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                             bg-(--accent-primary)/10
                             text-(--accent-primary)
                             shadow-[0_0_30px_var(--accent-glow)]
-                        `,children:(0,l.jsx)(i,{className:`size-6`})}),(0,l.jsxs)(`div`,{className:`mt-7`,children:[(0,l.jsxs)(`div`,{className:`
+                        `,children:(0,u.jsx)(i,{className:`size-6`})}),(0,u.jsxs)(`div`,{className:`mt-7`,children:[(0,u.jsxs)(`div`,{className:`
                                 flex
                                 items-center
                                 gap-2
-                            `,children:[(0,l.jsx)(`span`,{className:`
+                            `,children:[(0,u.jsx)(`span`,{className:`
                                     size-1.5
                                     rounded-full
                                     bg-(--accent-primary)
                                     shadow-[0_0_12px_var(--accent-glow)]
-                                `}),(0,l.jsx)(`span`,{className:`
+                                `}),(0,u.jsx)(`span`,{className:`
                                     text-[10px]
                                     font-bold
                                     uppercase
                                     tracking-[0.3em]
                                     text-(--accent-primary)
-                                `,children:`Account recovery`})]}),(0,l.jsxs)(`h1`,{className:`
+                                `,children:`Account recovery`})]}),(0,u.jsxs)(`h1`,{className:`
                                 mt-3
                                 text-3xl
                                 font-black
                                 tracking-tight
                                 sm:text-4xl
-                            `,children:[`Forgot your`,(0,l.jsx)(`br`,{}),(0,l.jsx)(`span`,{className:`text-(--accent-primary)`,children:`password?`})]}),(0,l.jsx)(`p`,{className:`
+                            `,children:[`Forgot your`,(0,u.jsx)(`br`,{}),(0,u.jsx)(`span`,{className:`text-(--accent-primary)`,children:`password?`})]}),(0,u.jsx)(`p`,{className:`
                                 mt-4
                                 text-sm
                                 leading-6
                                 text-white/40
-                            `,children:`No worries. Enter the email connected to your CineScope account and we'll send you a secure reset link.`})]}),(0,l.jsxs)(`form`,{onSubmit:async t=>{t.preventDefault(),m(``);let n=e.trim();if(!n){m(`Please enter your email address.`);return}u(!0);try{await s(n),f(!0)}catch(e){switch(typeof e==`object`&&e&&`code`in e?String(e.code):``){case`auth/invalid-email`:m(`Please enter a valid email address.`);break;case`auth/user-not-found`:m(`No account exists with this email.`);break;case`auth/too-many-requests`:m(`Too many attempts. Please try again later.`);break;default:m(`Something went wrong. Please try again.`)}}finally{u(!1)}},className:`mt-8`,children:[(0,l.jsx)(`label`,{htmlFor:`email`,className:`
+                            `,children:`No worries. Enter the email connected to your CineScope account and we'll send you a secure reset link.`})]}),(0,u.jsxs)(`form`,{onSubmit:async t=>{t.preventDefault(),h(``);let n=e.trim();if(!n){h(`Please enter your email address.`);return}d(!0);try{await c(n),p(!0)}catch(e){switch(typeof e==`object`&&e&&`code`in e?String(e.code):``){case`auth/invalid-email`:h(`Please enter a valid email address.`);break;case`auth/user-not-found`:h(`No account exists with this email.`);break;case`auth/too-many-requests`:h(`Too many attempts. Please try again later.`);break;default:h(`Something went wrong. Please try again.`)}}finally{d(!1)}},className:`mt-8`,children:[(0,u.jsx)(`label`,{htmlFor:`email`,className:`
                                 mb-2
                                 block
                                 text-xs
                                 font-bold
                                 text-white/50
-                            `,children:`Email address`}),(0,l.jsxs)(`div`,{className:`
+                            `,children:`Email address`}),(0,u.jsxs)(`div`,{className:`
                                 relative
-                            `,children:[(0,l.jsx)(r,{className:`
+                            `,children:[(0,u.jsx)(r,{className:`
                                     pointer-events-none
                                     absolute
                                     left-4
@@ -152,7 +152,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                                     size-4
                                     -translate-y-1/2
                                     text-white/25
-                                `}),(0,l.jsx)(`input`,{id:`email`,type:`email`,value:e,onChange:e=>t(e.target.value),placeholder:`you@example.com`,autoComplete:`email`,disabled:n,className:`
+                                `}),(0,u.jsx)(`input`,{id:`email`,type:`email`,value:e,onChange:e=>t(e.target.value),placeholder:`you@example.com`,autoComplete:`email`,disabled:s,className:`
                                     h-14
                                     w-full
                                     rounded-2xl
@@ -171,7 +171,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                                     focus:shadow-[0_0_25px_var(--accent-glow)]
                                     disabled:cursor-not-allowed
                                     disabled:opacity-50
-                                `})]}),p&&(0,l.jsx)(`div`,{className:`
+                                `})]}),m&&(0,u.jsx)(`div`,{className:`
                                     mt-3
                                     rounded-xl
                                     border
@@ -182,7 +182,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                                     text-xs
                                     font-medium
                                     text-red-400
-                                `,children:p}),(0,l.jsxs)(`button`,{type:`submit`,disabled:n,className:`
+                                `,children:m}),(0,u.jsxs)(`button`,{type:`submit`,disabled:s,className:`
                                 group
                                 relative
                                 mt-5
@@ -207,7 +207,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                                 active:translate-y-0
                                 disabled:cursor-not-allowed
                                 disabled:opacity-50
-                            `,children:[(0,l.jsx)(`span`,{className:`
+                            `,children:[(0,u.jsx)(`span`,{className:`
                                     pointer-events-none
                                     absolute
                                     inset-y-0
@@ -218,20 +218,20 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                                     transition-all
                                     duration-700
                                     group-hover:left-[120%]
-                                `}),n?(0,l.jsxs)(l.Fragment,{children:[(0,l.jsx)(`span`,{className:`
+                                `}),s?(0,u.jsxs)(u.Fragment,{children:[(0,u.jsx)(`span`,{className:`
                                             size-4
                                             animate-spin
                                             rounded-full
                                             border-2
                                             border-black/30
                                             border-t-black
-                                        `}),`Sending reset link...`]}):(0,l.jsxs)(l.Fragment,{children:[(0,l.jsx)(i,{className:`relative size-4.5`}),(0,l.jsx)(`span`,{className:`relative`,children:`Send Reset Link`})]})]})]}),(0,l.jsx)(`p`,{className:`
+                                        `}),`Sending reset link...`]}):(0,u.jsxs)(u.Fragment,{children:[(0,u.jsx)(i,{className:`relative size-4.5`}),(0,u.jsx)(`span`,{className:`relative`,children:`Send Reset Link`})]})]})]}),(0,u.jsx)(`p`,{className:`
                             mt-7
                             text-center
                             text-[10px]
                             leading-5
                             text-white/20
-                        `,children:`If you didn't request a password reset, you can safely ignore the email.`})]}),(0,l.jsxs)(`div`,{className:`
+                        `,children:`If you didn't request a password reset, you can safely ignore the email.`})]}),(0,u.jsxs)(`div`,{className:`
                         mt-6
                         flex
                         items-center
@@ -242,4 +242,4 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{K as t,T as n,d as r,h
                         uppercase
                         tracking-[0.2em]
                         text-white/15
-                    `,children:[(0,l.jsx)(r,{className:`size-3.5`}),`CineScope`]})]})]})};export{u as default};
+                    `,children:[(0,u.jsx)(r,{className:`size-3.5`}),`CineScope`]})]})]})};export{d as default};

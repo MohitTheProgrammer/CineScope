@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,K as n,T as r,U as i,t as a,w as o}from"./index-Bla7ApB1.js";import{t as s}from"./MovieCard-C2J41F_s.js";import{n as c}from"./userService-2bG7E7tC.js";import{a as l,i as u}from"./tmdb-CBdVkwx0.js";var d=r(),f=()=>(0,d.jsx)(`div`,{className:`flex gap-5 overflow-hidden`,children:Array.from({length:5}).map((e,t)=>(0,d.jsxs)(`div`,{className:`w-44 shrink-0 sm:w-48 lg:w-52`,children:[(0,d.jsx)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,V as r,W as i,q as a,t as o}from"./index-BqLEZ1aM.js";import{t as s}from"./MovieCard-CQAyEJbe.js";import{n as c}from"./userService-DF4F0PRh.js";import{a as l,i as u}from"./tmdb-CBdVkwx0.js";var d=t(),f=()=>(0,d.jsx)(`div`,{className:`flex gap-5 overflow-hidden`,children:Array.from({length:5}).map((e,t)=>(0,d.jsxs)(`div`,{className:`w-44 shrink-0 sm:w-48 lg:w-52`,children:[(0,d.jsx)(`div`,{className:`
                             aspect-2/3
                             animate-pulse
                             rounded-2xl
@@ -17,7 +17,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,K as n,T as r,U
                             animate-pulse
                             rounded
                             bg-white/5
-                        `})]},t))}),p=({movies:e,loading:t,error:n,title:r,redirectLink:o,subtitle:c,id:l})=>{let u=i();return(0,d.jsxs)(`section`,{id:l,className:`
+                        `})]},t))}),p=({movies:e,loading:t,error:n,title:r,redirectLink:a,subtitle:c,id:l})=>{let u=i();return(0,d.jsxs)(`section`,{id:l,className:`
                 mx-auto
                 max-w-7xl
                 px-6
@@ -51,7 +51,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,K as n,T as r,U
                         transition-colors
                         hover:text-(--accent-primary)
                         sm:flex
-                    `,onClick:()=>{u(o)},children:[`View all`,(0,d.jsx)(a,{})]})]}),t&&(0,d.jsx)(f,{}),!t&&n&&(0,d.jsxs)(`div`,{className:`
+                    `,onClick:()=>{u(a)},children:[`View all`,(0,d.jsx)(o,{})]})]}),t&&(0,d.jsx)(f,{}),!t&&n&&(0,d.jsxs)(`div`,{className:`
                         rounded-2xl
                         border
                         border-white/10
@@ -77,7 +77,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,K as n,T as r,U
                     uppercase
                     tracking-wider
                     text-white/40
-                `,children:t})]}),h=e(n(),1),g=`https://image.tmdb.org/t/p/original`,_=[`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`],v=async e=>{try{let t=await c(e,15);if(!t.length)return y();let n=(await Promise.allSettled(t.map(async e=>{let t=await fetch(`https://api.themoviedb.org/3/movie/${e}/images?api_key=9306b63a19c60cc5c7b1bc4de94f57d7&include_image_language=en,null`);if(!t.ok)throw Error(`Failed to fetch images for movie ${e}: ${t.status}`);return t.json()}))).filter(e=>e.status===`fulfilled`).flatMap(e=>e.value.backdrops);if(!n.length)return y();let r=n.filter(e=>e.width>=1920&&e.height>=1080),i=[...r.length>0?r:n].sort((e,t)=>t.vote_average-e.vote_average).slice(0,20);return g+i[Math.floor(Math.random()*i.length)].file_path}catch{return y()}},y=()=>_.length?_[Math.floor(Math.random()*_.length)]:null,b=[{first:`Discover`,accent:`something`,last:`unforgettable.`},{first:`Explore`,accent:`incredible`,last:`adventures.`},{first:`Uncover`,accent:`captivating`,last:`storylines.`},{first:`Experience`,accent:`extraordinary`,last:`masterpieces.`}],x=e=>{let[t,n]=(0,h.useState)(()=>Math.floor(Math.random()*b.length)),[r,i]=(0,h.useState)(``);return(0,h.useEffect)(()=>{let t=!0;(async()=>{try{let n=await v(e??``);t&&n&&i(n)}catch{return}})();let r=window.setInterval(()=>{n(e=>(e+1)%b.length)},5e3);return()=>{t=!1,window.clearInterval(r)}},[e]),{heroTextIndex:t,heroBackdrop:r}},S=`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`,C=({uid:e})=>{let{heroTextIndex:n,heroBackdrop:r}=x(e),i=b[n];return(0,d.jsxs)(`section`,{className:`relative min-h-180 overflow-hidden`,children:[(0,d.jsxs)(`div`,{className:`absolute inset-0`,children:[(0,d.jsx)(`img`,{src:r||S,alt:``,"aria-hidden":`true`,className:`
+                `,children:t})]}),h=e(a(),1),g=`https://image.tmdb.org/t/p/original`,_=[`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`],v=async e=>{try{let t=await c(e,15);if(!t.length)return y();let n=(await Promise.allSettled(t.map(async e=>{let t=await fetch(`https://api.themoviedb.org/3/movie/${e}/images?api_key=9306b63a19c60cc5c7b1bc4de94f57d7&include_image_language=en,null`);if(!t.ok)throw Error(`Failed to fetch images for movie ${e}: ${t.status}`);return t.json()}))).filter(e=>e.status===`fulfilled`).flatMap(e=>e.value.backdrops);if(!n.length)return y();let r=n.filter(e=>e.width>=1920&&e.height>=1080),i=[...r.length>0?r:n].sort((e,t)=>t.vote_average-e.vote_average).slice(0,20);return g+i[Math.floor(Math.random()*i.length)].file_path}catch{return y()}},y=()=>_.length?_[Math.floor(Math.random()*_.length)]:null,b=[{first:`Discover`,accent:`something`,last:`unforgettable.`},{first:`Explore`,accent:`incredible`,last:`adventures.`},{first:`Uncover`,accent:`captivating`,last:`storylines.`},{first:`Experience`,accent:`extraordinary`,last:`masterpieces.`}],x=e=>{let[t,n]=(0,h.useState)(()=>Math.floor(Math.random()*b.length)),[r,i]=(0,h.useState)(``);return(0,h.useEffect)(()=>{let t=!0;(async()=>{try{let n=await v(e??``);t&&n&&i(n)}catch{return}})();let r=window.setInterval(()=>{n(e=>(e+1)%b.length)},5e3);return()=>{t=!1,window.clearInterval(r)}},[e]),{heroTextIndex:t,heroBackdrop:r}},S=`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`,C=({uid:e})=>{let{heroTextIndex:t,heroBackdrop:n}=x(e),i=b[t];return(0,d.jsxs)(`section`,{className:`relative min-h-180 overflow-hidden`,children:[(0,d.jsxs)(`div`,{className:`absolute inset-0`,children:[(0,d.jsx)(`img`,{src:n||S,alt:``,"aria-hidden":`true`,className:`
                         h-full
                         w-full
                         object-cover
@@ -138,14 +138,14 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,K as n,T as r,U
                             text-white
                             sm:text-6xl
                             lg:text-8xl
-                        `,children:[i.first,(0,d.jsx)(`br`,{}),(0,d.jsx)(`span`,{className:`text-(--accent-primary)`,children:i.accent}),(0,d.jsx)(`br`,{}),i.last]},n),(0,d.jsx)(`p`,{className:`
+                        `,children:[i.first,(0,d.jsx)(`br`,{}),(0,d.jsx)(`span`,{className:`text-(--accent-primary)`,children:i.accent}),(0,d.jsx)(`br`,{}),i.last]},t),(0,d.jsx)(`p`,{className:`
                             mt-7
                             max-w-xl
                             text-sm
                             leading-6
                             text-white/60
                             sm:text-base
-                        `,children:`Stop scrolling endlessly. Discover movies worth watching and find your next favorite based on what you already love.`}),(0,d.jsxs)(`div`,{className:`mt-8 flex flex-wrap gap-3`,children:[(0,d.jsxs)(t,{to:`/trending`,className:`
+                        `,children:`Stop scrolling endlessly. Discover movies worth watching and find your next favorite based on what you already love.`}),(0,d.jsxs)(`div`,{className:`mt-8 flex flex-wrap gap-3`,children:[(0,d.jsxs)(r,{to:`/trending`,className:`
                                 flex
                                 items-center
                                 gap-2
@@ -161,7 +161,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,K as n,T as r,U
                                 duration-300
                                 hover:scale-105
                                 hover:shadow-[0_0_40px_var(--accent-glow)]
-                            `,children:[`Explore Movies`,(0,d.jsx)(a,{})]}),(0,d.jsx)(t,{to:`/how-it-works`,className:`
+                            `,children:[`Explore Movies`,(0,d.jsx)(o,{})]}),(0,d.jsx)(r,{to:`/how-it-works`,className:`
                                 rounded-full
                                 border
                                 border-white/15
@@ -182,4 +182,4 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,K as n,T as r,U
                             flex
                             items-center
                             gap-8
-                        `,children:[(0,d.jsx)(m,{value:`10K+`,label:`Movies`}),(0,d.jsx)(m,{value:`500K+`,label:`Ratings`}),(0,d.jsx)(m,{value:`AI`,label:`Recommendations`})]})]})})]})},w=()=>{let[e,t]=(0,h.useState)([]),[n,r]=(0,h.useState)([]),[i,a]=(0,h.useState)(!0),[o,s]=(0,h.useState)(!0),[c,d]=(0,h.useState)(null),[f,p]=(0,h.useState)(null);return(0,h.useEffect)(()=>{let e=!0;return(async()=>{try{a(!0),d(null);let n=await l();if(!e)return;t(n.results??[])}catch{if(!e)return;d(`Unable to load movies right now.`)}finally{e&&a(!1)}})(),(async()=>{try{s(!0),p(null);let t=await u();if(!e)return;r(t.results??[])}catch{if(!e)return;p(`Unable to load movies right now.`)}finally{e&&s(!1)}})(),()=>{e=!1}},[]),{trendingMovies:e,popularMovies:n,trendingLoading:i,popularLoading:o,trendingError:c,popularError:f}},T=()=>{let{user:e}=o(),{trendingMovies:t,popularMovies:n,trendingLoading:r,popularLoading:i,trendingError:a,popularError:s}=w();return(0,d.jsxs)(`main`,{className:`min-h-screen bg-(--bg-primary)`,children:[(0,d.jsx)(C,{uid:e?.uid}),(0,d.jsx)(p,{movies:t,loading:r,error:a,title:`trending movies`,redirectLink:`/trending`,subtitle:`right now`,id:`trending`}),(0,d.jsx)(p,{movies:n,loading:i,error:s,title:`popular movies`,redirectLink:`/popular`,subtitle:`among people`,id:`popular`})]})};export{T as default};
+                        `,children:[(0,d.jsx)(m,{value:`10K+`,label:`Movies`}),(0,d.jsx)(m,{value:`500K+`,label:`Ratings`}),(0,d.jsx)(m,{value:`AI`,label:`Recommendations`})]})]})})]})},w=()=>{let[e,t]=(0,h.useState)([]),[n,r]=(0,h.useState)([]),[i,a]=(0,h.useState)(!0),[o,s]=(0,h.useState)(!0),[c,d]=(0,h.useState)(null),[f,p]=(0,h.useState)(null);return(0,h.useEffect)(()=>{let e=!0;return(async()=>{try{a(!0),d(null);let n=await l();if(!e)return;t(n.results??[])}catch{if(!e)return;d(`Unable to load movies right now.`)}finally{e&&a(!1)}})(),(async()=>{try{s(!0),p(null);let t=await u();if(!e)return;r(t.results??[])}catch{if(!e)return;p(`Unable to load movies right now.`)}finally{e&&s(!1)}})(),()=>{e=!1}},[]),{trendingMovies:e,popularMovies:n,trendingLoading:i,popularLoading:o,trendingError:c,popularError:f}},T=()=>{let{user:e}=n(),{trendingMovies:t,popularMovies:r,trendingLoading:i,popularLoading:a,trendingError:o,popularError:s}=w();return(0,d.jsxs)(`main`,{className:`min-h-screen bg-(--bg-primary)`,children:[(0,d.jsx)(C,{uid:e?.uid}),(0,d.jsx)(p,{movies:t,loading:i,error:o,title:`trending movies`,redirectLink:`/trending`,subtitle:`right now`,id:`trending`}),(0,d.jsx)(p,{movies:r,loading:a,error:s,title:`popular movies`,redirectLink:`/popular`,subtitle:`among people`,id:`popular`})]})};export{T as default};

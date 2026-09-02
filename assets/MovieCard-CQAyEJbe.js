@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{H as t,K as n,T as r,U as i,w as a}from"./index-Bla7ApB1.js";import{t as o}from"./movie-vBYrFcM9.js";var s=e(n(),1),c=r(),l=({message:e,type:t=`success`,onClose:n})=>((0,s.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,c.jsx)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W as i,q as a}from"./index-BqLEZ1aM.js";import{t as o}from"./movie-Ck9s_8Vc.js";var s=e(a(),1),c=t(),l=({message:e,type:t=`success`,onClose:n})=>((0,s.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,c.jsx)(`div`,{className:`
                 fixed
                 bottom-6
                 left-1/2
@@ -18,7 +18,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{H as t,K as n,T as r,U
                 text-white
                 shadow-2xl
                 backdrop-blur-xl
-            `,children:(0,c.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,c.jsx)(`span`,{className:t===`success`?`text-green-400`:`text-red-400`,children:t===`success`?`✓`:`!`}),e]})})),u=`https://image.tmdb.org/t/p/w500`,d={28:`Action`,12:`Adventure`,16:`Animation`,35:`Comedy`,80:`Crime`,99:`Documentary`,18:`Drama`,10751:`Family`,14:`Fantasy`,36:`History`,27:`Horror`,10402:`Music`,9648:`Mystery`,10749:`Romance`,878:`Sci-Fi`,10770:`TV Movie`,53:`Thriller`,10752:`War`,37:`Western`},f=e=>{let n=i(),{pathname:r}=t(),{user:f}=a(),[g,_]=(0,s.useState)(null),{id:v,title:y,poster_path:b,release_date:x,vote_average:S,genre_ids:C=[],orientation:w}=e,T=x?new Date(x).getFullYear():null,E=b?`${u}${b}`:`/placeholder-movie.jpg`,D=C.map(e=>d[e]).filter(Boolean),O=r!==`/my-list`&&r!==`/profile`,k=()=>{v&&n(`/movie/${v}`)};return(0,c.jsxs)(`article`,{"data-movie-id":v,onClick:k,tabIndex:0,role:`link`,onKeyDown:e=>{(e.key===`Enter`||e.key===` `)&&(e.preventDefault(),k())},className:w===`vertical`?`group relative w-full min-w-0 cursor-pointer`:`group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52`,children:[(0,c.jsxs)(`div`,{className:`
+            `,children:(0,c.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,c.jsx)(`span`,{className:t===`success`?`text-green-400`:`text-red-400`,children:t===`success`?`✓`:`!`}),e]})})),u=`https://image.tmdb.org/t/p/w500`,d={28:`Action`,12:`Adventure`,16:`Animation`,35:`Comedy`,80:`Crime`,99:`Documentary`,18:`Drama`,10751:`Family`,14:`Fantasy`,36:`History`,27:`Horror`,10402:`Music`,9648:`Mystery`,10749:`Romance`,878:`Sci-Fi`,10770:`TV Movie`,53:`Thriller`,10752:`War`,37:`Western`},f=e=>{let t=i(),{pathname:a}=r(),{user:f}=n(),[g,_]=(0,s.useState)(null),{id:v,title:y,poster_path:b,release_date:x,vote_average:S,genre_ids:C=[],orientation:w}=e,T=x?new Date(x).getFullYear():null,E=b?`${u}${b}`:`/placeholder-movie.jpg`,D=C.map(e=>d[e]).filter(Boolean),O=a!==`/my-list`&&a!==`/profile`,k=()=>{v&&t(`/movie/${v}`)};return(0,c.jsxs)(`article`,{"data-movie-id":v,onClick:k,tabIndex:0,role:`link`,onKeyDown:e=>{(e.key===`Enter`||e.key===` `)&&(e.preventDefault(),k())},className:w===`vertical`?`group relative w-full min-w-0 cursor-pointer`:`group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52`,children:[(0,c.jsxs)(`div`,{className:`
                     relative
                     aspect-2/3
                     overflow-hidden
@@ -69,7 +69,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{H as t,K as n,T as r,U
                         transition-opacity
                         duration-300
                         group-hover:opacity-100
-                    `}),S>0&&(0,c.jsx)(p,{value:S}),v&&O&&(0,c.jsx)(`button`,{type:`button`,"aria-label":y?`Add ${y} to my list`:`Add movie to my list`,onClick:async e=>{if(e.stopPropagation(),!f){n(`/login`);return}if(v)try{let e={id:v,title:y,poster_path:b,vote_average:S,genre_ids:C};await o(f.uid,e),_({message:`${y} added to your liked list`,type:`success`})}catch{_({message:`Failed to add movie`,type:`error`})}},className:`
+                    `}),S>0&&(0,c.jsx)(p,{value:S}),v&&O&&(0,c.jsx)(`button`,{type:`button`,"aria-label":y?`Add ${y} to my list`:`Add movie to my list`,onClick:async e=>{if(e.stopPropagation(),!f){t(`/login`);return}if(v)try{let e={id:v,title:y,poster_path:b,vote_average:S,genre_ids:C};await o(f.uid,e),_({message:`${y} added to your liked list`,type:`success`})}catch{_({message:`Failed to add movie`,type:`error`})}},className:`
                             absolute
                             right-3
                             top-3

@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H as i,K as a,L as o,T as s,U as c,V as l,z as u}from"./index-Bla7ApB1.js";import{t as d}from"./userService-2bG7E7tC.js";var f=e(a(),1),p=async(e,t,i,a)=>{let o=(await r(n,t,i)).user;return await u(o,{displayName:e}),await d(o.uid,{displayName:e,email:o.email??t,avatarId:a}),o},m=async(e,t)=>(await o(n,e,t)).user,h=s(),g=`https://image.tmdb.org/t/p/original/wigZBAmNrIhxp2FNGOROUAeHvdh.jpg`,_=()=>{let e=i(),n=c(),r=e.pathname===`/login`,[a,o]=(0,f.useState)({name:``,email:``,password:``,confirmPassword:``}),[s,u]=(0,f.useState)(!1),[d,_]=(0,f.useState)(``),x=e=>{o(t=>({...t,[e.target.name]:e.target.value}))},S=async e=>{e.preventDefault(),_(``),u(!0);try{if(r)await m(a.email.trim(),a.password),n(`/`);else{if(a.password!==a.confirmPassword){_(`Passwords do not match.`);return}if(a.password.length<6){_(`Password must be at least 6 characters.`);return}await p(a.name.trim(),a.email.trim(),a.password,`01`),n(`/`)}}catch(e){switch(typeof e==`object`&&e&&`code`in e?String(e.code):``){case`auth/email-already-in-use`:_(`An account with this email already exists.`);break;case`auth/invalid-email`:_(`Please enter a valid email address.`);break;case`auth/weak-password`:_(`Password is too weak.`);break;case`auth/invalid-credential`:_(`Invalid email or password.`);break;case`auth/user-disabled`:_(`This account has been disabled.`);break;case`auth/too-many-requests`:_(`Too many attempts. Please try again later.`);break;default:_(`Something went wrong. Please try again.`)}}finally{u(!1)}};return(0,h.jsxs)(`main`,{className:`relative min-h-screen overflow-hidden bg-black`,children:[(0,h.jsxs)(`div`,{className:`pointer-events-none absolute inset-0`,children:[(0,h.jsx)(`img`,{src:g,alt:``,"aria-hidden":`true`,className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H as i,I as a,R as o,U as s,V as c,W as l,q as u}from"./index-BqLEZ1aM.js";import{t as d}from"./userService-DF4F0PRh.js";var f=e(u(),1),p=async(e,r,i,o)=>{let s=(await a(n,r,i)).user;return await t(s,{displayName:e}),await d(s.uid,{displayName:e,email:s.email??r,avatarId:o}),s},m=async(e,t)=>(await o(n,e,t)).user,h=r(),g=`https://image.tmdb.org/t/p/original/wigZBAmNrIhxp2FNGOROUAeHvdh.jpg`,_=()=>{let e=s(),t=l(),n=e.pathname===`/login`,[r,a]=(0,f.useState)({name:``,email:``,password:``,confirmPassword:``}),[o,u]=(0,f.useState)(!1),[d,_]=(0,f.useState)(``),x=e=>{a(t=>({...t,[e.target.name]:e.target.value}))},S=async e=>{e.preventDefault(),_(``),u(!0);try{if(n)await m(r.email.trim(),r.password),t(`/`);else{if(r.password!==r.confirmPassword){_(`Passwords do not match.`);return}if(r.password.length<6){_(`Password must be at least 6 characters.`);return}await p(r.name.trim(),r.email.trim(),r.password,`01`),t(`/`)}}catch(e){switch(typeof e==`object`&&e&&`code`in e?String(e.code):``){case`auth/email-already-in-use`:_(`An account with this email already exists.`);break;case`auth/invalid-email`:_(`Please enter a valid email address.`);break;case`auth/weak-password`:_(`Password is too weak.`);break;case`auth/invalid-credential`:_(`Invalid email or password.`);break;case`auth/user-disabled`:_(`This account has been disabled.`);break;case`auth/too-many-requests`:_(`Too many attempts. Please try again later.`);break;default:_(`Something went wrong. Please try again.`)}}finally{u(!1)}};return(0,h.jsxs)(`main`,{className:`relative min-h-screen overflow-hidden bg-black`,children:[(0,h.jsxs)(`div`,{className:`pointer-events-none absolute inset-0`,children:[(0,h.jsx)(`img`,{src:g,alt:``,"aria-hidden":`true`,className:`
                         h-full
                         w-full
                         object-cover
@@ -43,7 +43,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                         justify-between
                         px-6
                         lg:px-8
-                    `,children:[(0,h.jsxs)(l,{to:`/`,"aria-label":`CineScope home`,className:`
+                    `,children:[(0,h.jsxs)(i,{to:`/`,"aria-label":`CineScope home`,className:`
                             group
                             flex
                             items-center
@@ -63,7 +63,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                 rounded-full
                                 bg-(--accent-secondary)
                                 shadow-[0_0_10px_var(--accent-secondary)]
-                            `})]}),(0,h.jsx)(l,{to:`/`,className:`
+                            `})]}),(0,h.jsx)(i,{to:`/`,className:`
                             text-xs
                             font-semibold
                             text-white/40
@@ -117,7 +117,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                 leading-7
                                 text-white/45
                                 xl:text-base
-                            `,children:r?`Your movies. Your ratings. Your taste. Pick up where you left off and discover something worth watching.`:`Create your CineScope profile and start building a movie collection that actually reflects your taste.`}),(0,h.jsxs)(`div`,{className:`
+                            `,children:n?`Your movies. Your ratings. Your taste. Pick up where you left off and discover something worth watching.`:`Create your CineScope profile and start building a movie collection that actually reflects your taste.`}),(0,h.jsxs)(`div`,{className:`
                                 mt-10
                                 flex
                                 flex-wrap
@@ -136,12 +136,12 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                     uppercase
                                     tracking-[0.3em]
                                     text-(--accent-primary)
-                                `,children:r?`Welcome back`:`Create account`}),(0,h.jsx)(`h1`,{className:`
+                                `,children:n?`Welcome back`:`Create account`}),(0,h.jsx)(`h1`,{className:`
                                     text-4xl
                                     font-black
                                     tracking-tight
                                     text-white
-                                `,children:r?`Welcome back`:`Join CineScope`})]}),(0,h.jsxs)(`div`,{className:`
+                                `,children:n?`Welcome back`:`Join CineScope`})]}),(0,h.jsxs)(`div`,{className:`
                                 relative
                                 min-h-175
                                 w-full
@@ -160,12 +160,12 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                         uppercase
                                         tracking-[0.25em]
                                         text-(--accent-primary)
-                                    `,children:r?`Sign in`:`Get started`}),(0,h.jsx)(`h2`,{className:`
+                                    `,children:n?`Sign in`:`Get started`}),(0,h.jsx)(`h2`,{className:`
                                         mt-2
                                         text-2xl
                                         font-black
                                         text-white
-                                    `,children:r?`Continue watching`:`Create your account`})]}),(0,h.jsxs)(`div`,{className:`
+                                    `,children:n?`Continue watching`:`Create your account`})]}),(0,h.jsxs)(`div`,{className:`
                                     relative
                                     mb-7
                                     grid
@@ -187,8 +187,8 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                         transition-transform
                                         duration-300
                                         ease-out
-                                        ${r?`translate-x-0`:`translate-x-full`}
-                                    `}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!s&&n(`/login`),className:`
+                                        ${n?`translate-x-0`:`translate-x-full`}
+                                    `}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!o&&t(`/login`),className:`
                                         relative
                                         z-10
                                         rounded-lg
@@ -198,8 +198,8 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                         font-bold
                                         transition-colors
                                         duration-300
-                                        ${r?`text-white`:`text-white/40 hover:text-white/70`}
-                                    `,children:`Sign In`}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!s&&n(`/register`),className:`
+                                        ${n?`text-white`:`text-white/40 hover:text-white/70`}
+                                    `,children:`Sign In`}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!o&&t(`/register`),className:`
                                         relative
                                         z-10
                                         rounded-lg
@@ -209,7 +209,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                         font-bold
                                         transition-colors
                                         duration-300
-                                        ${r?`text-white/40 hover:text-white/70`:`text-white`}
+                                        ${n?`text-white/40 hover:text-white/70`:`text-white`}
                                     `,children:`Sign Up`})]}),d&&(0,h.jsx)(`div`,{className:`
                                         mb-5
                                         rounded-xl
@@ -227,22 +227,22 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,E as n,F as r,H
                                         transition-all
                                         duration-300
                                         ease-out
-                                        ${r?`translate-x-0 opacity-100`:`-translate-x-8 pointer-events-none opacity-0`}
-                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-5`,children:[(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:a.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Enter your password`,value:a.password,onChange:x,autoComplete:`current-password`,required:!0,minLength:6}),(0,h.jsx)(`div`,{className:`flex justify-end`,children:(0,h.jsx)(t,{to:`/forgot-password`,className:`
+                                        ${n?`translate-x-0 opacity-100`:`-translate-x-8 pointer-events-none opacity-0`}
+                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-5`,children:[(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:r.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Enter your password`,value:r.password,onChange:x,autoComplete:`current-password`,required:!0,minLength:6}),(0,h.jsx)(`div`,{className:`flex justify-end`,children:(0,h.jsx)(c,{to:`/forgot-password`,className:`
         text-[11px]
         font-semibold
         text-white/35
         transition-colors
         hover:text-(--accent-primary)
-    `,children:`Forgot password?`})}),(0,h.jsx)(b,{loading:s,text:`Sign In`})]})}),(0,h.jsx)(`div`,{className:`
+    `,children:`Forgot password?`})}),(0,h.jsx)(b,{loading:o,text:`Sign In`})]})}),(0,h.jsx)(`div`,{className:`
                                         absolute
                                         inset-x-0
                                         top-0
                                         transition-all
                                         duration-300
                                         ease-out
-                                        ${r?`translate-x-8 pointer-events-none opacity-0`:`translate-x-0 opacity-100`}
-                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-4`,children:[(0,h.jsx)(y,{label:`Name`,name:`name`,type:`text`,placeholder:`Your name`,value:a.name,onChange:x,autoComplete:`name`,required:!0}),(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:a.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Create a password`,value:a.password,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(y,{label:`Confirm password`,name:`confirmPassword`,type:`password`,placeholder:`Confirm your password`,value:a.confirmPassword,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(b,{loading:s,text:`Create Account`})]})})]}),(0,h.jsx)(`p`,{className:`
+                                        ${n?`translate-x-8 pointer-events-none opacity-0`:`translate-x-0 opacity-100`}
+                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-4`,children:[(0,h.jsx)(y,{label:`Name`,name:`name`,type:`text`,placeholder:`Your name`,value:r.name,onChange:x,autoComplete:`name`,required:!0}),(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:r.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Create a password`,value:r.password,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(y,{label:`Confirm password`,name:`confirmPassword`,type:`password`,placeholder:`Confirm your password`,value:r.confirmPassword,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(b,{loading:o,text:`Create Account`})]})})]}),(0,h.jsx)(`p`,{className:`
                                     absolute
                                     inset-x-7
                                     bottom-3
