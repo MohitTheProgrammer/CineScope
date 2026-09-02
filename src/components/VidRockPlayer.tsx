@@ -33,9 +33,11 @@ const VidRockPlayer = ({
         };
     }, [tmdbId]);
 
+    
+
     const playerUrl =
         !authLoading && user
-            ? `https://vidrock.net/movie/${tmdbId}?autoplay=true&download=true`
+            ? `https://vidrock.net/movie/${tmdbId}?autoplay=true&download=false`
             : undefined;
 
 
