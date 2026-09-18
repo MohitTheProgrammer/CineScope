@@ -98,13 +98,23 @@ export const getMovieRating = async (
 
     const rated = data.rated ?? {};
 
-    const movieRating = rated[String(movieId)];
+    const storedRating = rated[String(movieId)];
 
-    if (
-      !movieRating ||
-      movieRating.rated !== true ||
-      typeof movieRating.rating !== "number"
-    ) {
+    // Ratings are stored as `{ [movieId]: number }`. Accept the previous
+    // nested shape as well so users with older data do not lose their rating.
+    const movieRating =
+      typeof storedRating === "number"
+        ? storedRating
+        : storedRating &&
+            typeof storedRating === "object" &&
+            "rated" in storedRating &&
+            "rating" in storedRating &&
+            storedRating.rated === true &&
+            typeof storedRating.rating === "number"
+          ? storedRating.rating
+          : null;
+
+    if (movieRating === null || !Number.isFinite(movieRating)) {
       console.log(`[MovieService] Movie is not rated: ${movieId}`);
 
       return null;
@@ -112,7 +122,7 @@ export const getMovieRating = async (
 
     console.log(`[MovieService] Movie rating fetched successfully: ${movieId}`);
 
-    return movieRating.rating;
+    return movieRating;
   } catch (error) {
     console.error(
       `[MovieService] Failed to get movie rating: ${movieId}`,
@@ -180,6 +190,27 @@ export const removeLikedMovie = async (
     console.error("[MovieService] Failed to remove like:", error);
 
     throw error;
+  }
+};
+
+export const isMovieLiked = async (
+  uid: string,
+  movieId: number,
+): Promise<boolean> => {
+  try {
+    const snapshot = await getDoc(doc(db, "users", uid));
+
+    if (!snapshot.exists()) {
+      return false;
+    }
+
+    const liked = snapshot.data().liked;
+
+    return Array.isArray(liked) && liked.includes(movieId);
+  } catch (error) {
+    console.error(`[MovieService] Failed to check liked movie: ${movieId}`, error);
+
+    return false;
   }
 };
 
@@ -468,18 +499,18 @@ export const getUserMovieState = async (
     const watchlisted =
       Array.isArray(data.watchlist) && data.watchlist.includes(movieId);
 
-    const rated =
+    const storedRating =
       data.rated &&
-      typeof data.rated === "object" &&
-      Object.prototype.hasOwnProperty.call(data.rated, String(movieId));
-
-    const rating = rated ? Number(data.rated[String(movieId)]) : null;
+      typeof data.rated === "object"
+        ? data.rated[String(movieId)]
+        : undefined;
+    const rating = normalizeRating(storedRating);
 
     const result = {
       liked,
       watched,
       watchlisted,
-      rated: Boolean(rated),
+      rated: rating !== null,
       rating,
     };
 
@@ -491,6 +522,26 @@ export const getUserMovieState = async (
 
     throw error;
   }
+};
+
+const normalizeRating = (value: unknown): number | null => {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (
+    value &&
+    typeof value === "object" &&
+    "rated" in value &&
+    "rating" in value &&
+    value.rated === true &&
+    typeof value.rating === "number" &&
+    Number.isFinite(value.rating)
+  ) {
+    return value.rating;
+  }
+
+  return null;
 };
 
 /* =========================================================

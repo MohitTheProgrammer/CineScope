@@ -221,7 +221,7 @@ const MovieActions = ({
                                     />
 
                                     <span>
-                                        {userRating
+                                        {userRating !== null
                                             ? `Your rating: ${userRating}/5`
                                             : "Rated"}
                                     </span>

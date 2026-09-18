@@ -1,6 +1,6 @@
 import MovieCard from "../MovieCard";
 
-import type { UserMovie } from "../../services/userService";
+import type { UserMovie } from "../../services/recommendation";
 import { userMovieToMovie } from "../../utils/movieMapper";
 
 interface TasteMoviesProps {

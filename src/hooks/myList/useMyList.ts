@@ -37,6 +37,15 @@ export interface MyListMovie {
   poster_path: string | null;
   genre_ids: number[];
   vote_average: number;
+
+  adult: boolean;
+  backdrop_path: null;
+  original_language: string;
+  original_title: string;
+  popularity: number;
+  release_date: string;
+  video: boolean;
+  vote_count: number;
 }
 
 export interface MovieGroup {
@@ -248,6 +257,14 @@ const toMovie = (movie: UserMovie): MyListMovie => {
     poster_path: movie.posterPath ?? null,
     genre_ids: movie.genreIds ?? [],
     vote_average: movie.voteAverage ?? 0,
+    adult: false,
+    backdrop_path: null,
+    original_language: "",
+    original_title: movie.title,
+    popularity: 0,
+    release_date: "",
+    video: false,
+    vote_count: 0,
   };
 };
 

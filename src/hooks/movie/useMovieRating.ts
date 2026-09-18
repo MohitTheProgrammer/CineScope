@@ -33,14 +33,11 @@ export const useMovieRating = (movie: Movie | null): UseMovieRatingResult => {
    * Check whether the current user has
    * already rated this movie.
    *
-   * New structure:
+   * Stored structure:
    *
    * users/{uid}
    *     rated: {
-   *         "{movieId}": {
-   *             rated: true,
-   *             rating: 4.5
-   *         }
+   *         "{movieId}": 4.5
    *     }
    */
   useEffect(() => {
@@ -58,8 +55,6 @@ export const useMovieRating = (movie: Movie | null): UseMovieRatingResult => {
         setCheckingRated(true);
 
         const rating = await getMovieRating(user.uid, movie.id);
-        console.log({ rating });
-
         if (!cancelled) {
           setUserRating(rating);
           setRated(rating !== null);

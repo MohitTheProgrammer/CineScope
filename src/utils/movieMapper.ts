@@ -1,5 +1,5 @@
 import type { Movie } from "../types/movie";
-import type { UserMovie } from "../services/userService";
+import type { UserMovie } from "../services/recommendation";
 
 export const userMovieToMovie = (
     movie: UserMovie

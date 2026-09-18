@@ -2,9 +2,9 @@ import type { Movie } from "../types/movie";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useUser } from "../context/UserContext";
-import { addLikedMovie } from "../services/movie";
+import { addLikedMovie, isMovieLiked } from "../services/movie";
 import Toast from "./Toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
@@ -42,6 +42,9 @@ const MovieCard = (movie: MovieCardProps) => {
     message: string;
     type: "success" | "error";
   } | null>(null);
+  const [liked, setLiked] = useState(false);
+  const [checkingLiked, setCheckingLiked] = useState(false);
+  const [savingLike, setSavingLike] = useState(false);
 
   const {
     id,
@@ -64,6 +67,33 @@ const MovieCard = (movie: MovieCardProps) => {
   const shouldShowLikeButton =
     pathname !== "/my-list" && pathname !== "/profile";
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadLikedState = async () => {
+      if (!user?.uid || !id) {
+        setLiked(false);
+        setCheckingLiked(false);
+        return;
+      }
+
+      setCheckingLiked(true);
+
+      const isLiked = await isMovieLiked(user.uid, id);
+
+      if (!cancelled) {
+        setLiked(isLiked);
+        setCheckingLiked(false);
+      }
+    };
+
+    void loadLikedState();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, user?.uid]);
+
   const handleMovieClick = () => {
     if (!id) return;
 
@@ -77,9 +107,11 @@ const MovieCard = (movie: MovieCardProps) => {
       return;
     }
 
-    if (!id) return;
+    if (!id || liked || savingLike) return;
 
     try {
+      setSavingLike(true);
+
       const likedMovie = {
         id,
         title,
@@ -90,6 +122,8 @@ const MovieCard = (movie: MovieCardProps) => {
       };
 
       await addLikedMovie(user.uid, likedMovie);
+
+      setLiked(true);
 
       setToast({
         message: `${title} added to your liked list`,
@@ -102,6 +136,8 @@ const MovieCard = (movie: MovieCardProps) => {
         message: "Failed to add movie",
         type: "error",
       });
+    } finally {
+      setSavingLike(false);
     }
   };
 
@@ -202,13 +238,20 @@ const MovieCard = (movie: MovieCardProps) => {
 
         {vote_average > 0 && <Rating value={vote_average} />}
 
-        {id && shouldShowLikeButton && (
+        {id && (shouldShowLikeButton || liked) && (
           <button
             type="button"
             aria-label={
-              title ? `Add ${title} to my list` : "Add movie to my list"
+              liked
+                ? title
+                  ? `${title} is in your liked list`
+                  : "Movie is in your liked list"
+                : title
+                  ? `Add ${title} to my liked list`
+                  : "Add movie to my liked list"
             }
             onClick={handleLike}
+            disabled={checkingLiked || savingLike || liked}
             className="
                             absolute
                             right-3
@@ -231,9 +274,11 @@ const MovieCard = (movie: MovieCardProps) => {
                             hover:bg-(--accent-primary)
                             hover:text-white
                             group-hover:opacity-100 group-focus-within:opacity-100
+                            disabled:cursor-not-allowed
+                            disabled:opacity-100
                         "
           >
-            <PlusIcon />
+            {liked ? <CheckIcon /> : <PlusIcon />}
           </button>
         )}
 
@@ -428,6 +473,21 @@ const PlusIcon = () => (
   >
     <path d="M12 5v14" />
     <path d="M5 12h14" />
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="size-4"
+    aria-hidden="true"
+  >
+    <path d="m5 12 4.5 4.5L19 7" />
   </svg>
 );
 

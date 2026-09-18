@@ -1,29 +1,62 @@
-export type ThemeName =
-    | "neon"
-    | "purple"
-    | "cyan"
-    | "red";
-
 export interface Theme {
-    name: ThemeName;
+    name: string;
+
     label: string;
+
+    color: string;
 }
+
 
 export const themes: Theme[] = [
     {
         name: "neon",
-        label: "Neon Pink",
+        label: "Neon",
+        color: "#ff2da6",
     },
+
     {
         name: "purple",
-        label: "Electric Purple",
+        label: "Purple",
+        color: "#a855f7",
     },
+
     {
         name: "cyan",
-        label: "Cyber Cyan",
+        label: "Cyan",
+        color: "#00e5ff",
     },
+
     {
         name: "red",
-        label: "Crimson",
+        label: "Red",
+        color: "#ff3b3b",
+    },
+
+    {
+        name: "green",
+        label: "Green",
+        color: "#10b981",
+    },
+
+    {
+        name: "orange",
+        label: "Orange",
+        color: "#f59e0b",
+    },
+
+    {
+        name: "rose",
+        label: "Rose",
+        color: "#f43f5e",
+    },
+
+    {
+        name: "blue",
+        label: "Blue",
+        color: "#3b82f6",
     },
 ];
+
+
+export type ThemeName =
+    (typeof themes)[number]["name"];

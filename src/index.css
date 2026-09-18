@@ -1,4 +1,6 @@
 @import "tailwindcss";
+
+
 :root {
   --bg-primary: #05020a;
   --bg-secondary: #0d0815;
@@ -16,6 +18,10 @@
 }
 
 
+/* =========================================================
+   PURPLE
+   ========================================================= */
+
 [data-theme="purple"] {
   --bg-primary: #06030b;
   --bg-secondary: #10071c;
@@ -27,6 +33,10 @@
   --accent-glow: rgba(168, 85, 247, 0.3);
 }
 
+
+/* =========================================================
+   CYAN
+   ========================================================= */
 
 [data-theme="cyan"] {
   --bg-primary: #020708;
@@ -40,6 +50,10 @@
 }
 
 
+/* =========================================================
+   RED
+   ========================================================= */
+
 [data-theme="red"] {
   --bg-primary: #090202;
   --bg-secondary: #150606;
@@ -50,19 +64,94 @@
 
   --accent-glow: rgba(255, 59, 59, 0.3);
 }
+
+
+/* =========================================================
+   GREEN / EMERALD
+   ========================================================= */
+
+[data-theme="green"] {
+  --bg-primary: #020a07;
+  --bg-secondary: #061711;
+  --bg-glass: rgba(4, 17, 12, 0.82);
+
+  --accent-primary: #10b981;
+  --accent-secondary: #34d399;
+
+  --accent-glow: rgba(16, 185, 129, 0.3);
+}
+
+
+/* =========================================================
+   ORANGE / AMBER
+   ========================================================= */
+
+[data-theme="orange"] {
+  --bg-primary: #0b0702;
+  --bg-secondary: #191006;
+  --bg-glass: rgba(18, 10, 3, 0.82);
+
+  --accent-primary: #f59e0b;
+  --accent-secondary: #fb923c;
+
+  --accent-glow: rgba(245, 158, 11, 0.3);
+}
+
+
+/* =========================================================
+   ROSE
+   ========================================================= */
+
+[data-theme="rose"] {
+  --bg-primary: #0b0207;
+  --bg-secondary: #190610;
+  --bg-glass: rgba(18, 4, 11, 0.82);
+
+  --accent-primary: #f43f5e;
+  --accent-secondary: #ec4899;
+
+  --accent-glow: rgba(244, 63, 94, 0.3);
+}
+
+
+/* =========================================================
+   BLUE / ELECTRIC BLUE
+   ========================================================= */
+
+[data-theme="blue"] {
+  --bg-primary: #02060d;
+  --bg-secondary: #06101d;
+  --bg-glass: rgba(4, 11, 22, 0.82);
+
+  --accent-primary: #3b82f6;
+  --accent-secondary: #06b6d4;
+
+  --accent-glow: rgba(59, 130, 246, 0.3);
+}
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
 * {
   box-sizing: border-box;
 }
+
 
 html {
   scroll-behavior: smooth;
 }
 
+
 body {
   margin: 0;
   min-width: 320px;
+
   background: var(--bg-primary);
+
   color: var(--text-primary);
+
   font-family:
     Inter,
     ui-sans-serif,
@@ -73,14 +162,17 @@ body {
     sans-serif;
 }
 
+
 button,
 input {
   font: inherit;
 }
 
+
 button {
   cursor: pointer;
 }
+
 
 ::selection {
   background: var(--accent-primary);
@@ -88,57 +180,86 @@ button {
 }
 
 
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
 ::-webkit-scrollbar {
   width: 7px;
 }
+
 
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
 
+
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--accent-primary), var(--accent-secondary));
+  background:
+    linear-gradient(
+      var(--accent-primary),
+      var(--accent-secondary)
+    );
+
   border-radius: 999px;
 }
 
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
 
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
   outline: 2px solid var(--accent-primary);
+
   outline-offset: 3px;
 }
 
 
+/* =========================================================
+   GLASS
+   ========================================================= */
+
 .glass {
-  background: rgba(13, 8, 21, 0.7);
+  background: var(--bg-glass);
+
   border: 1px solid var(--border);
+
   backdrop-filter: blur(18px);
+
   -webkit-backdrop-filter: blur(18px);
 }
 
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
 @keyframes splash-loading {
-    0% {
-        transform: translateX(-100%);
-    }
+  0% {
+    transform: translateX(-100%);
+  }
 
-    50% {
-        transform: translateX(100%);
-    }
+  50% {
+    transform: translateX(100%);
+  }
 
-    100% {
-        transform: translateX(200%);
-    }
+  100% {
+    transform: translateX(200%);
+  }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
