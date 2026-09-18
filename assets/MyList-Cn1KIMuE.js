@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V as i,W as a,d as o,q as s,r as c,t as l}from"./index-DgQ_4D70.js";import{a as u}from"./recommendation-BS4xJBgt.js";import{t as d}from"./MovieCard-I91NcShB.js";import{t as f}from"./movieMapper-DiELs3Qi.js";var p=t(),m=({movielist:e,title:t})=>{let r=a(),i=e=>{r(`/movie/${e}`)};return(0,p.jsxs)(`section`,{className:`mx-auto max-w-7xl px-1 pb-24 lg:px-8`,children:[(0,p.jsxs)(`div`,{className:`flex items-end justify-between gap-4`,children:[(0,p.jsxs)(`div`,{children:[(0,p.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,p.jsx)(`span`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W as i,X as a,d as o,q as s,r as c,t as l}from"./index-CBwXnnyZ.js";import{r as u}from"./userService-HPq-o6Fr.js";import{a as d}from"./movie-Rjv1zAsd.js";import{t as f}from"./MovieCard-D2KLO_0u.js";var p=t(),m=({movielist:e,title:t})=>{let r=s(),i=e=>{r(`/movie/${e}`)};return(0,p.jsxs)(`section`,{className:`mx-auto max-w-7xl px-1 pb-24 lg:px-8`,children:[(0,p.jsxs)(`div`,{className:`flex items-end justify-between gap-4`,children:[(0,p.jsxs)(`div`,{children:[(0,p.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,p.jsx)(`span`,{className:`
                                 size-1.5
                                 rounded-full
                                 bg-(--accent-primary)
@@ -162,7 +162,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V
                                         `}),(0,p.jsx)(`span`,{className:`
                                             text-[10px]
                                             text-white/25
-                                        `,children:`Movie`})]})]})]},e.id))})]})},h=e(s(),1),g=()=>{let{user:e,loading:t}=r(),[n,i]=(0,h.useState)([]),[a,o]=(0,h.useState)(!0),[s,c]=(0,h.useState)(``),[l,d]=(0,h.useState)(``),[p,m]=(0,h.useState)(null),g=(0,h.useCallback)(async()=>{if(!e){i([]),o(!1);return}try{o(!0),c(``);let t=(await u(e.uid)).filter(e=>e.watched||e.watchlisted||e.liked||e.rated);i(t)}catch{c(`We couldn't load your saved movies. Please try again.`)}finally{o(!1)}},[e]);return(0,h.useEffect)(()=>{t||g()},[e,t,g]),{user:e,userLoading:t,movies:n,loading:a,error:s,searchQuery:l,setSearchQuery:d,movieGroups:(0,h.useMemo)(()=>{let e=l.trim().toLowerCase(),t=t=>!e||t.title.toLowerCase().includes(e);return[{title:`Want to Watch`,movies:n.filter(e=>e.watchlisted&&t(e)).map(f)},{title:`Watched`,movies:n.filter(e=>e.watched&&t(e)).map(f)},{title:`Liked`,movies:n.filter(e=>e.liked&&t(e)).map(f)},{title:`Rated`,movies:n.filter(e=>e.rated&&t(e)).map(f)}].filter(e=>e.movies.length>0)},[n,l]),selectedGroup:p,setSelectedGroup:m,reload:g}},_=({authenticated:e,searchQuery:t})=>e?(0,p.jsxs)(`div`,{className:`
+                                        `,children:`Movie`})]})]})]},e.id))})]})},h=e(a(),1),g=()=>{let{user:e,loading:t}=r(),[n,i]=(0,h.useState)([]),[a,o]=(0,h.useState)(!0),[s,c]=(0,h.useState)(``),[l,f]=(0,h.useState)(``),[p,m]=(0,h.useState)(null),g=(0,h.useCallback)(async()=>{if(!e){i([]),o(!1);return}try{o(!0),c(``);let t=await u(e.uid),n=Array.from(new Set([...t.liked,...t.watched,...t.watchlist,...Object.keys(t.rated).map(Number)]));if(n.length===0){i([]);return}let r=(await d(n)).map(e=>{let n=e.movieId,r=t.rated[String(n)]??null;return{movieId:n,title:e.title??``,posterPath:e.posterPath??null,movieSynopsis:e.movieSynopsis??``,genreIds:e.genreIds??[],voteAverage:e.voteAverage??0,liked:t.liked.includes(n),watched:t.watched.includes(n),watchlisted:t.watchlist.includes(n),rated:r!==null,rating:r}});i(r),console.log(`[useMyList] Movies loaded successfully:`,r)}catch(e){console.error(`[useMyList] Failed to load user movies:`,e),c(`We couldn't load your saved movies. Please try again.`)}finally{o(!1)}},[e]);return(0,h.useEffect)(()=>{t||g()},[e,t,g]),{user:e,userLoading:t,movies:n,loading:a,error:s,searchQuery:l,setSearchQuery:f,movieGroups:(0,h.useMemo)(()=>{let e=l.trim().toLowerCase(),t=t=>!e||t.title.toLowerCase().includes(e);return[{title:`Want to Watch`,movies:n.filter(e=>e.watchlisted&&t(e)).map(_)},{title:`Watched`,movies:n.filter(e=>e.watched&&t(e)).map(_)},{title:`Liked`,movies:n.filter(e=>e.liked&&t(e)).map(_)},{title:`Rated`,movies:n.filter(e=>e.rated&&t(e)).map(_)}].filter(e=>e.movies.length>0)},[n,l]),selectedGroup:p,setSelectedGroup:m,reload:g}},_=e=>({id:e.movieId,title:e.title,overview:e.movieSynopsis??``,poster_path:e.posterPath??null,genre_ids:e.genreIds??[],vote_average:e.voteAverage??0,adult:!1,backdrop_path:null,original_language:``,original_title:e.title,popularity:0,release_date:``,video:!1,vote_count:0}),v=({authenticated:e,searchQuery:t})=>e?(0,p.jsxs)(`div`,{className:`
                 mt-10
                 rounded-2xl
                 border
@@ -201,7 +201,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V
                             text-sm
                             font-bold
                             text-white
-                        `,children:`Sign in`})]})}),v=({message:e,onRetry:t})=>(0,p.jsxs)(`div`,{className:`
+                        `,children:`Sign in`})]})}),y=({message:e,onRetry:t})=>(0,p.jsxs)(`div`,{className:`
                 mt-10
                 rounded-2xl
                 border
@@ -214,7 +214,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V
                     font-bold
                     underline
                     underline-offset-4
-                `,children:`Try again`})]}),y=({group:e,onViewAll:t})=>(0,p.jsxs)(`section`,{children:[(0,p.jsxs)(`div`,{className:`
+                `,children:`Try again`})]}),b=({group:e,onViewAll:t})=>(0,p.jsxs)(`section`,{children:[(0,p.jsxs)(`div`,{className:`
                     mb-6
                     flex
                     items-end
@@ -247,7 +247,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V
                     pb-6
                     scrollbar-none
                     [&::-webkit-scrollbar]:hidden
-                `,children:e.movies.slice(0,10).map(e=>(0,p.jsx)(d,{...e,orientation:`horizontal`},e.id))})]}),b=({searchQuery:e,onSearchChange:t})=>(0,p.jsxs)(`header`,{children:[(0,p.jsx)(`p`,{className:`
+                `,children:e.movies.slice(0,10).map(e=>(0,p.jsx)(f,{...e,orientation:`horizontal`},e.id))})]}),x=({searchQuery:e,onSearchChange:t})=>(0,p.jsxs)(`header`,{children:[(0,p.jsx)(`p`,{className:`
                     text-xs
                     font-bold
                     uppercase
@@ -273,7 +273,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V
                         transition-colors
                         placeholder:text-white/35
                         focus:border-(--accent-primary)
-                    `})]})]}),x=()=>(0,p.jsx)(`div`,{className:`
+                    `})]})]}),S=()=>(0,p.jsx)(`div`,{className:`
                 mt-10
                 grid
                 grid-cols-2
@@ -295,7 +295,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V
                                 w-3/4
                                 rounded
                                 bg-white/5
-                            `})]},t))}),S=()=>{let{user:e,userLoading:t,movies:n,loading:r,error:i,searchQuery:a,setSearchQuery:o,movieGroups:s,selectedGroup:c,setSelectedGroup:l,reload:u}=g();return t?(0,p.jsx)(`main`,{className:`
+                            `})]},t))}),C=()=>{let{user:e,userLoading:t,movies:n,loading:r,error:i,searchQuery:a,setSearchQuery:o,movieGroups:s,selectedGroup:c,setSelectedGroup:l,reload:u}=g();return t?(0,p.jsx)(`main`,{className:`
                     min-h-screen
                     bg-(--bg-primary)
                 `}):e?c?(0,p.jsxs)(`main`,{className:`
@@ -322,7 +322,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,V
                 pb-20
                 pt-32
                 lg:px-8
-            `,children:(0,p.jsxs)(`div`,{className:`mx-auto max-w-7xl`,children:[(0,p.jsx)(b,{searchQuery:a,onSearchChange:o}),r&&(0,p.jsx)(x,{}),!r&&i&&(0,p.jsx)(v,{message:i,onRetry:()=>void u()}),!r&&!i&&n.length===0&&(0,p.jsx)(_,{authenticated:!0}),!r&&!i&&n.length>0&&s.length===0&&(0,p.jsx)(_,{authenticated:!0,searchQuery:a}),!r&&!i&&s.length>0&&(0,p.jsx)(`div`,{className:`
+            `,children:(0,p.jsxs)(`div`,{className:`mx-auto max-w-7xl`,children:[(0,p.jsx)(x,{searchQuery:a,onSearchChange:o}),r&&(0,p.jsx)(S,{}),!r&&i&&(0,p.jsx)(y,{message:i,onRetry:()=>void u()}),!r&&!i&&n.length===0&&(0,p.jsx)(v,{authenticated:!0}),!r&&!i&&n.length>0&&s.length===0&&(0,p.jsx)(v,{authenticated:!0,searchQuery:a}),!r&&!i&&s.length>0&&(0,p.jsx)(`div`,{className:`
                                 mt-12
                                 space-y-16
-                            `,children:s.map(e=>(0,p.jsx)(y,{group:e,onViewAll:()=>l(e)},e.title))})]})}):(0,p.jsx)(_,{authenticated:!1})};export{S as default};
+                            `,children:s.map(e=>(0,p.jsx)(b,{group:e,onViewAll:()=>l(e)},e.title))})]})}):(0,p.jsx)(v,{authenticated:!1})};export{C as default};

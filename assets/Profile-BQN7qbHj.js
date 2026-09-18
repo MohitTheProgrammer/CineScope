@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,O as i,P as a,W as o,k as s,o as c,q as l,w as u,z as d}from"./index-DgQ_4D70.js";import{i as f}from"./userService-GHevR2W9.js";var p=e(l(),1),m=r(),h=({user:e,avatar:t,loggingOut:n,onLogout:r})=>(0,m.jsxs)(`section`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,H as r,L as i,O as a,U as o,X as s,k as c,o as l,q as u,w as d}from"./index-CBwXnnyZ.js";import{a as f}from"./userService-HPq-o6Fr.js";var p=e(s(),1),m=n(),h=({user:e,avatar:t,loggingOut:n,onLogout:r})=>(0,m.jsxs)(`section`,{className:`
                 relative
                 overflow-hidden
                 rounded-3xl
@@ -110,7 +110,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,O
                                         items-center
                                         justify-center
                                         bg-black/30
-                                    `,children:(0,m.jsx)(c,{})})]},n.id)})})]}),v=({displayName:e,selectedAvatar:t,saving:n,onDisplayNameChange:r,onAvatarChange:i,onSave:a})=>(0,m.jsxs)(`section`,{className:`
+                                    `,children:(0,m.jsx)(l,{})})]},n.id)})})]}),v=({displayName:e,selectedAvatar:t,saving:n,onDisplayNameChange:r,onAvatarChange:i,onSave:a})=>(0,m.jsxs)(`section`,{className:`
                 mt-6
                 rounded-3xl
                 border
@@ -238,21 +238,24 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,O
                                         rounded-full
                                         bg-white/10
                                         sm:size-20
-                                    `},t))}),(0,m.jsx)(`div`,{className:`mt-8 h-11 w-32 rounded-xl bg-white/10`})]})]})}),b=[{name:`neon`,label:`Neon Pink`},{name:`purple`,label:`Electric Purple`},{name:`cyan`,label:`Cyber Cyan`},{name:`red`,label:`Crimson`}],x=()=>{let{theme:e,setTheme:t}=u();return(0,m.jsx)(`div`,{className:`grid grid-cols-2 gap-3 sm:grid-cols-4`,children:b.map(n=>{let r=e===n.name,i=n.name===`neon`?`#ff2da6`:n.name===`purple`?`#a855f7`:n.name===`cyan`?`#00e5ff`:`#ff3b3b`;return(0,m.jsxs)(`button`,{type:`button`,"aria-label":`Switch to ${n.label}`,title:n.label,onClick:()=>t(n.name),className:`
+                                    `},t))}),(0,m.jsx)(`div`,{className:`mt-8 h-11 w-32 rounded-xl bg-white/10`})]})]})}),b=[{name:`neon`,label:`Neon`,color:`#ff2da6`},{name:`purple`,label:`Purple`,color:`#a855f7`},{name:`cyan`,label:`Cyan`,color:`#00e5ff`},{name:`red`,label:`Red`,color:`#ff3b3b`},{name:`green`,label:`Green`,color:`#10b981`},{name:`orange`,label:`Orange`,color:`#f59e0b`},{name:`rose`,label:`Rose`,color:`#f43f5e`},{name:`blue`,label:`Blue`,color:`#3b82f6`}],x=()=>{let{theme:e,setTheme:t}=d();return(0,m.jsx)(`div`,{className:`grid grid-cols-2 gap-3 sm:grid-cols-4`,children:b.map(n=>{let r=e===n.name;return(0,m.jsxs)(`button`,{type:`button`,"aria-label":`Switch to ${n.label}`,title:n.label,onClick:()=>t(n.name),className:`
                             group relative flex min-h-24
                             flex-col items-center justify-center
                             rounded-xl border
                             transition-all duration-300
+
                             ${r?`border-white/25 bg-white/10`:`border-white/8 bg-white/2 hover:border-white/15 hover:bg-white/6`}
                         `,children:[(0,m.jsx)(`span`,{className:`
                                 size-8 rounded-full
                                 transition-all duration-300
+
                                 ${r?`scale-110`:`group-hover:scale-110`}
-                            `,style:{backgroundColor:i,boxShadow:r?`0 0 24px ${i}70`:`0 0 12px ${i}20`}}),(0,m.jsx)(`span`,{className:`
-                                mt-3 text-[9px] font-bold uppercase
-                                tracking-[0.15em]
+                            `,style:{backgroundColor:n.color,boxShadow:r?`0 0 24px ${n.color}70`:`0 0 12px ${n.color}20`}}),(0,m.jsx)(`span`,{className:`
+                                mt-3 text-[9px] font-bold
+                                uppercase tracking-[0.15em]
+
                                 ${r?`text-white`:`text-white/35 group-hover:text-white/70`}
-                            `,children:n.label}),r&&(0,m.jsx)(`span`,{className:`absolute right-2 top-2 size-1.5 rounded-full`,style:{backgroundColor:i,boxShadow:`0 0 8px ${i}`}})]},n.name)})})},S=`avatar-1`,C=()=>{let e=o(),[r,c]=(0,p.useState)(null),[l,u]=(0,p.useState)(``),[_,b]=(0,p.useState)(S),[C,w]=(0,p.useState)(!0),[T,E]=(0,p.useState)(!1),[D,O]=(0,p.useState)(!1);(0,p.useEffect)(()=>{let t=!1;return(async()=>{let r=n.currentUser;if(!r){e(`/login`,{replace:!0});return}try{let e=a(i,`users`,r.uid),n=await s(e);if(t)return;let o=n.exists()?n.data():{},l={uid:r.uid,displayName:o.displayName??r.displayName??`CineScope User`,email:o.email??r.email??``,avatarId:o.avatarId??S};c(l),u(l.displayName),b(l.avatarId)}catch{return}finally{t||w(!1)}})(),()=>{t=!0}},[e]);let k=async()=>{let e=n.currentUser;if(!e||!r||T)return;let i=l.trim();if(i)try{E(!0),await f(e.uid,i,_),await t(e,{displayName:i}),c(e=>e&&{...e,displayName:i,avatarId:_})}catch{return}finally{E(!1)}},A=async()=>{if(!D)try{O(!0),await d(n),e(`/login`,{replace:!0})}catch{O(!1)}};if(C)return(0,m.jsx)(y,{});if(!r)return null;let j=g.find(e=>e.id===r.avatarId)??g[0];return(0,m.jsx)(`main`,{className:`
+                            `,children:n.label}),r&&(0,m.jsx)(`span`,{className:`absolute right-2 top-2 size-1.5 rounded-full`,style:{backgroundColor:n.color,boxShadow:`0 0 8px ${n.color}`}})]},n.name)})})},S=`avatar-1`,C=()=>{let e=u(),[n,s]=(0,p.useState)(null),[l,d]=(0,p.useState)(``),[_,b]=(0,p.useState)(S),[C,w]=(0,p.useState)(!0),[T,E]=(0,p.useState)(!1),[D,O]=(0,p.useState)(!1);(0,p.useEffect)(()=>{let n=!1;return(async()=>{let r=t.currentUser;if(!r){e(`/login`,{replace:!0});return}try{let e=i(a,`users`,r.uid),t=await c(e);if(n)return;let o=t.exists()?t.data():{},l={uid:r.uid,displayName:o.displayName??r.displayName??`CineScope User`,email:o.email??r.email??``,avatarId:o.avatarId??S};s(l),d(l.displayName),b(l.avatarId)}catch{return}finally{n||w(!1)}})(),()=>{n=!0}},[e]);let k=async()=>{let e=t.currentUser;if(!e||!n||T)return;let r=l.trim();if(r)try{E(!0),await f(e.uid,r,_),await o(e,{displayName:r}),s(e=>e&&{...e,displayName:r,avatarId:_})}catch{return}finally{E(!1)}},A=async()=>{if(!D)try{O(!0),await r(t),e(`/login`,{replace:!0})}catch{O(!1)}};if(C)return(0,m.jsx)(y,{});if(!n)return null;let j=g.find(e=>e.id===n.avatarId)??g[0];return(0,m.jsx)(`main`,{className:`
                 min-h-screen
                 bg-(--bg-primary)
                 px-5
@@ -260,4 +263,4 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,O
                 pt-28
                 sm:px-6
                 lg:px-8
-            `,children:(0,m.jsxs)(`div`,{className:`mx-auto max-w-7xl`,children:[(0,m.jsx)(h,{user:r,avatar:j,loggingOut:D,onLogout:A}),(0,m.jsx)(v,{displayName:l,selectedAvatar:_,saving:T,onDisplayNameChange:u,onAvatarChange:b,onSave:k}),(0,m.jsxs)(`div`,{className:`rounded-2xl border border-white/10 bg-white/2.5 p-5 sm:p-6 mt-6`,children:[(0,m.jsxs)(`div`,{className:`mb-5`,children:[(0,m.jsx)(`p`,{className:`text-[10px] font-bold uppercase tracking-[0.2em] text-(--accent-primary)`,children:`Appearance`}),(0,m.jsx)(`h3`,{className:`mt-1 text-lg font-bold tracking-tight text-white`,children:`Choose your theme`}),(0,m.jsx)(`p`,{className:`mt-1 text-xs text-white/35`,children:`Personalize the look and feel of CineScope.`})]}),(0,m.jsx)(`div`,{className:`rounded-xl border border-white/8 bg-black/20 p-3 sm:p-4`,children:(0,m.jsx)(x,{})})]})]})})};export{C as default};
+            `,children:(0,m.jsxs)(`div`,{className:`mx-auto max-w-7xl`,children:[(0,m.jsx)(h,{user:n,avatar:j,loggingOut:D,onLogout:A}),(0,m.jsx)(v,{displayName:l,selectedAvatar:_,saving:T,onDisplayNameChange:d,onAvatarChange:b,onSave:k}),(0,m.jsxs)(`div`,{className:`rounded-2xl border border-white/10 bg-white/2.5 p-5 sm:p-6 mt-6`,children:[(0,m.jsxs)(`div`,{className:`mb-5`,children:[(0,m.jsx)(`p`,{className:`text-[10px] font-bold uppercase tracking-[0.2em] text-(--accent-primary)`,children:`Appearance`}),(0,m.jsx)(`h3`,{className:`mt-1 text-lg font-bold tracking-tight text-white`,children:`Choose your theme`}),(0,m.jsx)(`p`,{className:`mt-1 text-xs text-white/35`,children:`Personalize the look and feel of CineScope.`})]}),(0,m.jsx)(`div`,{className:`rounded-xl border border-white/8 bg-black/20 p-3 sm:p-4`,children:(0,m.jsx)(x,{})})]})]})})};export{C as default};

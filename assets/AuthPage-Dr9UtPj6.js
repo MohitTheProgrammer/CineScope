@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H as i,I as a,R as o,U as s,V as c,W as l,q as u}from"./index-DgQ_4D70.js";import{t as d}from"./userService-GHevR2W9.js";var f=e(u(),1),p=async(e,r,i,o)=>{let s=(await a(n,r,i)).user;return await t(s,{displayName:e}),await d(s.uid,{displayName:e,email:s.email??r,avatarId:o}),s},m=async(e,t)=>(await o(n,e,t)).user,h=r(),g=`https://image.tmdb.org/t/p/original/wigZBAmNrIhxp2FNGOROUAeHvdh.jpg`,_=()=>{let e=s(),t=l(),n=e.pathname===`/login`,[r,a]=(0,f.useState)({name:``,email:``,password:``,confirmPassword:``}),[o,u]=(0,f.useState)(!1),[d,_]=(0,f.useState)(``),x=e=>{a(t=>({...t,[e.target.name]:e.target.value}))},S=async e=>{e.preventDefault(),_(``),u(!0);try{if(n)await m(r.email.trim(),r.password),t(`/`);else{if(r.password!==r.confirmPassword){_(`Passwords do not match.`);return}if(r.password.length<6){_(`Password must be at least 6 characters.`);return}await p(r.name.trim(),r.email.trim(),r.password,`01`),t(`/`)}}catch(e){switch(typeof e==`object`&&e&&`code`in e?String(e.code):``){case`auth/email-already-in-use`:_(`An account with this email already exists.`);break;case`auth/invalid-email`:_(`Please enter a valid email address.`);break;case`auth/weak-password`:_(`Password is too weak.`);break;case`auth/invalid-credential`:_(`Invalid email or password.`);break;case`auth/user-disabled`:_(`This account has been disabled.`);break;case`auth/too-many-requests`:_(`Too many attempts. Please try again later.`);break;default:_(`Something went wrong. Please try again.`)}}finally{u(!1)}};return(0,h.jsxs)(`main`,{className:`relative min-h-screen overflow-hidden bg-black`,children:[(0,h.jsxs)(`div`,{className:`pointer-events-none absolute inset-0`,children:[(0,h.jsx)(`img`,{src:g,alt:``,"aria-hidden":`true`,className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,G as r,K as i,U as a,V as o,W as s,X as c,q as l,z as u}from"./index-CBwXnnyZ.js";import{t as d}from"./userService-HPq-o6Fr.js";var f=e(c(),1),p=async(e,n,r,i)=>{let o=(await u(t,n,r)).user;return await a(o,{displayName:e}),await d(o.uid,{displayName:e,email:o.email??n,avatarId:i}),o},m=async(e,n)=>(await o(t,e,n)).user,h=n(),g=`https://image.tmdb.org/t/p/original/wigZBAmNrIhxp2FNGOROUAeHvdh.jpg`,_=()=>{let e=i(),t=l(),n=e.pathname===`/login`,[a,o]=(0,f.useState)({name:``,email:``,password:``,confirmPassword:``}),[c,u]=(0,f.useState)(!1),[d,_]=(0,f.useState)(``),x=e=>{o(t=>({...t,[e.target.name]:e.target.value}))},S=async e=>{e.preventDefault(),_(``),u(!0);try{if(n)await m(a.email.trim(),a.password),t(`/`);else{if(a.password!==a.confirmPassword){_(`Passwords do not match.`);return}if(a.password.length<6){_(`Password must be at least 6 characters.`);return}await p(a.name.trim(),a.email.trim(),a.password,`01`),t(`/`)}}catch(e){switch(typeof e==`object`&&e&&`code`in e?String(e.code):``){case`auth/email-already-in-use`:_(`An account with this email already exists.`);break;case`auth/invalid-email`:_(`Please enter a valid email address.`);break;case`auth/weak-password`:_(`Password is too weak.`);break;case`auth/invalid-credential`:_(`Invalid email or password.`);break;case`auth/user-disabled`:_(`This account has been disabled.`);break;case`auth/too-many-requests`:_(`Too many attempts. Please try again later.`);break;default:_(`Something went wrong. Please try again.`)}}finally{u(!1)}};return(0,h.jsxs)(`main`,{className:`relative min-h-screen overflow-hidden bg-black`,children:[(0,h.jsxs)(`div`,{className:`pointer-events-none absolute inset-0`,children:[(0,h.jsx)(`img`,{src:g,alt:``,"aria-hidden":`true`,className:`
                         h-full
                         w-full
                         object-cover
@@ -43,7 +43,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H
                         justify-between
                         px-6
                         lg:px-8
-                    `,children:[(0,h.jsxs)(i,{to:`/`,"aria-label":`CineScope home`,className:`
+                    `,children:[(0,h.jsxs)(r,{to:`/`,"aria-label":`CineScope home`,className:`
                             group
                             flex
                             items-center
@@ -63,7 +63,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H
                                 rounded-full
                                 bg-(--accent-secondary)
                                 shadow-[0_0_10px_var(--accent-secondary)]
-                            `})]}),(0,h.jsx)(i,{to:`/`,className:`
+                            `})]}),(0,h.jsx)(r,{to:`/`,className:`
                             text-xs
                             font-semibold
                             text-white/40
@@ -188,7 +188,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H
                                         duration-300
                                         ease-out
                                         ${n?`translate-x-0`:`translate-x-full`}
-                                    `}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!o&&t(`/login`),className:`
+                                    `}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!c&&t(`/login`),className:`
                                         relative
                                         z-10
                                         rounded-lg
@@ -199,7 +199,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H
                                         transition-colors
                                         duration-300
                                         ${n?`text-white`:`text-white/40 hover:text-white/70`}
-                                    `,children:`Sign In`}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!o&&t(`/register`),className:`
+                                    `,children:`Sign In`}),(0,h.jsx)(`button`,{type:`button`,onClick:()=>!c&&t(`/register`),className:`
                                         relative
                                         z-10
                                         rounded-lg
@@ -228,13 +228,13 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H
                                         duration-300
                                         ease-out
                                         ${n?`translate-x-0 opacity-100`:`-translate-x-8 pointer-events-none opacity-0`}
-                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-5`,children:[(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:r.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Enter your password`,value:r.password,onChange:x,autoComplete:`current-password`,required:!0,minLength:6}),(0,h.jsx)(`div`,{className:`flex justify-end`,children:(0,h.jsx)(c,{to:`/forgot-password`,className:`
+                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-5`,children:[(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:a.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Enter your password`,value:a.password,onChange:x,autoComplete:`current-password`,required:!0,minLength:6}),(0,h.jsx)(`div`,{className:`flex justify-end`,children:(0,h.jsx)(s,{to:`/forgot-password`,className:`
         text-[11px]
         font-semibold
         text-white/35
         transition-colors
         hover:text-(--accent-primary)
-    `,children:`Forgot password?`})}),(0,h.jsx)(b,{loading:o,text:`Sign In`})]})}),(0,h.jsx)(`div`,{className:`
+    `,children:`Forgot password?`})}),(0,h.jsx)(b,{loading:c,text:`Sign In`})]})}),(0,h.jsx)(`div`,{className:`
                                         absolute
                                         inset-x-0
                                         top-0
@@ -242,7 +242,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{B as t,D as n,E as r,H
                                         duration-300
                                         ease-out
                                         ${n?`translate-x-8 pointer-events-none opacity-0`:`translate-x-0 opacity-100`}
-                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-4`,children:[(0,h.jsx)(y,{label:`Name`,name:`name`,type:`text`,placeholder:`Your name`,value:r.name,onChange:x,autoComplete:`name`,required:!0}),(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:r.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Create a password`,value:r.password,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(y,{label:`Confirm password`,name:`confirmPassword`,type:`password`,placeholder:`Confirm your password`,value:r.confirmPassword,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(b,{loading:o,text:`Create Account`})]})})]}),(0,h.jsx)(`p`,{className:`
+                                    `,children:(0,h.jsxs)(`form`,{onSubmit:S,className:`space-y-4`,children:[(0,h.jsx)(y,{label:`Name`,name:`name`,type:`text`,placeholder:`Your name`,value:a.name,onChange:x,autoComplete:`name`,required:!0}),(0,h.jsx)(y,{label:`Email`,name:`email`,type:`email`,placeholder:`you@example.com`,value:a.email,onChange:x,autoComplete:`email`,required:!0}),(0,h.jsx)(y,{label:`Password`,name:`password`,type:`password`,placeholder:`Create a password`,value:a.password,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(y,{label:`Confirm password`,name:`confirmPassword`,type:`password`,placeholder:`Confirm your password`,value:a.confirmPassword,onChange:x,autoComplete:`new-password`,required:!0,minLength:6}),(0,h.jsx)(b,{loading:c,text:`Create Account`})]})})]}),(0,h.jsx)(`p`,{className:`
                                     absolute
                                     inset-x-7
                                     bottom-3

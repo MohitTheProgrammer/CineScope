@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W as i,q as a}from"./index-DgQ_4D70.js";import{t as o}from"./movie-RbKOEh-7.js";var s=e(a(),1),c=t(),l=({message:e,type:t=`success`,onClose:n})=>((0,s.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,c.jsx)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,K as n,T as r,X as i,q as a}from"./index-CBwXnnyZ.js";import{s as o,t as s}from"./movie-Rjv1zAsd.js";var c=e(i(),1),l=t(),u=({message:e,type:t=`success`,onClose:n})=>((0,c.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,l.jsx)(`div`,{className:`
                 fixed
                 bottom-6
                 left-1/2
@@ -18,7 +18,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                 text-white
                 shadow-2xl
                 backdrop-blur-xl
-            `,children:(0,c.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,c.jsx)(`span`,{className:t===`success`?`text-green-400`:`text-red-400`,children:t===`success`?`✓`:`!`}),e]})})),u=`https://image.tmdb.org/t/p/w500`,d={28:`Action`,12:`Adventure`,16:`Animation`,35:`Comedy`,80:`Crime`,99:`Documentary`,18:`Drama`,10751:`Family`,14:`Fantasy`,36:`History`,27:`Horror`,10402:`Music`,9648:`Mystery`,10749:`Romance`,878:`Sci-Fi`,10770:`TV Movie`,53:`Thriller`,10752:`War`,37:`Western`},f=e=>{let t=i(),{pathname:a}=r(),{user:f}=n(),[g,_]=(0,s.useState)(null),{id:v,title:y,poster_path:b,release_date:x,vote_average:S,genre_ids:C=[],orientation:w}=e,T=x?new Date(x).getFullYear():null,E=b?`${u}${b}`:`/placeholder-movie.jpg`,D=C.map(e=>d[e]).filter(Boolean),O=a!==`/my-list`&&a!==`/profile`,k=()=>{v&&t(`/movie/${v}`)};return(0,c.jsxs)(`article`,{"data-movie-id":v,onClick:k,tabIndex:0,role:`link`,onKeyDown:e=>{(e.key===`Enter`||e.key===` `)&&(e.preventDefault(),k())},className:w===`vertical`?`group relative w-full min-w-0 cursor-pointer`:`group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52`,children:[(0,c.jsxs)(`div`,{className:`
+            `,children:(0,l.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,l.jsx)(`span`,{className:t===`success`?`text-green-400`:`text-red-400`,children:t===`success`?`✓`:`!`}),e]})})),d=`https://image.tmdb.org/t/p/w500`,f={28:`Action`,12:`Adventure`,16:`Animation`,35:`Comedy`,80:`Crime`,99:`Documentary`,18:`Drama`,10751:`Family`,14:`Fantasy`,36:`History`,27:`Horror`,10402:`Music`,9648:`Mystery`,10749:`Romance`,878:`Sci-Fi`,10770:`TV Movie`,53:`Thriller`,10752:`War`,37:`Western`},p=e=>{let t=a(),{pathname:i}=n(),{user:p}=r(),[v,y]=(0,c.useState)(null),[b,x]=(0,c.useState)(!1),[S,C]=(0,c.useState)(!1),[w,T]=(0,c.useState)(!1),{id:E,title:D,poster_path:O,release_date:k,vote_average:A,genre_ids:j=[],orientation:M}=e,N=k?new Date(k).getFullYear():null,P=O?`${d}${O}`:`/placeholder-movie.jpg`,F=j.map(e=>f[e]).filter(Boolean),I=i!==`/my-list`&&i!==`/profile`;(0,c.useEffect)(()=>{let e=!1;return(async()=>{if(!p?.uid||!E){x(!1),C(!1);return}C(!0);let t=await o(p.uid,E);e||(x(t),C(!1))})(),()=>{e=!0}},[E,p?.uid]);let L=()=>{E&&t(`/movie/${E}`)};return(0,l.jsxs)(`article`,{"data-movie-id":E,onClick:L,tabIndex:0,role:`link`,onKeyDown:e=>{(e.key===`Enter`||e.key===` `)&&(e.preventDefault(),L())},className:M===`vertical`?`group relative w-full min-w-0 cursor-pointer`:`group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52`,children:[(0,l.jsxs)(`div`,{className:`
                     relative
                     aspect-2/3
                     overflow-hidden
@@ -32,7 +32,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                     group-hover:-translate-y-2
                     group-hover:border-(--accent-primary)
                     group-hover:shadow-[0_15px_45px_var(--accent-glow)]
-                `,children:[b?(0,c.jsx)(`img`,{src:E,alt:y||`Movie poster`,loading:`lazy`,className:`
+                `,children:[O?(0,l.jsx)(`img`,{src:P,alt:D||`Movie poster`,loading:`lazy`,className:`
                             absolute
                             inset-0
                             h-full
@@ -42,7 +42,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                             duration-700
                             ease-out
                             group-hover:scale-110
-                        `}):(0,c.jsx)(`div`,{className:`
+                        `}):(0,l.jsx)(`div`,{className:`
                             absolute
                             inset-0
                             flex
@@ -51,7 +51,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                             bg-white/5
                             text-xs
                             text-white/30
-                        `,children:`No poster`}),(0,c.jsx)(`div`,{className:`
+                        `,children:`No poster`}),(0,l.jsx)(`div`,{className:`
                         absolute
                         inset-x-0
                         bottom-0
@@ -61,7 +61,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                         via-black/30
                         to-transparent
                         opacity-90
-                    `}),(0,c.jsx)(`div`,{className:`
+                    `}),(0,l.jsx)(`div`,{className:`
                         absolute
                         inset-0
                         bg-black/20
@@ -69,7 +69,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                         transition-opacity
                         duration-300
                         group-hover:opacity-100
-                    `}),S>0&&(0,c.jsx)(p,{value:S}),v&&O&&(0,c.jsx)(`button`,{type:`button`,"aria-label":y?`Add ${y} to my list`:`Add movie to my list`,onClick:async e=>{if(e.stopPropagation(),!f){t(`/login`);return}if(v)try{let e={id:v,title:y,poster_path:b,vote_average:S,genre_ids:C};await o(f.uid,e),_({message:`${y} added to your liked list`,type:`success`})}catch{_({message:`Failed to add movie`,type:`error`})}},className:`
+                    `}),A>0&&(0,l.jsx)(m,{value:A}),E&&(I||b)&&(0,l.jsx)(`button`,{type:`button`,"aria-label":b?D?`${D} is in your liked list`:`Movie is in your liked list`:D?`Add ${D} to my liked list`:`Add movie to my liked list`,onClick:async n=>{if(n.stopPropagation(),!p){t(`/login`);return}if(!(!E||b||w))try{T(!0);let t={id:E,title:D,overview:e.overview??``,poster_path:O,vote_average:A,genre_ids:j};await s(p.uid,t),x(!0),y({message:`${D} added to your liked list`,type:`success`})}catch(e){console.error(`[MovieCard] Failed to like movie:`,e),y({message:`Failed to add movie`,type:`error`})}finally{T(!1)}},disabled:S||w||b,className:`
                             absolute
                             right-3
                             top-3
@@ -91,7 +91,9 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                             hover:bg-(--accent-primary)
                             hover:text-white
                             group-hover:opacity-100 group-focus-within:opacity-100
-                        `,children:(0,c.jsx)(h,{})}),v&&(0,c.jsx)(`button`,{type:`button`,"aria-label":y?`Open ${y}`:`Open movie`,onClick:e=>{e.stopPropagation(),k()},className:`
+                            disabled:cursor-not-allowed
+                            disabled:opacity-100
+                        `,children:b?(0,l.jsx)(_,{}):(0,l.jsx)(g,{})}),E&&(0,l.jsx)(`button`,{type:`button`,"aria-label":D?`Open ${D}`:`Open movie`,onClick:e=>{e.stopPropagation(),L()},className:`
                             absolute
                             left-1/2
                             top-1/2
@@ -111,19 +113,19 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                             duration-300
                             hover:scale-110
                             group-hover:opacity-100
-                        `,children:(0,c.jsx)(m,{})}),(0,c.jsxs)(`div`,{className:`
+                        `,children:(0,l.jsx)(h,{})}),(0,l.jsxs)(`div`,{className:`
                         absolute
                         inset-x-0
                         bottom-0
                         z-10
                         p-4
-                    `,children:[y&&(0,c.jsx)(`h3`,{className:`
+                    `,children:[D&&(0,l.jsx)(`h3`,{className:`
                                 line-clamp-2
                                 text-sm
                                 font-bold
                                 leading-tight
                                 text-white
-                            `,children:y}),(T||S>0)&&(0,c.jsxs)(`div`,{className:`
+                            `,children:D}),(N||A>0)&&(0,l.jsxs)(`div`,{className:`
                                 mt-1.5
                                 flex
                                 items-center
@@ -131,16 +133,16 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                                 text-[11px]
                                 font-medium
                                 text-white/60
-                            `,children:[T&&(0,c.jsx)(`span`,{children:T}),T&&S>0&&(0,c.jsx)(`span`,{className:`
+                            `,children:[N&&(0,l.jsx)(`span`,{children:N}),N&&A>0&&(0,l.jsx)(`span`,{className:`
                                             size-1
                                             rounded-full
                                             bg-white/30
-                                        `}),S>0&&(0,c.jsx)(`span`,{children:S.toFixed(1)})]})]})]}),O&&D.length>0&&(0,c.jsx)(`div`,{className:`
+                                        `}),A>0&&(0,l.jsx)(`span`,{children:A.toFixed(1)})]})]})]}),I&&F.length>0&&(0,l.jsx)(`div`,{className:`
                         mt-2
                         flex
                         gap-1.5
                         overflow-hidden
-                    `,children:D.slice(0,2).map(e=>(0,c.jsx)(`span`,{className:`
+                    `,children:F.slice(0,2).map(e=>(0,l.jsx)(`span`,{className:`
                                     truncate
                                     rounded-full
                                     border
@@ -153,7 +155,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                                     uppercase
                                     tracking-wide
                                     text-white/50
-                                `,children:e},e))}),g&&(0,c.jsx)(l,{message:g.message,type:g.type,onClose:()=>_(null)})]})},p=({value:e})=>!e||e<=0?null:(0,c.jsxs)(`div`,{className:`
+                                `,children:e},e))}),v&&(0,l.jsx)(u,{message:v.message,type:v.type,onClose:()=>y(null)})]})},m=({value:e})=>!e||e<=0?null:(0,l.jsxs)(`div`,{className:`
                 absolute
                 left-3
                 top-3
@@ -171,4 +173,4 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,U as r,W
                 font-bold
                 text-white
                 backdrop-blur-md
-            `,children:[(0,c.jsx)(g,{}),(0,c.jsx)(`span`,{children:e.toFixed(1)})]}),m=()=>(0,c.jsx)(`svg`,{viewBox:`0 0 24 24`,fill:`currentColor`,className:`size-4`,"aria-hidden":`true`,children:(0,c.jsx)(`path`,{d:`M8 5.14v13.72c0 .79.87 1.27 1.54.85l10.98-6.86a1 1 0 0 0 0-1.7L9.54 4.29A1 1 0 0 0 8 5.14Z`})}),h=()=>(0,c.jsxs)(`svg`,{viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,className:`size-4`,"aria-hidden":`true`,children:[(0,c.jsx)(`path`,{d:`M12 5v14`}),(0,c.jsx)(`path`,{d:`M5 12h14`})]}),g=()=>(0,c.jsx)(`svg`,{viewBox:`0 0 24 24`,fill:`currentColor`,className:`size-3 text-(--accent-secondary)`,"aria-hidden":`true`,children:(0,c.jsx)(`path`,{d:`m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z`})});export{f as t};
+            `,children:[(0,l.jsx)(v,{}),(0,l.jsx)(`span`,{children:e.toFixed(1)})]}),h=()=>(0,l.jsx)(`svg`,{viewBox:`0 0 24 24`,fill:`currentColor`,className:`size-4`,"aria-hidden":`true`,children:(0,l.jsx)(`path`,{d:`M8 5.14v13.72c0 .79.87 1.27 1.54.85l10.98-6.86a1 1 0 0 0 0-1.7L9.54 4.29A1 1 0 0 0 8 5.14Z`})}),g=()=>(0,l.jsxs)(`svg`,{viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,className:`size-4`,"aria-hidden":`true`,children:[(0,l.jsx)(`path`,{d:`M12 5v14`}),(0,l.jsx)(`path`,{d:`M5 12h14`})]}),_=()=>(0,l.jsx)(`svg`,{viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2.5`,strokeLinecap:`round`,strokeLinejoin:`round`,className:`size-4`,"aria-hidden":`true`,children:(0,l.jsx)(`path`,{d:`m5 12 4.5 4.5L19 7`})}),v=()=>(0,l.jsx)(`svg`,{viewBox:`0 0 24 24`,fill:`currentColor`,className:`size-3 text-(--accent-secondary)`,"aria-hidden":`true`,children:(0,l.jsx)(`path`,{d:`m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z`})});export{p as t};

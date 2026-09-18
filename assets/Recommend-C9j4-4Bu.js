@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W as i,d as a,i as o,l as s,q as c,r as l,x as u}from"./index-DgQ_4D70.js";import{a as d,i as f,n as p,r as m,t as h}from"./recommendation-BS4xJBgt.js";var g=e(c(),1),_=()=>{let[e,t]=(0,g.useState)([]),[r,i]=(0,g.useState)(!0),[a,o]=(0,g.useState)(null),s=(0,g.useCallback)(async()=>{try{i(!0),o(null),t([]);let e=n.currentUser;if(!e)throw Error(`You must be logged in.`);let r=await d(e.uid),a=h(r),s=m(a),c=p(s),l=await f(c,r);await new Promise(e=>setTimeout(e,1800)),t(l.slice(0,3))}catch{o(`We couldn't build your recommendations.`)}finally{i(!1)}},[]);return(0,g.useEffect)(()=>{s()},[s]),{movies:e,loading:r,error:a,generateRecommendations:s}},v=r(),y=()=>(0,v.jsx)(`section`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X as i,d as a,i as o,l as s,q as c,r as l,x as u}from"./index-CBwXnnyZ.js";import{r as d}from"./userService-HPq-o6Fr.js";import{a as f}from"./movie-Rjv1zAsd.js";import{i as p,n as m,r as h,t as g}from"./recommendation-Bu02fBVz.js";var _=e(i(),1),v=()=>{let[e,t]=(0,_.useState)([]),[r,i]=(0,_.useState)(!0),[a,o]=(0,_.useState)(null),s=(0,_.useCallback)(async()=>{try{i(!0),o(null),t([]);let e=n.currentUser;if(!e)throw Error(`You must be logged in.`);let r=await d(e.uid),a=Object.keys(r.rated).map(Number),s=[...new Set([...r.liked,...r.watched,...r.watchlist,...a])].filter(e=>Number.isFinite(e));if(!s.length){t([]);return}let c=(await f(s)).map(e=>{let t=e.movieId,n=r.rated[String(t)];return{movieId:t,title:e.title,posterPath:e.posterPath,genreIds:e.genreIds,voteAverage:e.voteAverage,liked:r.liked.includes(t),watchlisted:r.watchlist.includes(t),watched:r.watched.includes(t),rated:typeof n==`number`,rating:typeof n==`number`?n:null,createdAt:e.createdAt??null,updatedAt:e.updatedAt??null}}),l=g(c),u=h(l),_=m(u),v=await p(_,c);await new Promise(e=>setTimeout(e,1800)),t(v.slice(0,3))}catch(e){console.error(`Failed to generate recommendations:`,e),o(`We couldn't build your recommendations.`)}finally{i(!1)}},[]);return(0,_.useEffect)(()=>{s()},[s]),{movies:e,loading:r,error:a,generateRecommendations:s}},y=r(),b=()=>(0,y.jsx)(`section`,{className:`
                 relative
                 mx-auto
                 max-w-7xl
@@ -6,18 +6,18 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                 pb-14
                 pt-28
                 lg:px-8
-            `,children:(0,v.jsxs)(`div`,{className:`max-w-4xl`,children:[(0,v.jsxs)(`div`,{className:`flex items-center gap-3`,children:[(0,v.jsx)(`span`,{className:`
+            `,children:(0,y.jsxs)(`div`,{className:`max-w-4xl`,children:[(0,y.jsxs)(`div`,{className:`flex items-center gap-3`,children:[(0,y.jsx)(`span`,{className:`
                             size-1.5
                             rounded-full
                             bg-(--accent-primary)
                             shadow-[0_0_15px_var(--accent-glow)]
-                        `}),(0,v.jsx)(`span`,{className:`
+                        `}),(0,y.jsx)(`span`,{className:`
                             text-[10px]
                             font-black
                             uppercase
                             tracking-[0.3em]
                             text-(--accent-primary)
-                        `,children:`CineScope intelligence`})]}),(0,v.jsxs)(`h1`,{className:`
+                        `,children:`CineScope intelligence`})]}),(0,y.jsxs)(`h1`,{className:`
                         mt-5
                         text-5xl
                         font-black
@@ -25,14 +25,14 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         tracking-tighter
                         sm:text-6xl
                         lg:text-8xl
-                    `,children:[`Your next`,(0,v.jsx)(`br`,{}),(0,v.jsx)(`span`,{className:`text-(--accent-primary)`,children:`obsession`}),(0,v.jsx)(`br`,{}),`is waiting.`]}),(0,v.jsx)(`p`,{className:`
+                    `,children:[`Your next`,(0,y.jsx)(`br`,{}),(0,y.jsx)(`span`,{className:`text-(--accent-primary)`,children:`obsession`}),(0,y.jsx)(`br`,{}),`is waiting.`]}),(0,y.jsx)(`p`,{className:`
                         mt-6
                         max-w-2xl
                         text-base
                         leading-7
                         text-white/40
                         sm:text-lg
-                    `,children:`We studied your Movie DNA and searched for three movies that feel like they were made for you.`})]})}),b=()=>(0,v.jsx)(`section`,{className:`mx-auto max-w-7xl px-6 pb-24 lg:px-8`,children:(0,v.jsxs)(`div`,{className:`
+                    `,children:`We studied your Movie DNA and searched for three movies that feel like they were made for you.`})]})}),x=()=>(0,y.jsx)(`section`,{className:`mx-auto max-w-7xl px-6 pb-24 lg:px-8`,children:(0,y.jsxs)(`div`,{className:`
                     relative
                     min-h-105
                     overflow-hidden
@@ -40,7 +40,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                     border
                     border-white/10
                     bg-white/2.5
-                `,children:[(0,v.jsx)(`div`,{className:`
+                `,children:[(0,y.jsx)(`div`,{className:`
                         pointer-events-none
                         absolute
                         left-1/2
@@ -52,7 +52,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         rounded-full
                         bg-(--accent-primary)/8
                         blur-[100px]
-                    `}),(0,v.jsx)(`div`,{className:`
+                    `}),(0,y.jsx)(`div`,{className:`
                         pointer-events-none
                         absolute
                         -right-32
@@ -61,7 +61,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         rounded-full
                         bg-purple-500/5
                         blur-3xl
-                    `}),(0,v.jsx)(`div`,{className:`
+                    `}),(0,y.jsx)(`div`,{className:`
                         pointer-events-none
                         absolute
                         -bottom-40
@@ -70,7 +70,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         rounded-full
                         bg-(--accent-primary)/5
                         blur-3xl
-                    `}),(0,v.jsxs)(`div`,{className:`
+                    `}),(0,y.jsxs)(`div`,{className:`
                         relative
                         flex
                         min-h-105
@@ -80,27 +80,27 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         px-6
                         py-16
                         text-center
-                    `,children:[(0,v.jsxs)(`div`,{className:`relative flex size-28 items-center justify-center`,children:[(0,v.jsx)(`div`,{className:`
+                    `,children:[(0,y.jsxs)(`div`,{className:`relative flex size-28 items-center justify-center`,children:[(0,y.jsx)(`div`,{className:`
                                 absolute
                                 inset-0
                                 animate-ping
                                 rounded-full
                                 border
                                 border-(--accent-primary)/10
-                            `}),(0,v.jsx)(`div`,{className:`
+                            `}),(0,y.jsx)(`div`,{className:`
                                 absolute
                                 inset-2
                                 rounded-full
                                 border
                                 border-(--accent-primary)/20
-                            `}),(0,v.jsx)(`div`,{className:`
+                            `}),(0,y.jsx)(`div`,{className:`
                                 absolute
                                 inset-1
                                 animate-[spin_2.5s_linear_infinite]
                                 rounded-full
                                 border-t
                                 border-(--accent-primary)/70
-                            `}),(0,v.jsx)(`div`,{className:`
+                            `}),(0,y.jsx)(`div`,{className:`
                                 relative
                                 flex
                                 size-20
@@ -112,19 +112,19 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                                 bg-(--accent-primary)/10
                                 text-(--accent-primary)
                                 shadow-[0_0_60px_var(--accent-glow)]
-                            `,children:(0,v.jsx)(s,{className:`size-9 animate-pulse`})})]}),(0,v.jsxs)(`div`,{className:`mt-8 flex items-center gap-2`,children:[(0,v.jsx)(`span`,{className:`
+                            `,children:(0,y.jsx)(s,{className:`size-9 animate-pulse`})})]}),(0,y.jsxs)(`div`,{className:`mt-8 flex items-center gap-2`,children:[(0,y.jsx)(`span`,{className:`
                                 size-1.5
                                 animate-pulse
                                 rounded-full
                                 bg-(--accent-primary)
                                 shadow-[0_0_12px_var(--accent-glow)]
-                            `}),(0,v.jsx)(`span`,{className:`
+                            `}),(0,y.jsx)(`span`,{className:`
                                 text-[10px]
                                 font-black
                                 uppercase
                                 tracking-[0.3em]
                                 text-(--accent-primary)
-                            `,children:`CineScope Intelligence`})]}),(0,v.jsxs)(`h2`,{className:`
+                            `,children:`CineScope Intelligence`})]}),(0,y.jsxs)(`h2`,{className:`
                             mt-4
                             max-w-xl
                             text-3xl
@@ -132,13 +132,13 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                             tracking-[-0.03em]
                             text-white
                             sm:text-4xl
-                        `,children:[`Finding your`,` `,(0,v.jsx)(`span`,{className:`text-(--accent-primary)`,children:`perfect watch`})]}),(0,v.jsx)(`p`,{className:`
+                        `,children:[`Finding your`,` `,(0,y.jsx)(`span`,{className:`text-(--accent-primary)`,children:`perfect watch`})]}),(0,y.jsx)(`p`,{className:`
                             mt-3
                             max-w-md
                             text-sm
                             leading-6
                             text-white/35
-                        `,children:`Analyzing your Movie DNA and searching for something that matches your taste.`}),(0,v.jsxs)(`div`,{className:`mt-8 flex flex-wrap items-center justify-center gap-3`,children:[(0,v.jsx)(x,{icon:(0,v.jsx)(u,{className:`size-3`}),label:`Taste`}),(0,v.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,v.jsx)(x,{icon:(0,v.jsx)(o,{className:`size-3`}),label:`Analyze`}),(0,v.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,v.jsx)(x,{icon:(0,v.jsx)(a,{className:`size-3`}),label:`Discover`})]}),(0,v.jsxs)(`div`,{className:`mt-7 flex items-center gap-1.5`,children:[(0,v.jsx)(S,{}),(0,v.jsx)(S,{delay:`150ms`}),(0,v.jsx)(S,{delay:`300ms`})]})]})]})}),x=({icon:e,label:t})=>(0,v.jsxs)(`div`,{className:`
+                        `,children:`Analyzing your Movie DNA and searching for something that matches your taste.`}),(0,y.jsxs)(`div`,{className:`mt-8 flex flex-wrap items-center justify-center gap-3`,children:[(0,y.jsx)(S,{icon:(0,y.jsx)(u,{className:`size-3`}),label:`Taste`}),(0,y.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,y.jsx)(S,{icon:(0,y.jsx)(o,{className:`size-3`}),label:`Analyze`}),(0,y.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,y.jsx)(S,{icon:(0,y.jsx)(a,{className:`size-3`}),label:`Discover`})]}),(0,y.jsxs)(`div`,{className:`mt-7 flex items-center gap-1.5`,children:[(0,y.jsx)(C,{}),(0,y.jsx)(C,{delay:`150ms`}),(0,y.jsx)(C,{delay:`300ms`})]})]})]})}),S=({icon:e,label:t})=>(0,y.jsxs)(`div`,{className:`
                 flex
                 items-center
                 gap-2
@@ -153,12 +153,12 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                 uppercase
                 tracking-wider
                 text-white/30
-            `,children:[(0,v.jsx)(`span`,{className:`text-(--accent-primary)`,children:e}),t]}),S=({delay:e=`0ms`})=>(0,v.jsx)(`span`,{className:`
+            `,children:[(0,y.jsx)(`span`,{className:`text-(--accent-primary)`,children:e}),t]}),C=({delay:e=`0ms`})=>(0,y.jsx)(`span`,{className:`
                 size-1.5
                 animate-bounce
                 rounded-full
                 bg-(--accent-primary)
-            `,style:{animationDelay:e}}),C=({message:e,onRetry:t})=>(0,v.jsx)(`section`,{className:`relative mx-auto max-w-7xl px-6 pb-24 lg:px-8`,children:(0,v.jsxs)(`div`,{className:`
+            `,style:{animationDelay:e}}),w=({message:e,onRetry:t})=>(0,y.jsx)(`section`,{className:`relative mx-auto max-w-7xl px-6 pb-24 lg:px-8`,children:(0,y.jsxs)(`div`,{className:`
                     rounded-4xl
                     border
                     border-white/10
@@ -166,7 +166,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                     px-6
                     py-20
                     text-center
-                `,children:[(0,v.jsx)(`div`,{className:`
+                `,children:[(0,y.jsx)(`div`,{className:`
                         mx-auto
                         flex
                         size-16
@@ -177,7 +177,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         border-(--accent-primary)/20
                         bg-(--accent-primary)/10
                         text-(--accent-primary)
-                    `,children:(0,v.jsx)(a,{className:`size-7`})}),(0,v.jsx)(`h2`,{className:`mt-6 text-2xl font-black`,children:`The movie universe glitched.`}),(0,v.jsx)(`p`,{className:`mx-auto mt-3 max-w-md text-sm leading-6 text-white/35`,children:e}),(0,v.jsxs)(`button`,{type:`button`,onClick:t,className:`
+                    `,children:(0,y.jsx)(a,{className:`size-7`})}),(0,y.jsx)(`h2`,{className:`mt-6 text-2xl font-black`,children:`The movie universe glitched.`}),(0,y.jsx)(`p`,{className:`mx-auto mt-3 max-w-md text-sm leading-6 text-white/35`,children:e}),(0,y.jsxs)(`button`,{type:`button`,onClick:t,className:`
                         mt-8
                         inline-flex
                         items-center
@@ -192,7 +192,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         shadow-[0_15px_45px_var(--accent-glow)]
                         transition-all
                         hover:-translate-y-1
-                    `,children:[`Try again`,(0,v.jsx)(l,{className:`size-4`})]})]})}),w=()=>(0,v.jsx)(`section`,{className:`mx-auto max-w-7xl px-6 pb-24 lg:px-8`,children:(0,v.jsxs)(`div`,{className:`
+                    `,children:[`Try again`,(0,y.jsx)(l,{className:`size-4`})]})]})}),T=()=>(0,y.jsx)(`section`,{className:`mx-auto max-w-7xl px-6 pb-24 lg:px-8`,children:(0,y.jsxs)(`div`,{className:`
                     rounded-4xl
                     border
                     border-white/10
@@ -200,11 +200,11 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                     px-6
                     py-20
                     text-center
-                `,children:[(0,v.jsx)(s,{className:`
+                `,children:[(0,y.jsx)(s,{className:`
                         mx-auto
                         size-12
                         text-(--accent-primary)
-                    `}),(0,v.jsx)(`h2`,{className:`mt-5 text-2xl font-black`,children:`Your Movie DNA needs a little more data.`}),(0,v.jsx)(`p`,{className:`mx-auto mt-3 max-w-lg text-sm leading-6 text-white/35`,children:`Like, watch, rate or save a few movies and CineScope will have enough information to find your next obsession.`})]})}),T=`https://image.tmdb.org/t/p/`,E=({movie:e,rank:n,label:r,featured:i=!1,onClick:o})=>{let s=e.poster_path?T+(i?`original`:`w780`)+e.poster_path:null,c=e.backdrop_path?T+`original`+e.backdrop_path:s;return(0,v.jsxs)(`article`,{onClick:o,className:`
+                    `}),(0,y.jsx)(`h2`,{className:`mt-5 text-2xl font-black`,children:`Your Movie DNA needs a little more data.`}),(0,y.jsx)(`p`,{className:`mx-auto mt-3 max-w-lg text-sm leading-6 text-white/35`,children:`Like, watch, rate or save a few movies and CineScope will have enough information to find your next obsession.`})]})}),E=`https://image.tmdb.org/t/p/`,D=({movie:e,rank:n,label:r,featured:i=!1,onClick:o})=>{let s=e.poster_path?E+(i?`original`:`w780`)+e.poster_path:null,c=e.backdrop_path?E+`original`+e.backdrop_path:s;return(0,y.jsxs)(`article`,{onClick:o,className:`
                 group
                 relative
                 cursor-pointer
@@ -220,7 +220,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                 hover:shadow-[0_30px_100px_var(--accent-glow)]
                 animate-[recommendationReveal_800ms_ease-out_both]
                 ${i?`min-h-130`:`min-h-105`}
-            `,children:[c&&(0,v.jsx)(`img`,{src:c,alt:``,"aria-hidden":`true`,className:`
+            `,children:[c&&(0,y.jsx)(`img`,{src:c,alt:``,"aria-hidden":`true`,className:`
                         absolute
                         inset-0
                         h-full
@@ -233,14 +233,14 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         duration-1000
                         group-hover:scale-105
                         group-hover:opacity-20
-                    `}),(0,v.jsx)(`div`,{className:`
+                    `}),(0,y.jsx)(`div`,{className:`
                     absolute
                     inset-0
                     bg-linear-to-br
                     from-(--accent-primary)/8
                     via-transparent
                     to-black
-                `}),(0,v.jsxs)(`div`,{className:`
+                `}),(0,y.jsxs)(`div`,{className:`
                     relative
                     grid
                     h-full
@@ -250,7 +250,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                     lg:grid-cols-[minmax(0,0.9fr)_1.1fr]
                     lg:items-center
                     lg:p-8
-                `,children:[(0,v.jsxs)(`div`,{className:`
+                `,children:[(0,y.jsxs)(`div`,{className:`
                         relative
                         mx-auto
                         w-full
@@ -262,20 +262,20 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         bg-black/30
                         shadow-2xl
                         ${i?`lg:max-w-md`:``}
-                    `,children:[(0,v.jsx)(`div`,{className:`aspect-2/3`,children:s?(0,v.jsx)(`img`,{src:s,alt:e.title,className:`
+                    `,children:[(0,y.jsx)(`div`,{className:`aspect-2/3`,children:s?(0,y.jsx)(`img`,{src:s,alt:e.title,className:`
                                     h-full
                                     w-full
                                     object-cover
                                     transition-transform
                                     duration-1000
                                     group-hover:scale-105
-                                `}):(0,v.jsx)(`div`,{className:`
+                                `}):(0,y.jsx)(`div`,{className:`
                                     flex
                                     h-full
                                     items-center
                                     justify-center
                                     bg-white/5
-                                `,children:(0,v.jsx)(a,{className:`size-12 text-white/20`})})}),(0,v.jsx)(`div`,{className:`
+                                `,children:(0,y.jsx)(a,{className:`size-12 text-white/20`})})}),(0,y.jsx)(`div`,{className:`
                             pointer-events-none
                             absolute
                             -bottom-10
@@ -289,7 +289,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                             transition-opacity
                             duration-700
                             group-hover:opacity-100
-                        `})]}),(0,v.jsxs)(`div`,{className:`flex min-w-0 flex-col justify-center`,children:[(0,v.jsxs)(`div`,{className:`flex items-center gap-3`,children:[(0,v.jsx)(`div`,{className:`
+                        `})]}),(0,y.jsxs)(`div`,{className:`flex min-w-0 flex-col justify-center`,children:[(0,y.jsxs)(`div`,{className:`flex items-center gap-3`,children:[(0,y.jsx)(`div`,{className:`
                                 flex
                                 size-11
                                 shrink-0
@@ -300,19 +300,19 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                                 border-(--accent-primary)/25
                                 bg-(--accent-primary)/10
                                 text-(--accent-primary)
-                            `,children:n===1?(0,v.jsx)(u,{className:`size-5`}):(0,v.jsx)(`span`,{className:`text-sm font-black`,children:n})}),(0,v.jsxs)(`div`,{children:[(0,v.jsx)(`p`,{className:`
+                            `,children:n===1?(0,y.jsx)(u,{className:`size-5`}):(0,y.jsx)(`span`,{className:`text-sm font-black`,children:n})}),(0,y.jsxs)(`div`,{children:[(0,y.jsx)(`p`,{className:`
                                     text-[10px]
                                     font-black
                                     uppercase
                                     tracking-[0.3em]
                                     text-(--accent-primary)
-                                `,children:r}),(0,v.jsx)(`p`,{className:`mt-0.5 text-[10px] text-white/25`,children:`Handpicked by your Movie DNA`})]})]}),(0,v.jsx)(`h3`,{className:`
+                                `,children:r}),(0,y.jsx)(`p`,{className:`mt-0.5 text-[10px] text-white/25`,children:`Handpicked by your Movie DNA`})]})]}),(0,y.jsx)(`h3`,{className:`
                             mt-7
                             font-black
                             leading-[0.95]
                             tracking-[-0.04em]
                             ${i?`text-4xl sm:text-5xl lg:text-6xl`:`text-3xl sm:text-4xl`}
-                        `,children:e.title}),e.vote_average!==void 0&&(0,v.jsxs)(`div`,{className:`mt-5 flex items-center gap-3`,children:[(0,v.jsxs)(`div`,{className:`
+                        `,children:e.title}),e.vote_average!==void 0&&(0,y.jsxs)(`div`,{className:`mt-5 flex items-center gap-3`,children:[(0,y.jsxs)(`div`,{className:`
                                     flex
                                     items-center
                                     gap-2
@@ -322,7 +322,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                                     bg-(--accent-primary)/10
                                     px-3
                                     py-1.5
-                                `,children:[(0,v.jsx)(`span`,{className:`text-sm font-black text-(--accent-primary)`,children:`★`}),(0,v.jsx)(`span`,{className:`text-xs font-black text-white`,children:e.vote_average.toFixed(1)})]}),(0,v.jsx)(`span`,{className:`text-[10px] font-bold uppercase tracking-wider text-white/25`,children:`TMDB rating`})]}),(0,v.jsxs)(`div`,{className:`
+                                `,children:[(0,y.jsx)(`span`,{className:`text-sm font-black text-(--accent-primary)`,children:`★`}),(0,y.jsx)(`span`,{className:`text-xs font-black text-white`,children:e.vote_average.toFixed(1)})]}),(0,y.jsx)(`span`,{className:`text-[10px] font-bold uppercase tracking-wider text-white/25`,children:`TMDB rating`})]}),(0,y.jsxs)(`div`,{className:`
                             mt-7
                             flex
                             items-start
@@ -332,12 +332,12 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                             border-white/10
                             bg-black/20
                             p-4
-                        `,children:[(0,v.jsx)(t,{className:`
+                        `,children:[(0,y.jsx)(t,{className:`
                                 mt-0.5
                                 size-4
                                 shrink-0
                                 text-(--accent-primary)
-                            `}),(0,v.jsxs)(`div`,{children:[(0,v.jsx)(`p`,{className:`text-xs font-bold text-white/70`,children:`Why this one?`}),(0,v.jsx)(`p`,{className:`mt-1 text-xs leading-5 text-white/30`,children:`Its genres align with the patterns CineScope found in your taste.`})]})]}),(0,v.jsxs)(`div`,{className:`
+                            `}),(0,y.jsxs)(`div`,{children:[(0,y.jsx)(`p`,{className:`text-xs font-bold text-white/70`,children:`Why this one?`}),(0,y.jsx)(`p`,{className:`mt-1 text-xs leading-5 text-white/30`,children:`Its genres align with the patterns CineScope found in your taste.`})]})]}),(0,y.jsxs)(`div`,{className:`
                             mt-7
                             flex
                             items-center
@@ -347,12 +347,12 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                             uppercase
                             tracking-[0.15em]
                             text-(--accent-primary)
-                        `,children:[(0,v.jsx)(`span`,{children:`Explore movie`}),(0,v.jsx)(l,{className:`
+                        `,children:[(0,y.jsx)(`span`,{children:`Explore movie`}),(0,y.jsx)(l,{className:`
                                 size-4
                                 transition-transform
                                 duration-300
                                 group-hover:translate-x-2
-                            `})]})]})]}),(0,v.jsx)(`div`,{className:`
+                            `})]})]})]}),(0,y.jsx)(`div`,{className:`
                     pointer-events-none
                     absolute
                     right-5
@@ -365,14 +365,14 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                     transition-opacity
                     duration-500
                     group-hover:opacity-100
-                `})]})},D=({movies:e,onRegenerate:t,onMovieClick:n})=>{let r=e[0],i=e.slice(1);return(0,v.jsxs)(`section`,{className:`
+                `})]})},O=({movies:e,onRegenerate:t,onMovieClick:n})=>{let r=e[0],i=e.slice(1);return(0,y.jsxs)(`section`,{className:`
                 relative
                 mx-auto
                 max-w-7xl
                 px-6
                 pb-28
                 lg:px-8
-            `,children:[(0,v.jsxs)(`div`,{className:`
+            `,children:[(0,y.jsxs)(`div`,{className:`
                     mb-8
                     flex
                     flex-col
@@ -380,19 +380,19 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                     sm:flex-row
                     sm:items-end
                     sm:justify-between
-                `,children:[(0,v.jsxs)(`div`,{children:[(0,v.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,v.jsx)(u,{className:`size-4 text-(--accent-primary)`}),(0,v.jsx)(`span`,{className:`
+                `,children:[(0,y.jsxs)(`div`,{children:[(0,y.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,y.jsx)(u,{className:`size-4 text-(--accent-primary)`}),(0,y.jsx)(`span`,{className:`
                                 text-[10px]
                                 font-black
                                 uppercase
                                 tracking-[0.3em]
                                 text-(--accent-primary)
-                            `,children:`The algorithm has spoken`})]}),(0,v.jsxs)(`h2`,{className:`
+                            `,children:`The algorithm has spoken`})]}),(0,y.jsxs)(`h2`,{className:`
                             mt-2
                             text-3xl
                             font-black
                             tracking-tight
                             sm:text-4xl
-                        `,children:[`Three movies.`,(0,v.jsx)(`br`,{}),(0,v.jsx)(`span`,{className:`text-white/35`,children:`One very good night.`})]})]}),(0,v.jsxs)(`button`,{type:`button`,onClick:t,className:`
+                        `,children:[`Three movies.`,(0,y.jsx)(`br`,{}),(0,y.jsx)(`span`,{className:`text-white/35`,children:`One very good night.`})]})]}),(0,y.jsxs)(`button`,{type:`button`,onClick:t,className:`
                         group
                         inline-flex
                         w-fit
@@ -413,19 +413,19 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         hover:border-(--accent-primary)/50
                         hover:bg-(--accent-primary)/15
                         hover:shadow-[0_15px_45px_var(--accent-glow)]
-                    `,children:[(0,v.jsx)(u,{className:`
+                    `,children:[(0,y.jsx)(u,{className:`
                             size-4
                             transition-transform
                             duration-500
                             group-hover:rotate-180
-                        `}),`Find Another Trio`]})]}),r&&(0,v.jsx)(E,{movie:r,rank:1,label:`FIRST PICK`,featured:!0,onClick:()=>n(r.id)}),i.length>0&&(0,v.jsx)(`div`,{className:`mt-6 grid gap-6 md:grid-cols-2`,children:i.map((e,t)=>(0,v.jsx)(E,{movie:e,rank:t+2,label:t===0?`SECOND PICK`:`THIRD PICK`,onClick:()=>n(e.id)},e.id))}),(0,v.jsxs)(`div`,{className:`
+                        `}),`Find Another Trio`]})]}),r&&(0,y.jsx)(D,{movie:r,rank:1,label:`FIRST PICK`,featured:!0,onClick:()=>n(r.id)}),i.length>0&&(0,y.jsx)(`div`,{className:`mt-6 grid gap-6 md:grid-cols-2`,children:i.map((e,t)=>(0,y.jsx)(D,{movie:e,rank:t+2,label:t===0?`SECOND PICK`:`THIRD PICK`,onClick:()=>n(e.id)},e.id))}),(0,y.jsxs)(`div`,{className:`
                     mt-12
                     flex
                     flex-col
                     items-center
                     justify-center
                     text-center
-                `,children:[(0,v.jsx)(`div`,{className:`
+                `,children:[(0,y.jsx)(`div`,{className:`
                         flex
                         size-10
                         items-center
@@ -435,9 +435,9 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,W
                         border-(--accent-primary)/15
                         bg-(--accent-primary)/5
                         text-(--accent-primary)
-                    `,children:(0,v.jsx)(s,{className:`size-4`})}),(0,v.jsx)(`p`,{className:`mt-4 text-xs text-white/25`,children:`Recommendations powered by your Movie DNA`})]})]})},O=()=>{let e=i(),{movies:t,loading:n,error:r,generateRecommendations:a}=_();return(0,v.jsxs)(`main`,{className:`
+                    `,children:(0,y.jsx)(s,{className:`size-4`})}),(0,y.jsx)(`p`,{className:`mt-4 text-xs text-white/25`,children:`Recommendations powered by your Movie DNA`})]})]})},k=()=>{let e=c(),{movies:t,loading:n,error:r,generateRecommendations:i}=v();return(0,y.jsxs)(`main`,{className:`
                 min-h-screen
                 overflow-hidden
                 bg-(--bg-primary)
                 text-white
-            `,children:[(0,v.jsx)(y,{}),n&&(0,v.jsx)(b,{}),!n&&r&&(0,v.jsx)(C,{message:r,onRetry:a}),!n&&!r&&t.length===0&&(0,v.jsx)(w,{}),!n&&!r&&t.length>0&&(0,v.jsx)(D,{movies:t,onRegenerate:a,onMovieClick:t=>e(`/movie/${t}`)})]})};export{O as default};
+            `,children:[(0,y.jsx)(b,{}),n&&(0,y.jsx)(x,{}),!n&&r&&(0,y.jsx)(w,{message:r,onRetry:i}),!n&&!r&&t.length===0&&(0,y.jsx)(T,{}),!n&&!r&&t.length>0&&(0,y.jsx)(O,{movies:t,onRegenerate:i,onMovieClick:t=>e(`/movie/${t}`)})]})};export{k as default};
