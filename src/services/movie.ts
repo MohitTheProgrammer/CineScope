@@ -1,278 +1,691 @@
 import {
-    doc,
-    serverTimestamp,
-    setDoc,
-    getDocs,
-    collection,
-    getDoc,
-    query,
-    where,
+  arrayRemove,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 
 import { db } from "../services/firebase";
 
 interface Movie {
-    id: number;
-    title: string;
-    poster_path: string | null;
-    genre_ids: number[];
-    vote_average: number;
+  id: number;
+  title: string;
+  overview?: string | null;
+  poster_path: string | null;
+  genre_ids: number[];
+  vote_average: number;
 }
 
-export const addWatchlistMovie = async (
-    uid: string,
-    movie: Movie
-) => {
-    const movieRef = doc(
-        db,
-        "users",
-        uid,
-        "movies",
-        String(movie.id)
-    );
-
-    await setDoc(
-        movieRef,
-        {
-            movieId: movie.id,
-            title: movie.title,
-            posterPath: movie.poster_path,
-            genreIds: movie.genre_ids,
-            voteAverage: movie.vote_average,
-
-            watchlisted: true,
-
-            updatedAt: serverTimestamp(),
-        },
-        {
-            merge: true,
-        }
-    );
-};
-
-export const addWatchedMovie = async (
-    uid: string,
-    movie: Movie
-) => {
-    const movieRef = doc(
-        db,
-        "users",
-        uid,
-        "movies",
-        String(movie.id)
-    );
-
-    await setDoc(
-        movieRef,
-        {
-            movieId: movie.id,
-            title: movie.title,
-            posterPath: movie.poster_path,
-            genreIds: movie.genre_ids,
-            voteAverage: movie.vote_average,
-
-            watched: true,
-
-            updatedAt: serverTimestamp(),
-        },
-        {
-            merge: true,
-        }
-    );
-};
-
-export const rateMovie = async (
-    uid: string,
-    movie: Movie,
-    rating: number
-) => {
-    const movieRef = doc(
-        db,
-        "users",
-        uid,
-        "movies",
-        String(movie.id)
-    );
-
-    await setDoc(
-        movieRef,
-        {
-            movieId: movie.id,
-            title: movie.title,
-            posterPath: movie.poster_path,
-            genreIds: movie.genre_ids,
-            voteAverage: movie.vote_average,
-
-            rated: true,
-            rating,
-
-            updatedAt: serverTimestamp(),
-        },
-        {
-            merge: true,
-        }
-    );
-};
-
-export const addLikedMovie = async (
-    uid: string,
-    movie: Movie
-) => {
-    const movieRef = doc(
-        db,
-        "users",
-        uid,
-        "movies",
-        String(movie.id)
-    );
-
-    await setDoc(
-        movieRef,
-        {
-            movieId: movie.id,
-            title: movie.title,
-            posterPath: movie.poster_path,
-            genreIds: movie.genre_ids,
-            voteAverage: movie.vote_average,
-
-            liked: true,
-
-            updatedAt: serverTimestamp(),
-        },
-        {
-            merge: true,
-        }
-    );
-};
-
-export const removeLikedMovie = async (
-    uid: string,
-    movieId: number
-) => {
-    const movieRef = doc(
-        db,
-        "users",
-        uid,
-        "movies",
-        String(movieId)
-    );
-
-    await setDoc(movieRef, {
-        liked: false,
-        updatedAt: serverTimestamp(),
-    }, { merge: true });
-};
-
-export const removeWatchlistMovie = async (
-    uid: string,
-    movieId: number
-) => {
-    const movieRef = doc(db, "users", uid, "movies", String(movieId));
-
-    await setDoc(movieRef, {
-        watchlisted: false,
-        updatedAt: serverTimestamp(),
-    }, { merge: true });
-};
-
-export interface WatchlistMovie {
-    id: number;
-    title: string;
-    posterPath: string | null;
-    voteAverage: number;
-    genreIds: number[];
-    updatedAt: unknown;
+export interface GlobalMovie {
+  movieId: number;
+  title: string;
+  movieSynopsis: string;
+  posterPath: string | null;
+  genreIds: number[];
+  voteAverage: number;
+  createdAt?: unknown;
+  updatedAt?: unknown;
 }
 
-export const getWatchlistMovies = async (
-    userId: string
-): Promise<WatchlistMovie[]> => {
-    const moviesRef = collection(
-        db,
-        "users",
-        userId,
-        "movies"
-    );
-
-    const snapshot = await getDocs(
-        query(moviesRef, where("watchlisted", "==", true))
-    );
-
-    return snapshot.docs
-        .filter((movieDoc) => movieDoc.data().watched !== true)
-        .map((movieDoc) => ({
-            ...(movieDoc.data() as Omit<WatchlistMovie, "id">),
-            id: Number(movieDoc.id),
-        }));
-};
-
-export interface LikedMovie {
-    id: number;
-    title: string;
-    posterPath: string | null;
-    voteAverage: number;
-    genreIds: number[];
-}
-
-export const getLikedMovies = async (uid: string): Promise<LikedMovie[]> => {
-    const moviesRef = collection(db, "users", uid, "movies");
-    const snapshot = await getDocs(
-        query(moviesRef, where("liked", "==", true))
-    );
-    return snapshot.docs
-        .map((item) => item.data())
-        .map((movie) => ({
-            id: movie.movieId,
-            title: movie.title,
-            posterPath: movie.posterPath ?? null,
-            voteAverage: movie.voteAverage ?? 0,
-            genreIds: movie.genreIds ?? [],
-        }));
-};
-
-
-export const isMovieInWatchlist = async (
-    userId: string,
-    movieId: number
-): Promise<boolean> => {
-    const movieRef = doc(db, "users", userId, "movies", String(movieId));
+/* =========================================================
+   GLOBAL MOVIE
+   ========================================================= */
+const createOrUpdateGlobalMovie = async (movie: Movie): Promise<void> => {
+  try {
+    const movieRef = doc(db, "movies", String(movie.id));
 
     const snapshot = await getDoc(movieRef);
 
-    return snapshot.exists() && snapshot.data().watchlisted === true;
-};
+    const movieData = {
+      movieId: movie.id,
+      title: movie.title ?? "",
+      movieSynopsis: movie.overview ?? "",
+      posterPath: movie.poster_path ?? null,
+      genreIds: movie.genre_ids ?? [],
+      voteAverage: movie.vote_average ?? 0,
+      updatedAt: serverTimestamp(),
+    };
 
-export const isMovieWatched = async (
-    userId: string,
-    movieId: number
-): Promise<boolean> => {
-    const movieRef = doc(db, "users", userId, "movies", String(movieId));
-    const snapshot = await getDoc(movieRef);
+    if (snapshot.exists()) {
+      await updateDoc(movieRef, movieData);
 
-    return snapshot.exists() && snapshot.data().watched === true;
-};
+      console.log(
+        `[MovieService] Global movie updated successfully: ${movie.id}`,
+      );
+    } else {
+      await setDoc(movieRef, {
+        ...movieData,
+        createdAt: serverTimestamp(),
+      });
 
-export const isMovieRated = async (
-    userId: string,
-    movieId: number
-): Promise<boolean> => {
-    const movieRef = doc(db, "users", userId, "movies", String(movieId));
-    const snapshot = await getDoc(movieRef);
+      console.log(
+        `[MovieService] Global movie created successfully: ${movie.id}`,
+      );
+    }
+  } catch (error) {
+    console.error(
+      `[MovieService] Failed to create/update global movie: ${movie.id}`,
+      error,
+    );
 
-    return snapshot.exists() && snapshot.data().rated === true;
+    throw error;
+  }
 };
 
 export const getMovieRating = async (
-    userId: string,
-    movieId: number
+  uid: string,
+  movieId: number,
 ): Promise<number | null> => {
-    const movieRef = doc(db, "users", userId, "movies", String(movieId));
+  try {
+    const userRef = doc(db, "users", uid);
+
+    const snapshot = await getDoc(userRef);
+
+    if (!snapshot.exists()) {
+      console.log(`[MovieService] User document not found: ${uid}`);
+
+      return null;
+    }
+
+    const data = snapshot.data();
+
+    const rated = data.rated ?? {};
+
+    const movieRating = rated[String(movieId)];
+
+    if (
+      !movieRating ||
+      movieRating.rated !== true ||
+      typeof movieRating.rating !== "number"
+    ) {
+      console.log(`[MovieService] Movie is not rated: ${movieId}`);
+
+      return null;
+    }
+
+    console.log(`[MovieService] Movie rating fetched successfully: ${movieId}`);
+
+    return movieRating.rating;
+  } catch (error) {
+    console.error(
+      `[MovieService] Failed to get movie rating: ${movieId}`,
+      error,
+    );
+
+    return null;
+  }
+};
+
+/* =========================================================
+   LIKE
+   ========================================================= */
+
+export const addLikedMovie = async (
+  uid: string,
+  movie: Movie,
+): Promise<void> => {
+  try {
+    console.log("[MovieService] Adding liked movie:", movie.id);
+
+    await createOrUpdateGlobalMovie(movie);
+
+    const userRef = doc(db, "users", uid);
+
+    await setDoc(
+      userRef,
+      {
+        liked: arrayUnion(movie.id),
+        updatedAt: serverTimestamp(),
+      },
+      {
+        merge: true,
+      },
+    );
+
+    console.log("[MovieService] Movie liked successfully:", movie.id);
+  } catch (error) {
+    console.error("[MovieService] Failed to like movie:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   REMOVE LIKE
+   ========================================================= */
+
+export const removeLikedMovie = async (
+  uid: string,
+  movieId: number,
+): Promise<void> => {
+  try {
+    console.log("[MovieService] Removing liked movie:", movieId);
+
+    const userRef = doc(db, "users", uid);
+
+    await updateDoc(userRef, {
+      liked: arrayRemove(movieId),
+      updatedAt: serverTimestamp(),
+    });
+
+    console.log("[MovieService] Movie unliked successfully:", movieId);
+  } catch (error) {
+    console.error("[MovieService] Failed to remove like:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   WATCHLIST
+   ========================================================= */
+
+export const addWatchlistMovie = async (
+  uid: string,
+  movie: Movie,
+): Promise<void> => {
+  try {
+    console.log("[MovieService] Adding movie to watchlist:", movie.id);
+
+    await createOrUpdateGlobalMovie(movie);
+
+    const userRef = doc(db, "users", uid);
+
+    await setDoc(
+      userRef,
+      {
+        watchlist: arrayUnion(movie.id),
+        updatedAt: serverTimestamp(),
+      },
+      {
+        merge: true,
+      },
+    );
+
+    console.log("[MovieService] Movie added to watchlist:", movie.id);
+  } catch (error) {
+    console.error("[MovieService] Failed to add watchlist movie:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   REMOVE WATCHLIST
+   ========================================================= */
+
+export const removeWatchlistMovie = async (
+  uid: string,
+  movieId: number,
+): Promise<void> => {
+  try {
+    console.log("[MovieService] Removing movie from watchlist:", movieId);
+
+    const userRef = doc(db, "users", uid);
+
+    await updateDoc(userRef, {
+      watchlist: arrayRemove(movieId),
+      updatedAt: serverTimestamp(),
+    });
+
+    console.log("[MovieService] Movie removed from watchlist:", movieId);
+  } catch (error) {
+    console.error("[MovieService] Failed to remove watchlist movie:", error);
+
+    throw error;
+  }
+};
+
+export const isMovieInWatchlist = async (
+  uid: string,
+  movieId: number,
+): Promise<boolean> => {
+  try {
+    const userRef = doc(db, "users", uid);
+
+    const snapshot = await getDoc(userRef);
+
+    if (!snapshot.exists()) {
+      console.log(`[MovieService] User document not found: ${uid}`);
+
+      return false;
+    }
+
+    const data = snapshot.data();
+
+    const watchlist = data.watchlist ?? [];
+
+    const exists = watchlist.includes(movieId);
+
+    console.log(`[MovieService] Watchlist check: ${movieId} -> ${exists}`);
+
+    return exists;
+  } catch (error) {
+    console.error(
+      `[MovieService] Failed to check watchlist: ${movieId}`,
+      error,
+    );
+
+    return false;
+  }
+};
+
+/* =========================================================
+   WATCHED
+   ========================================================= */
+
+export const addWatchedMovie = async (
+  uid: string,
+  movie: Movie,
+): Promise<void> => {
+  try {
+    console.log("[MovieService] Adding watched movie:", movie.id);
+
+    await createOrUpdateGlobalMovie(movie);
+
+    const userRef = doc(db, "users", uid);
+
+    await setDoc(
+      userRef,
+      {
+        watched: arrayUnion(movie.id),
+        updatedAt: serverTimestamp(),
+      },
+      {
+        merge: true,
+      },
+    );
+
+    console.log("[MovieService] Movie marked as watched:", movie.id);
+  } catch (error) {
+    console.error("[MovieService] Failed to add watched movie:", error);
+
+    throw error;
+  }
+};
+
+export const isMovieWatched = async (
+  uid: string,
+  movieId: number,
+): Promise<boolean> => {
+  try {
+    const userRef = doc(db, "users", uid);
+
+    const snapshot = await getDoc(userRef);
+
+    if (!snapshot.exists()) {
+      console.log(`[MovieService] User document not found: ${uid}`);
+
+      return false;
+    }
+
+    const data = snapshot.data();
+
+    const watched = Array.isArray(data.watched) ? data.watched : [];
+
+    const exists = watched.includes(movieId);
+
+    console.log(
+      `[MovieService] Watched state checked: ${movieId} -> ${exists}`,
+    );
+
+    return exists;
+  } catch (error) {
+    console.error(
+      `[MovieService] Failed to check watched movie: ${movieId}`,
+      error,
+    );
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   RATING
+   ========================================================= */
+
+export const rateMovie = async (
+  uid: string,
+  movie: Movie,
+  rating: number,
+): Promise<void> => {
+  try {
+    console.log("[MovieService] Rating movie:", movie.id, "rating:", rating);
+
+    await createOrUpdateGlobalMovie(movie);
+
+    const userRef = doc(db, "users", uid);
+
+    await setDoc(
+      userRef,
+      {
+        rated: {
+          [String(movie.id)]: rating,
+        },
+        updatedAt: serverTimestamp(),
+      },
+      {
+        merge: true,
+      },
+    );
+
+    console.log("[MovieService] Movie rated successfully:", movie.id, rating);
+  } catch (error) {
+    console.error("[MovieService] Failed to rate movie:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   GET GLOBAL MOVIE
+   ========================================================= */
+
+export const getGlobalMovie = async (
+  movieId: number,
+): Promise<GlobalMovie | null> => {
+  try {
+    console.log("[MovieService] Fetching global movie:", movieId);
+
+    const movieRef = doc(db, "movies", String(movieId));
+
     const snapshot = await getDoc(movieRef);
 
-    if (!snapshot.exists()) return null;
+    if (!snapshot.exists()) {
+      console.log("[MovieService] Global movie not found:", movieId);
 
-    const movie = snapshot.data();
-    return movie.rated === true && typeof movie.rating === "number"
-        ? movie.rating
-        : null;
+      return null;
+    }
+
+    const data = snapshot.data();
+
+    console.log("[MovieService] Global movie fetched:", movieId);
+
+    return {
+      movieId: data.movieId,
+      title: data.title ?? "",
+      movieSynopsis: data.movieSynopsis ?? "",
+      posterPath: data.posterPath ?? null,
+      genreIds: data.genreIds ?? [],
+      voteAverage: data.voteAverage ?? 0,
+      createdAt: data.createdAt ?? null,
+      updatedAt: data.updatedAt ?? null,
+    };
+  } catch (error) {
+    console.error("[MovieService] Failed to fetch global movie:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   USER MOVIE INTERACTION STATE
+   ========================================================= */
+
+export interface UserMovieState {
+  liked: boolean;
+  watched: boolean;
+  watchlisted: boolean;
+  rated: boolean;
+  rating: number | null;
+}
+
+export const getUserMovieState = async (
+  uid: string,
+  movieId: number,
+): Promise<UserMovieState> => {
+  try {
+    console.log("[MovieService] Fetching user movie state:", movieId);
+
+    const userRef = doc(db, "users", uid);
+
+    const snapshot = await getDoc(userRef);
+
+    if (!snapshot.exists()) {
+      return {
+        liked: false,
+        watched: false,
+        watchlisted: false,
+        rated: false,
+        rating: null,
+      };
+    }
+
+    const data = snapshot.data();
+
+    const liked = Array.isArray(data.liked) && data.liked.includes(movieId);
+
+    const watched =
+      Array.isArray(data.watched) && data.watched.includes(movieId);
+
+    const watchlisted =
+      Array.isArray(data.watchlist) && data.watchlist.includes(movieId);
+
+    const rated =
+      data.rated &&
+      typeof data.rated === "object" &&
+      Object.prototype.hasOwnProperty.call(data.rated, String(movieId));
+
+    const rating = rated ? Number(data.rated[String(movieId)]) : null;
+
+    const result = {
+      liked,
+      watched,
+      watchlisted,
+      rated: Boolean(rated),
+      rating,
+    };
+
+    console.log("[MovieService] User movie state:", movieId, result);
+
+    return result;
+  } catch (error) {
+    console.error("[MovieService] Failed to fetch user movie state:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   GET USER LIKED MOVIES
+   ========================================================= */
+
+export const getLikedMovies = async (uid: string): Promise<GlobalMovie[]> => {
+  try {
+    console.log("[MovieService] Fetching liked movies");
+
+    const userRef = doc(db, "users", uid);
+
+    const userSnapshot = await getDoc(userRef);
+
+    if (!userSnapshot.exists()) {
+      return [];
+    }
+
+    const data = userSnapshot.data();
+
+    const movieIds: number[] = Array.isArray(data.liked)
+      ? data.liked.filter((id: unknown): id is number => typeof id === "number")
+      : [];
+
+    const movies = await Promise.all(
+      movieIds.map((movieId) => getGlobalMovie(movieId)),
+    );
+
+    const result = movies.filter(
+      (movie): movie is GlobalMovie => movie !== null,
+    );
+
+    console.log("[MovieService] Liked movies fetched:", result.length);
+
+    return result;
+  } catch (error) {
+    console.error("[MovieService] Failed to fetch liked movies:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   GET USER WATCHLIST
+   ========================================================= */
+
+export const getWatchlistMovies = async (
+  uid: string,
+): Promise<GlobalMovie[]> => {
+  try {
+    console.log("[MovieService] Fetching watchlist movies");
+
+    const userRef = doc(db, "users", uid);
+
+    const userSnapshot = await getDoc(userRef);
+
+    if (!userSnapshot.exists()) {
+      return [];
+    }
+
+    const data = userSnapshot.data();
+
+    const movieIds: number[] = Array.isArray(data.watchlist)
+      ? data.watchlist.filter(
+          (id: unknown): id is number => typeof id === "number",
+        )
+      : [];
+
+    const movies = await Promise.all(
+      movieIds.map((movieId) => getGlobalMovie(movieId)),
+    );
+
+    const result = movies.filter(
+      (movie): movie is GlobalMovie => movie !== null,
+    );
+
+    console.log("[MovieService] Watchlist movies fetched:", result.length);
+
+    return result;
+  } catch (error) {
+    console.error("[MovieService] Failed to fetch watchlist movies:", error);
+
+    throw error;
+  }
+};
+
+/* =========================================================
+   GET USER WATCHED MOVIES
+   ========================================================= */
+
+export const getWatchedMovies = async (uid: string): Promise<GlobalMovie[]> => {
+  try {
+    console.log("[MovieService] Fetching watched movies");
+
+    const userRef = doc(db, "users", uid);
+
+    const userSnapshot = await getDoc(userRef);
+
+    if (!userSnapshot.exists()) {
+      return [];
+    }
+
+    const data = userSnapshot.data();
+
+    const movieIds: number[] = Array.isArray(data.watched)
+      ? data.watched.filter(
+          (id: unknown): id is number => typeof id === "number",
+        )
+      : [];
+
+    const movies = await Promise.all(
+      movieIds.map((movieId) => getGlobalMovie(movieId)),
+    );
+
+    const result = movies.filter(
+      (movie): movie is GlobalMovie => movie !== null,
+    );
+
+    console.log("[MovieService] Watched movies fetched:", result.length);
+
+    return result;
+  } catch (error) {
+    console.error("[MovieService] Failed to fetch watched movies:", error);
+
+    throw error;
+  }
+};
+
+export const getMoviesByIds = async (
+  movieIds: number[],
+): Promise<GlobalMovie[]> => {
+  if (movieIds.length === 0) {
+    return [];
+  }
+
+  try {
+    const uniqueIds = [
+      ...new Set(
+        movieIds.filter(
+          (id): id is number => typeof id === "number" && Number.isInteger(id),
+        ),
+      ),
+    ];
+
+    if (uniqueIds.length === 0) {
+      return [];
+    }
+
+    const moviesRef = collection(db, "movies");
+
+    const chunks: number[][] = [];
+
+    for (let i = 0; i < uniqueIds.length; i += 30) {
+      chunks.push(uniqueIds.slice(i, i + 30));
+    }
+
+    const results: GlobalMovie[] = [];
+
+    for (const chunk of chunks) {
+      const snapshot = await getDocs(
+        query(moviesRef, where("movieId", "in", chunk)),
+      );
+
+      snapshot.docs.forEach((movieDoc) => {
+        const data = movieDoc.data();
+
+        results.push({
+          movieId: data.movieId ?? Number(movieDoc.id),
+
+          title: data.title ?? "",
+
+          movieSynopsis: data.movieSynopsis ?? "",
+
+          posterPath: data.posterPath ?? null,
+
+          genreIds: Array.isArray(data.genreIds) ? data.genreIds : [],
+
+          voteAverage:
+            typeof data.voteAverage === "number" ? data.voteAverage : 0,
+
+          createdAt: data.createdAt ?? null,
+
+          updatedAt: data.updatedAt ?? null,
+        });
+      });
+    }
+
+    console.log(
+      `[MovieService] Global movies fetched successfully: ${results.length}`,
+    );
+
+    return results;
+  } catch (error) {
+    console.error("[MovieService] Failed to fetch movies by IDs:", error);
+
+    throw error;
+  }
 };

@@ -1,213 +1,254 @@
-import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useUser } from "../../context/UserContext";
 
-import { getUserMovies } from "../../services/recommendation";
+import { getUserMovieInteractions } from "../../services/userService";
 
-import type { UserMovie } from "../../services/userService";
-import type { Movie } from "../../types/movie";
+import { getMoviesByIds } from "../../services/movie";
 
-import { userMovieToMovie } from "../../utils/movieMapper";
+export interface UserMovie {
+  movieId: number;
+
+  title: string;
+
+  posterPath: string | null;
+
+  movieSynopsis: string;
+
+  genreIds: number[];
+
+  voteAverage: number;
+
+  liked: boolean;
+
+  watched: boolean;
+
+  watchlisted: boolean;
+
+  rated: boolean;
+
+  rating: number | null;
+}
+
+export interface MyListMovie {
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string | null;
+  genre_ids: number[];
+  vote_average: number;
+}
 
 export interface MovieGroup {
-    title: string;
-    movies: Movie[];
+  title: string;
+  movies: MyListMovie[];
 }
 
 interface UseMyListResult {
-    user: ReturnType<typeof useUser>["user"];
-    userLoading: boolean;
+  user: ReturnType<typeof useUser>["user"];
 
-    movies: UserMovie[];
+  userLoading: boolean;
 
-    loading: boolean;
-    error: string;
+  movies: UserMovie[];
 
-    searchQuery: string;
-    setSearchQuery: (
-        query: string
-    ) => void;
+  loading: boolean;
 
-    movieGroups: MovieGroup[];
+  error: string;
 
-    selectedGroup: MovieGroup | null;
+  searchQuery: string;
 
-    setSelectedGroup: (
-        group: MovieGroup | null
-    ) => void;
+  setSearchQuery: (query: string) => void;
 
-    reload: () => Promise<void>;
+  movieGroups: MovieGroup[];
+
+  selectedGroup: MovieGroup | null;
+
+  setSelectedGroup: (group: MovieGroup | null) => void;
+
+  reload: () => Promise<void>;
 }
 
 const useMyList = (): UseMyListResult => {
-    const {
-        user,
-        loading: userLoading,
-    } = useUser();
+  const { user, loading: userLoading } = useUser();
 
-    const [movies, setMovies] =
-        useState<UserMovie[]>([]);
+  const [movies, setMovies] = useState<UserMovie[]>([]);
 
-    const [loading, setLoading] =
-        useState(true);
+  const [loading, setLoading] = useState(true);
 
-    const [error, setError] =
-        useState("");
+  const [error, setError] = useState("");
 
-    const [searchQuery, setSearchQuery] =
-        useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const [selectedGroup, setSelectedGroup] =
-        useState<MovieGroup | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<MovieGroup | null>(null);
 
+  const loadMovies = useCallback(async () => {
+    if (!user) {
+      setMovies([]);
+      setLoading(false);
+      return;
+    }
 
-    const loadMovies = useCallback(
-        async () => {
-            if (!user) {
-                setMovies([]);
-                setLoading(false);
-                return;
-            }
+    try {
+      setLoading(true);
+      setError("");
 
-            try {
-                setLoading(true);
-                setError("");
+      /*
+       * Get only the user's interaction data.
+       *
+       * Example:
+       *
+       * liked     -> [123, 456]
+       * watched   -> [789]
+       * watchlist -> [123, 999]
+       * rated     -> { "456": 4.5 }
+       */
+      const interactions = await getUserMovieInteractions(user.uid);
 
-                const savedMovies =
-                    await getUserMovies(
-                        user.uid
-                    );
+      /*
+       * Collect every movie ID the user
+       * has interacted with.
+       */
+      const movieIds = Array.from(
+        new Set([
+          ...interactions.liked,
+          ...interactions.watched,
+          ...interactions.watchlist,
+          ...Object.keys(interactions.rated).map(Number),
+        ]),
+      );
 
-                const saved =
-                    savedMovies.filter(
-                        (movie) =>
-                            movie.watched ||
-                            movie.watchlisted ||
-                            movie.liked ||
-                            movie.rated
-                    );
+      if (movieIds.length === 0) {
+        setMovies([]);
+        return;
+      }
 
-                setMovies(saved);
-            } catch {
+      /*
+       * Fetch the actual movie objects
+       * from the global movies collection.
+       */
+      const globalMovies = await getMoviesByIds(movieIds);
 
-                setError(
-                    "We couldn't load your saved movies. Please try again."
-                );
-            } finally {
-                setLoading(false);
-            }
-        },
-        [user]
-    );
+      /*
+       * Combine global movie data with
+       * user-specific interaction data.
+       */
+      const userMovies: UserMovie[] = globalMovies.map((movie) => {
+        const movieId = movie.movieId;
 
+        const rating = interactions.rated[String(movieId)] ?? null;
 
-    useEffect(() => {
-        if (userLoading) {
-            return;
-        }
+        return {
+          movieId,
 
-        void loadMovies();
-    }, [
-        user,
-        userLoading,
-        loadMovies,
-    ]);
+          title: movie.title ?? "",
 
+          posterPath: movie.posterPath ?? null,
 
-    const movieGroups = useMemo(() => {
-        const query =
-            searchQuery
-                .trim()
-                .toLowerCase();
+          movieSynopsis: movie.movieSynopsis ?? "",
 
-        const matchesSearch = (
-            movie: UserMovie
-        ) =>
-            !query ||
-            movie.title
-                .toLowerCase()
-                .includes(query);
+          genreIds: movie.genreIds ?? [],
 
-        const groups: MovieGroup[] = [
-            {
-                title: "Want to Watch",
-                movies: movies
-                    .filter(
-                        (movie) =>
-                            movie.watchlisted &&
-                            matchesSearch(movie)
-                    )
-                    .map(userMovieToMovie),
-            },
+          voteAverage: movie.voteAverage ?? 0,
 
-            {
-                title: "Watched",
-                movies: movies
-                    .filter(
-                        (movie) =>
-                            movie.watched &&
-                            matchesSearch(movie)
-                    )
-                    .map(userMovieToMovie),
-            },
+          liked: interactions.liked.includes(movieId),
 
-            {
-                title: "Liked",
-                movies: movies
-                    .filter(
-                        (movie) =>
-                            movie.liked &&
-                            matchesSearch(movie)
-                    )
-                    .map(userMovieToMovie),
-            },
+          watched: interactions.watched.includes(movieId),
 
-            {
-                title: "Rated",
-                movies: movies
-                    .filter(
-                        (movie) =>
-                            movie.rated &&
-                            matchesSearch(movie)
-                    )
-                    .map(userMovieToMovie),
-            },
-        ];
+          watchlisted: interactions.watchlist.includes(movieId),
 
-        return groups.filter(
-            (group) =>
-                group.movies.length > 0
-        );
-    }, [
-        movies,
-        searchQuery,
-    ]);
+          rated: rating !== null,
 
+          rating,
+        };
+      });
 
-    return {
-        user,
-        userLoading,
+      setMovies(userMovies);
 
-        movies,
+      console.log("[useMyList] Movies loaded successfully:", userMovies);
+    } catch (err) {
+      console.error("[useMyList] Failed to load user movies:", err);
 
-        loading,
-        error,
+      setError("We couldn't load your saved movies. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
-        searchQuery,
-        setSearchQuery,
+  useEffect(() => {
+    if (userLoading) {
+      return;
+    }
 
-        movieGroups,
+    void loadMovies();
+  }, [user, userLoading, loadMovies]);
 
-        selectedGroup,
-        setSelectedGroup,
+  const movieGroups = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
 
-        reload: loadMovies,
-    };
+    const matchesSearch = (movie: UserMovie) =>
+      !query || movie.title.toLowerCase().includes(query);
+
+    const groups: MovieGroup[] = [
+      {
+        title: "Want to Watch",
+
+        movies: movies
+          .filter((movie) => movie.watchlisted && matchesSearch(movie))
+          .map(toMovie),
+      },
+
+      {
+        title: "Watched",
+
+        movies: movies
+          .filter((movie) => movie.watched && matchesSearch(movie))
+          .map(toMovie),
+      },
+
+      {
+        title: "Liked",
+
+        movies: movies
+          .filter((movie) => movie.liked && matchesSearch(movie))
+          .map(toMovie),
+      },
+
+      {
+        title: "Rated",
+
+        movies: movies
+          .filter((movie) => movie.rated && matchesSearch(movie))
+          .map(toMovie),
+      },
+    ];
+
+    return groups.filter((group) => group.movies.length > 0);
+  }, [movies, searchQuery]);
+
+  return {
+    user,
+    userLoading,
+    movies,
+    loading,
+    error,
+    searchQuery,
+    setSearchQuery,
+    movieGroups,
+    selectedGroup,
+    setSelectedGroup,
+    reload: loadMovies,
+  };
+};
+
+const toMovie = (movie: UserMovie): MyListMovie => {
+  return {
+    id: movie.movieId,
+    title: movie.title,
+    overview: movie.movieSynopsis ?? "",
+    poster_path: movie.posterPath ?? null,
+    genre_ids: movie.genreIds ?? [],
+    vote_average: movie.voteAverage ?? 0,
+  };
 };
 
 export default useMyList;

@@ -1,19 +1,22 @@
-import {
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useUser } from "../../context/UserContext";
 
 import {
-    getUserMovies,
+    getUserMovieInteractions,
+} from "../../services/userService";
+
+import {
+    getMoviesByIds,
+    type GlobalMovie,
+} from "../../services/movie";
+
+import {
     filterUserMoviesByPriority,
     getGenreScores,
     getFinalGenreScores,
+    type UserMovie,
 } from "../../services/recommendation";
-
-import type { UserMovie } from "../../services/userService";
 
 import {
     getGenreInfo,
@@ -22,13 +25,19 @@ import {
 
 export interface RankedGenre {
     genreId: number;
+
     score: number;
+
     name: string;
+
     icon: React.ComponentType<{
         className?: string;
     }>;
+
     percentage: number;
+
     rank: number;
+
     description: string;
 }
 
@@ -56,13 +65,149 @@ const useForYou = () => {
                 setLoading(true);
                 setError(null);
 
-                const userMovies =
-                    await getUserMovies(
+                /*
+                 * New Firestore structure:
+                 *
+                 * users/{uid}
+                 *
+                 * liked:
+                 * [550, 680]
+                 *
+                 * watched:
+                 * [550, 120]
+                 *
+                 * watchlist:
+                 * [999, 120]
+                 *
+                 * rated:
+                 * {
+                 *     "550": 4,
+                 *     "680": 3.5
+                 * }
+                 */
+
+                const interactions =
+                    await getUserMovieInteractions(
                         user.uid
                     );
 
+                /*
+                 * Get movie IDs from every
+                 * interaction category.
+                 */
+
+                const ratedMovieIds =
+                    Object.keys(
+                        interactions.rated
+                    ).map(Number);
+
+                const movieIds = [
+                    ...new Set([
+                        ...interactions.liked,
+                        ...interactions.watched,
+                        ...interactions.watchlist,
+                        ...ratedMovieIds,
+                    ]),
+                ].filter(
+                    (id) =>
+                        Number.isFinite(id)
+                );
+
+                if (!movieIds.length) {
+                    setMovies([]);
+                    return;
+                }
+
+                /*
+                 * Get global movie metadata from:
+                 *
+                 * movies/{movieId}
+                 */
+
+                const globalMovies =
+                    await getMoviesByIds(
+                        movieIds
+                    );
+
+                /*
+                 * Combine:
+                 *
+                 * Global movie data
+                 * +
+                 * User interaction data
+                 *
+                 * into UserMovie objects used
+                 * by the recommendation system.
+                 */
+
+                const userMovies: UserMovie[] =
+                    globalMovies.map(
+                        (movie: GlobalMovie) => {
+                            const movieId =
+                                movie.movieId;
+
+                            const rating =
+                                interactions.rated[
+                                    String(movieId)
+                                ];
+
+                            return {
+                                movieId,
+
+                                title:
+                                    movie.title,
+
+                                posterPath:
+                                    movie.posterPath,
+
+                                genreIds:
+                                    movie.genreIds,
+
+                                voteAverage:
+                                    movie.voteAverage,
+
+                                liked:
+                                    interactions.liked.includes(
+                                        movieId
+                                    ),
+
+                                watchlisted:
+                                    interactions.watchlist.includes(
+                                        movieId
+                                    ),
+
+                                watched:
+                                    interactions.watched.includes(
+                                        movieId
+                                    ),
+
+                                rated:
+                                    typeof rating ===
+                                    "number",
+
+                                rating:
+                                    typeof rating ===
+                                    "number"
+                                        ? rating
+                                        : null,
+
+                                createdAt:
+                                    movie.createdAt ??
+                                    null,
+
+                                updatedAt:
+                                    movie.updatedAt ??
+                                    null,
+                            };
+                        }
+                    );
+
                 setMovies(userMovies);
-            } catch {
+            } catch (error) {
+                console.error(
+                    "Failed to load For You movie data:",
+                    error
+                );
 
                 setError(
                     "We couldn't analyze your movie taste right now."
@@ -75,49 +220,53 @@ const useForYou = () => {
         void loadMovies();
     }, [user?.uid]);
 
-    const recommendationData = useMemo(() => {
-        if (!movies.length) {
+    const recommendationData =
+        useMemo(() => {
+            if (!movies.length) {
+                return {
+                    filteredMovies: {
+                        liked: [],
+                        rated: [],
+                        watchlisted: [],
+                        watched: [],
+                    },
+
+                    finalGenreScores: [],
+                };
+            }
+
+            const filteredMovies =
+                filterUserMoviesByPriority(
+                    movies
+                );
+
+            const genreScores =
+                getGenreScores(
+                    filteredMovies
+                );
+
+            const finalGenreScores =
+                getFinalGenreScores(
+                    genreScores
+                );
+
             return {
-                filteredMovies: {
-                    liked: [],
-                    rated: [],
-                    watchlisted: [],
-                    watched: [],
-                },
-                finalGenreScores: [],
+                filteredMovies,
+                finalGenreScores,
             };
-        }
-
-        const filteredMovies =
-            filterUserMoviesByPriority(
-                movies
-            );
-
-        const genreScores =
-            getGenreScores(
-                filteredMovies
-            );
-
-        const finalGenreScores =
-            getFinalGenreScores(
-                genreScores
-            );
-
-        return {
-            filteredMovies,
-            finalGenreScores,
-        };
-    }, [movies]);
+        }, [movies]);
 
     const rankedGenres = useMemo(() => {
         const scores =
-            recommendationData.finalGenreScores;
+            recommendationData
+                .finalGenreScores;
 
-        const totalScore = scores.reduce(
-            (total, genre) =>
-                total + genre.score,
-            0
-        );
+        const totalScore =
+            scores.reduce(
+                (total, genre) =>
+                    total + genre.score,
+                0
+            );
 
         if (!totalScore) {
             return [];
@@ -139,9 +288,13 @@ const useForYou = () => {
 
                 return {
                     ...genre,
+
                     ...info,
+
                     rank: index + 1,
+
                     percentage,
+
                     description:
                         getGenreDescription(
                             index + 1,
@@ -180,7 +333,9 @@ const useForYou = () => {
                     .filteredMovies
                     .watched.length,
         }),
-        [recommendationData.filteredMovies]
+        [
+            recommendationData.filteredMovies,
+        ]
     );
 
     const tasteMovies = useMemo(
@@ -192,12 +347,9 @@ const useForYou = () => {
         movies,
         loading,
         error,
-
         rankedGenres,
         topGenre,
-
         activity,
-
         tasteMovies,
     };
 };

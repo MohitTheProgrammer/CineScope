@@ -1,134 +1,157 @@
-import {
-    collection,
-    getDocs,
-} from "firebase/firestore";
+export interface UserMovie {
+    movieId: number;
 
-import { db } from "./firebase";
+    title: string;
 
-import type { UserMovie } from "./userService";
+    posterPath: string | null;
 
+    genreIds: number[];
 
-export const getUserMovies = async (
-    userId: string
-): Promise<UserMovie[]> => {
-        const moviesRef = collection(
-            db,
-            "users",
-            userId,
-            "movies"
-        );
+    voteAverage: number;
 
-        const snapshot = await getDocs(moviesRef);
+    liked: boolean;
 
-        return snapshot.docs.map((doc) => {
-            const data = doc.data();
+    watchlisted: boolean;
 
-            return {
-                movieId: data.movieId,
-                title: data.title,
-                posterPath: data.posterPath ?? null,
-                genreIds: data.genreIds ?? [],
-                voteAverage: data.voteAverage ?? 0,
+    watched: boolean;
 
-                liked: data.liked ?? false,
-                watchlisted: data.watchlisted ?? false,
-                watched: data.watched ?? false,
+    rated: boolean;
 
-                rated: data.rated ?? false,
-                rating: data.rating ?? null,
+    rating: number | null;
 
-                createdAt: data.createdAt,
-                updatedAt: data.updatedAt,
-            };
-        });
-};
+    createdAt?: unknown;
+
+    updatedAt?: unknown;
+}
+
 
 
 export interface FilteredUserMovies {
     liked: UserMovie[];
+
     rated: UserMovie[];
+
     watchlisted: UserMovie[];
+
     watched: UserMovie[];
 }
+
+
 
 export const filterUserMoviesByPriority = (
     movies: UserMovie[]
 ): FilteredUserMovies => {
     const liked: UserMovie[] = [];
+
     const rated: UserMovie[] = [];
+
     const watchlisted: UserMovie[] = [];
+
     const watched: UserMovie[] = [];
+
+
 
     for (const movie of movies) {
         if (movie.liked === true) {
             liked.push(movie);
+
             continue;
         }
+
+
 
         if (movie.rated === true) {
             rated.push(movie);
+
             continue;
         }
 
+
+
         if (movie.watchlisted === true) {
             watchlisted.push(movie);
+
             continue;
         }
+
+
 
         if (movie.watched === true) {
             watched.push(movie);
         }
     }
 
+
+
     return {
         liked,
+
         rated,
+
         watchlisted,
+
         watched,
     };
 };
+
+
 
 interface GenreScore {
     [genreId: number]: number;
 }
 
+
+
 interface FilteredGenreScores {
     liked: GenreScore;
+
     rated: GenreScore;
+
     watchlisted: GenreScore;
+
     watched: GenreScore;
 }
+
+
 
 export const getGenreScores = (
     filteredMovies: FilteredUserMovies
 ): FilteredGenreScores => {
-
     const calculateScores = (
         movies: UserMovie[]
     ): GenreScore => {
-
         const scores: GenreScore = {};
 
-        for (const movie of movies) {
 
+
+        for (const movie of movies) {
             const uniqueGenreIds = new Set(
                 movie.genreIds ?? []
             );
 
-            for (const genreId of uniqueGenreIds) {
 
+
+            for (const genreId of uniqueGenreIds) {
                 scores[genreId] =
                     (scores[genreId] ?? 0) + 1;
             }
         }
 
+
+
         return scores;
     };
 
-    return {
-        liked: calculateScores(filteredMovies.liked),
 
-        rated: calculateScores(filteredMovies.rated),
+
+    return {
+        liked: calculateScores(
+            filteredMovies.liked
+        ),
+
+        rated: calculateScores(
+            filteredMovies.rated
+        ),
 
         watchlisted: calculateScores(
             filteredMovies.watchlisted
@@ -140,124 +163,234 @@ export const getGenreScores = (
     };
 };
 
+
+
 interface FinalGenreScore {
     genreId: number;
+
     score: number;
 }
+
+
 
 export const getFinalGenreScores = (
     genreScores: FilteredGenreScores
 ): FinalGenreScore[] => {
+    const combinedScores: Record<
+        number,
+        number
+    > = {};
 
-    const combinedScores: Record<number, number> = {};
 
-    const addScores = (scores: GenreScore) => {
-        for (const [genreId, score] of Object.entries(scores)) {
 
+    const addScores = (
+        scores: GenreScore
+    ) => {
+        for (const [
+            genreId,
+            score,
+        ] of Object.entries(scores)) {
             const id = Number(genreId);
 
             combinedScores[id] =
-                (combinedScores[id] ?? 0) + score;
+                (combinedScores[id] ?? 0) +
+                score;
         }
     };
 
-    addScores(genreScores.liked);
-    addScores(genreScores.rated);
-    addScores(genreScores.watchlisted);
-    addScores(genreScores.watched);
 
-    return Object.entries(combinedScores)
-        .map(([genreId, score]) => ({
-            genreId: Number(genreId),
-            score,
-        }))
-        .sort((a, b) => b.score - a.score);
+
+    addScores(genreScores.liked);
+
+    addScores(genreScores.rated);
+
+    addScores(
+        genreScores.watchlisted
+    );
+
+    addScores(
+        genreScores.watched
+    );
+
+
+
+    return Object.entries(
+        combinedScores
+    )
+        .map(
+            ([
+                genreId,
+                score,
+            ]) => ({
+                genreId: Number(
+                    genreId
+                ),
+
+                score,
+            })
+        )
+        .sort(
+            (a, b) =>
+                b.score - a.score
+        );
 };
+
+
+
 interface RecommendedMovie {
     id: number;
+
     title: string;
+
     poster_path: string | null;
+
     backdrop_path: string | null;
+
     vote_average: number;
+
     genre_ids: number[];
 }
 
-const shuffleArray = <T,>(array: T[]): T[] => {
+
+
+const shuffleArray = <T,>(
+    array: T[]
+): T[] => {
     const shuffled = [...array];
 
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
 
-        [shuffled[i], shuffled[j]] = [
+
+    for (
+        let i = shuffled.length - 1;
+        i > 0;
+        i--
+    ) {
+        const j =
+            Math.floor(
+                Math.random() *
+                    (i + 1)
+            );
+
+
+
+        [
+            shuffled[i],
+            shuffled[j],
+        ] = [
             shuffled[j],
             shuffled[i],
         ];
     }
 
+
+
     return shuffled;
 };
 
-export const getRecommendedMovies = async (
-    genreScores: {
-        genreId: number;
-        score: number;
-    }[],
-    userMovies: UserMovie[]
-): Promise<RecommendedMovie[]> => {
-
-    const apiKey =
-        import.meta.env.VITE_TMDB_API_KEY;
-
-    if (!apiKey) {
-        throw new Error("TMDB API key is missing.");
-    }
 
 
-    const topGenres = genreScores
-        .slice(0, 3)
-        .map((genre) => genre.genreId);
+export const getRecommendedMovies =
+    async (
+        genreScores: {
+            genreId: number;
 
-    if (!topGenres.length) {
-        return [];
-    }
+            score: number;
+        }[],
+
+        userMovies: UserMovie[]
+    ): Promise<RecommendedMovie[]> => {
+        const apiKey =
+            import.meta.env
+                .VITE_TMDB_API_KEY;
 
 
-    const genreQuery = topGenres.join("|");
 
-    const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie` +
-        `?api_key=${apiKey}` +
-        `&with_genres=${genreQuery}` +
-        `&sort_by=popularity.desc` +
-        `&vote_count.gte=100` +
-        `&page=1`
-    );
+        if (!apiKey) {
+            throw new Error(
+                "TMDB API key is missing."
+            );
+        }
 
-    if (!response.ok) {
-        throw new Error(
-            `TMDB request failed: ${response.status}`
+
+
+        const topGenres =
+            genreScores
+                .slice(0, 3)
+                .map(
+                    (genre) =>
+                        genre.genreId
+                );
+
+
+
+        if (!topGenres.length) {
+            return [];
+        }
+
+
+
+        const genreQuery =
+            topGenres.join("|");
+
+
+
+        const response =
+            await fetch(
+                `https://api.themoviedb.org/3/discover/movie` +
+                    `?api_key=${apiKey}` +
+                    `&with_genres=${genreQuery}` +
+                    `&sort_by=popularity.desc` +
+                    `&vote_count.gte=100` +
+                    `&page=1`
+            );
+
+
+
+        if (!response.ok) {
+            throw new Error(
+                `TMDB request failed: ${response.status}`
+            );
+        }
+
+
+
+        const data: {
+            results: RecommendedMovie[];
+        } = await response.json();
+
+
+
+        const userMovieIds =
+            new Set(
+                userMovies.map(
+                    (movie) =>
+                        movie.movieId
+                )
+            );
+
+
+
+        const unseenMovies =
+            (
+                data.results ?? []
+            ).filter(
+                (movie) =>
+                    !userMovieIds.has(
+                        movie.id
+                    )
+            );
+
+
+
+        const shuffledMovies =
+            shuffleArray(
+                unseenMovies
+            );
+
+
+
+        return shuffledMovies.slice(
+            0,
+            3
         );
-    }
-
-    const data: {
-        results: RecommendedMovie[];
-    } = await response.json();
-
-
-    const userMovieIds = new Set(
-        userMovies.map((movie) => movie.movieId)
-    );
-
-
-    const unseenMovies = (data.results ?? []).filter(
-        (movie: RecommendedMovie) =>
-            !userMovieIds.has(movie.id)
-    );
-
-
-    const shuffledMovies =
-        shuffleArray(unseenMovies);
-
-
-    return shuffledMovies.slice(0, 3);
-};
+    };

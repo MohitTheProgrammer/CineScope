@@ -6,131 +6,125 @@ import { addLikedMovie } from "../services/movie";
 import Toast from "./Toast";
 import { useState } from "react";
 
-const IMAGE_BASE_URL =
-    "https://image.tmdb.org/t/p/w500";
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 const GENRE_MAP: Record<number, string> = {
-    28: "Action",
-    12: "Adventure",
-    16: "Animation",
-    35: "Comedy",
-    80: "Crime",
-    99: "Documentary",
-    18: "Drama",
-    10751: "Family",
-    14: "Fantasy",
-    36: "History",
-    27: "Horror",
-    10402: "Music",
-    9648: "Mystery",
-    10749: "Romance",
-    878: "Sci-Fi",
-    10770: "TV Movie",
-    53: "Thriller",
-    10752: "War",
-    37: "Western",
+  28: "Action",
+  12: "Adventure",
+  16: "Animation",
+  35: "Comedy",
+  80: "Crime",
+  99: "Documentary",
+  18: "Drama",
+  10751: "Family",
+  14: "Fantasy",
+  36: "History",
+  27: "Horror",
+  10402: "Music",
+  9648: "Mystery",
+  10749: "Romance",
+  878: "Sci-Fi",
+  10770: "TV Movie",
+  53: "Thriller",
+  10752: "War",
+  37: "Western",
 };
 
 interface MovieCardProps extends Movie {
-    orientation: "vertical" | "horizontal";
+  orientation: "vertical" | "horizontal";
 }
 
 const MovieCard = (movie: MovieCardProps) => {
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
-    const { user } = useUser();
-    const [toast, setToast] = useState<{
-        message: string;
-        type: "success" | "error";
-    } | null>(null);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { user } = useUser();
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
-    const {
+  const {
+    id,
+    title,
+    poster_path,
+    release_date,
+    vote_average,
+    genre_ids = [],
+    orientation,
+  } = movie;
+
+  const year = release_date ? new Date(release_date).getFullYear() : null;
+
+  const posterUrl = poster_path
+    ? `${IMAGE_BASE_URL}${poster_path}`
+    : "/placeholder-movie.jpg";
+
+  const genres = genre_ids.map((genreId) => GENRE_MAP[genreId]).filter(Boolean);
+
+  const shouldShowLikeButton =
+    pathname !== "/my-list" && pathname !== "/profile";
+
+  const handleMovieClick = () => {
+    if (!id) return;
+
+    navigate(`/movie/${id}`);
+  };
+  const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (!id) return;
+
+    try {
+      const likedMovie = {
         id,
         title,
+        overview: movie.overview ?? "",
         poster_path,
-        release_date,
         vote_average,
-        genre_ids = [],
-        orientation,
-    } = movie;
+        genre_ids,
+      };
 
-    const year = release_date
-        ? new Date(release_date).getFullYear()
-        : null;
+      await addLikedMovie(user.uid, likedMovie);
 
-    const posterUrl = poster_path
-        ? `${IMAGE_BASE_URL}${poster_path}`
-        : "/placeholder-movie.jpg";
+      setToast({
+        message: `${title} added to your liked list`,
+        type: "success",
+      });
+    } catch (error) {
+      console.error("[MovieCard] Failed to like movie:", error);
 
-    const genres = genre_ids
-        .map((genreId) => GENRE_MAP[genreId])
-        .filter(Boolean);
+      setToast({
+        message: "Failed to add movie",
+        type: "error",
+      });
+    }
+  };
 
-    const shouldShowLikeButton =
-        pathname !== "/my-list" && pathname !== "/profile";
-
-    const handleMovieClick = () => {
-        if (!id) return;
-
-        navigate(`/movie/${id}`);
-    };
-
-    const handleLike = async (
-        e: React.MouseEvent<HTMLButtonElement>
-    ) => {
-        e.stopPropagation();
-
-        if (!user) {
-            navigate("/login");
-            return;
+  return (
+    <article
+      data-movie-id={id}
+      onClick={handleMovieClick}
+      tabIndex={0}
+      role="link"
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          handleMovieClick();
         }
-
-        if (!id) return;
-
-        try {
-            const likedMovie = {
-                id,
-                title,
-                poster_path,
-                vote_average,
-                genre_ids,
-            };
-
-            await addLikedMovie(user.uid, likedMovie);
-
-            setToast({
-                message: `${title} added to your liked list`,
-                type: "success",
-            });
-        } catch {
-            setToast({
-                message: "Failed to add movie",
-                type: "error",
-            });
-        }
-    };
-
-    return (
-        <article
-            data-movie-id={id}
-            onClick={handleMovieClick}
-            tabIndex={0}
-            role="link"
-            onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    handleMovieClick();
-                }
-            }}
-            className={
-                orientation === "vertical"
-                    ? "group relative w-full min-w-0 cursor-pointer"
-                    : "group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52"
-            }
-        >
-
-            <div
-                className="
+      }}
+      className={
+        orientation === "vertical"
+          ? "group relative w-full min-w-0 cursor-pointer"
+          : "group relative w-44 shrink-0 cursor-pointer sm:w-48 lg:w-52"
+      }
+    >
+      <div
+        className="
                     relative
                     aspect-2/3
                     overflow-hidden
@@ -145,14 +139,13 @@ const MovieCard = (movie: MovieCardProps) => {
                     group-hover:border-(--accent-primary)
                     group-hover:shadow-[0_15px_45px_var(--accent-glow)]
                 "
-            >
-
-                {poster_path ? (
-                    <img
-                        src={posterUrl}
-                        alt={title || "Movie poster"}
-                        loading="lazy"
-                        className="
+      >
+        {poster_path ? (
+          <img
+            src={posterUrl}
+            alt={title || "Movie poster"}
+            loading="lazy"
+            className="
                             absolute
                             inset-0
                             h-full
@@ -163,10 +156,10 @@ const MovieCard = (movie: MovieCardProps) => {
                             ease-out
                             group-hover:scale-110
                         "
-                    />
-                ) : (
-                    <div
-                        className="
+          />
+        ) : (
+          <div
+            className="
                             absolute
                             inset-0
                             flex
@@ -176,14 +169,13 @@ const MovieCard = (movie: MovieCardProps) => {
                             text-xs
                             text-white/30
                         "
-                    >
-                        No poster
-                    </div>
-                )}
+          >
+            No poster
+          </div>
+        )}
 
-
-                <div
-                    className="
+        <div
+          className="
                         absolute
                         inset-x-0
                         bottom-0
@@ -194,11 +186,10 @@ const MovieCard = (movie: MovieCardProps) => {
                         to-transparent
                         opacity-90
                     "
-                />
+        />
 
-
-                <div
-                    className="
+        <div
+          className="
                         absolute
                         inset-0
                         bg-black/20
@@ -207,24 +198,18 @@ const MovieCard = (movie: MovieCardProps) => {
                         duration-300
                         group-hover:opacity-100
                     "
-                />
+        />
 
+        {vote_average > 0 && <Rating value={vote_average} />}
 
-                {vote_average > 0 && (
-                    <Rating value={vote_average} />
-                )}
-
-
-                {id && shouldShowLikeButton && (
-                    <button
-                        type="button"
-                        aria-label={
-                            title
-                                ? `Add ${title} to my list`
-                                : "Add movie to my list"
-                        }
-                        onClick={handleLike}
-                        className="
+        {id && shouldShowLikeButton && (
+          <button
+            type="button"
+            aria-label={
+              title ? `Add ${title} to my list` : "Add movie to my list"
+            }
+            onClick={handleLike}
+            className="
                             absolute
                             right-3
                             top-3
@@ -247,25 +232,20 @@ const MovieCard = (movie: MovieCardProps) => {
                             hover:text-white
                             group-hover:opacity-100 group-focus-within:opacity-100
                         "
-                    >
-                        <PlusIcon />
-                    </button>
-                )}
+          >
+            <PlusIcon />
+          </button>
+        )}
 
-
-                {id && (
-                    <button
-                        type="button"
-                        aria-label={
-                            title
-                                ? `Open ${title}`
-                                : "Open movie"
-                        }
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            handleMovieClick();
-                        }}
-                        className="
+        {id && (
+          <button
+            type="button"
+            aria-label={title ? `Open ${title}` : "Open movie"}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleMovieClick();
+            }}
+            className="
                             absolute
                             left-1/2
                             top-1/2
@@ -286,40 +266,37 @@ const MovieCard = (movie: MovieCardProps) => {
                             hover:scale-110
                             group-hover:opacity-100
                         "
-                    >
-                        <PlayIcon />
-                    </button>
-                )}
+          >
+            <PlayIcon />
+          </button>
+        )}
 
-
-                <div
-                    className="
+        <div
+          className="
                         absolute
                         inset-x-0
                         bottom-0
                         z-10
                         p-4
                     "
-                >
-
-                    {title && (
-                        <h3
-                            className="
+        >
+          {title && (
+            <h3
+              className="
                                 line-clamp-2
                                 text-sm
                                 font-bold
                                 leading-tight
                                 text-white
                             "
-                        >
-                            {title}
-                        </h3>
-                    )}
+            >
+              {title}
+            </h3>
+          )}
 
-
-                    {(year || vote_average > 0) && (
-                        <div
-                            className="
+          {(year || vote_average > 0) && (
+            <div
+              className="
                                 mt-1.5
                                 flex
                                 items-center
@@ -328,52 +305,38 @@ const MovieCard = (movie: MovieCardProps) => {
                                 font-medium
                                 text-white/60
                             "
-                        >
-                            {year && (
-                                <span>
-                                    {year}
-                                </span>
-                            )}
+            >
+              {year && <span>{year}</span>}
 
-                            {year &&
-                                vote_average > 0 && (
-                                    <span
-                                        className="
+              {year && vote_average > 0 && (
+                <span
+                  className="
                                             size-1
                                             rounded-full
                                             bg-white/30
                                         "
-                                    />
-                                )}
+                />
+              )}
 
-                            {vote_average > 0 && (
-                                <span>
-                                    {vote_average.toFixed(
-                                        1
-                                    )}
-                                </span>
-                            )}
-                        </div>
-                    )}
-                </div>
+              {vote_average > 0 && <span>{vote_average.toFixed(1)}</span>}
             </div>
+          )}
+        </div>
+      </div>
 
-
-            {shouldShowLikeButton && genres.length > 0 && (
-                <div
-                    className="
+      {shouldShowLikeButton && genres.length > 0 && (
+        <div
+          className="
                         mt-2
                         flex
                         gap-1.5
                         overflow-hidden
                     "
-                >
-                    {genres
-                        .slice(0, 2)
-                        .map((genre) => (
-                            <span
-                                key={genre}
-                                className="
+        >
+          {genres.slice(0, 2).map((genre) => (
+            <span
+              key={genre}
+              className="
                                     truncate
                                     rounded-full
                                     border
@@ -387,36 +350,35 @@ const MovieCard = (movie: MovieCardProps) => {
                                     tracking-wide
                                     text-white/50
                                 "
-                            >
-                                {genre}
-                            </span>
-                        ))}
-                </div>
-            )}
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={() => setToast(null)}
-                />
-            )}
-        </article>
-    );
+            >
+              {genre}
+            </span>
+          ))}
+        </div>
+      )}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+    </article>
+  );
 };
 
-
 interface RatingProps {
-    value: number;
+  value: number;
 }
 
 const Rating = ({ value }: RatingProps) => {
-    if (!value || value <= 0) {
-        return null;
-    }
+  if (!value || value <= 0) {
+    return null;
+  }
 
-    return (
-        <div
-            className="
+  return (
+    <div
+      className="
                 absolute
                 left-3
                 top-3
@@ -435,50 +397,49 @@ const Rating = ({ value }: RatingProps) => {
                 text-white
                 backdrop-blur-md
             "
-        >
-            <StarIcon />
+    >
+      <StarIcon />
 
-            <span>{value.toFixed(1)}</span>
-        </div>
-    );
+      <span>{value.toFixed(1)}</span>
+    </div>
+  );
 };
 
-
 const PlayIcon = () => (
-    <svg
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="size-4"
-        aria-hidden="true"
-    >
-        <path d="M8 5.14v13.72c0 .79.87 1.27 1.54.85l10.98-6.86a1 1 0 0 0 0-1.7L9.54 4.29A1 1 0 0 0 8 5.14Z" />
-    </svg>
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="size-4"
+    aria-hidden="true"
+  >
+    <path d="M8 5.14v13.72c0 .79.87 1.27 1.54.85l10.98-6.86a1 1 0 0 0 0-1.7L9.54 4.29A1 1 0 0 0 8 5.14Z" />
+  </svg>
 );
 
 const PlusIcon = () => (
-    <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        className="size-4"
-        aria-hidden="true"
-    >
-        <path d="M12 5v14" />
-        <path d="M5 12h14" />
-    </svg>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    className="size-4"
+    aria-hidden="true"
+  >
+    <path d="M12 5v14" />
+    <path d="M5 12h14" />
+  </svg>
 );
 
 const StarIcon = () => (
-    <svg
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="size-3 text-(--accent-secondary)"
-        aria-hidden="true"
-    >
-        <path d="m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z" />
-    </svg>
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="size-3 text-(--accent-secondary)"
+    aria-hidden="true"
+  >
+    <path d="m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z" />
+  </svg>
 );
 
 export default MovieCard;
