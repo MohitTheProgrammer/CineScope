@@ -1,20 +1,68 @@
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState, type ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
 import { useUser } from "../context/UserContext";
+import { db } from "../services/firebase";
 import MovieSearch from "./MovieSearch";
+import { AVATARS } from "../constent/file";
+
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [photoURL, setPhotoURL] = useState<string | null>(null);
+
   const { user } = useUser();
+
+  // Close mobile menu with Escape
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
     };
+
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+    };
   }, []);
 
+  // Load user's profile avatar
+  useEffect(() => {
+    const loadProfile = async () => {
+      // User logged out
+      if (!user?.uid) {
+        setPhotoURL(null);
+        return;
+      }
 
+      try {
+        const userRef = doc(db, "users", user.uid);
+        const snapshot = await getDoc(userRef);
+
+        if (!snapshot.exists()) {
+          console.log("User document does not exist.");
+          setPhotoURL(null);
+          return;
+        }
+
+        const data = snapshot.data();
+
+        console.log("User Data:", data);
+
+        const currentAvatar =
+          AVATARS.find((avatar) => avatar.id === data.avatarId) ?? AVATARS[0];
+
+        setPhotoURL(currentAvatar.src);
+      } catch (error) {
+        console.error("Failed to load user profile:", error);
+        setPhotoURL(null);
+      }
+    };
+
+    loadProfile();
+  }, [user?.uid]);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -33,7 +81,6 @@ const Navbar = () => {
                 backdrop-blur-2xl
             "
     >
-
       <nav
         className="
                     mx-auto
@@ -47,44 +94,31 @@ const Navbar = () => {
                     lg:px-8
                 "
       >
-
         <Logo />
-
 
         <div
           className="
-    ml-8
-    hidden
-    items-center
-    gap-8
-    lg:flex
-"
+                        ml-8
+                        hidden
+                        items-center
+                        gap-8
+                        lg:flex
+                    "
         >
-          <NavItem
-            to="/"
-            end
-          >
+          <NavItem to="/" end>
             Discover
           </NavItem>
 
-          <NavItem to="/trending">
-            Trending
-          </NavItem>
+          <NavItem to="/trending">Trending</NavItem>
 
-          {user && <>
-            <NavItem to="/my-list">
-              My List
-            </NavItem>
+          {user && (
+            <>
+              <NavItem to="/my-list">My List</NavItem>
 
-            <NavItem to="/for-you">
-              For You
-            </NavItem>
-          </>}
-
-
-
+              <NavItem to="/for-you">For You</NavItem>
+            </>
+          )}
         </div>
-
 
         <div
           className="
@@ -99,65 +133,50 @@ const Navbar = () => {
             <MovieSearch />
           </div>
 
-          {user && <div className="hidden lg:block">
+          {user && (
+            <NavLink to="/profile">
+              <IconButton label="Profile" className="hidden lg:flex">
+                <UserIcon photoURL={photoURL} />
+              </IconButton>
+            </NavLink>
+          )}
 
-          </div>}
-
-          {user && <NavLink to="/profile">
-            <IconButton
-              label="Profile"
-              className="hidden lg:flex"
-            >
-              <UserIcon />
-            </IconButton>
-          </NavLink>}
-          {!user && <NavLink to="/login">
-            <button
-              type="button"
-              className="
-                            hidden
-                            rounded-full
-                            border
-                            border-(--accent-primary)
-                            bg-(--accent-primary)
-                            px-5
-                            py-2.5
-                            text-sm
-                            font-semibold
-                            text-white
-                            transition-all
-                            duration-300
-                            hover:scale-105
-                            hover:shadow-[0_0_25px_var(--accent-glow)]
-                            lg:block
-                        "
-            >
-
-              Sign In
-            </button>
-          </NavLink>}
-
+          {!user && (
+            <NavLink to="/login">
+              <button
+                type="button"
+                className="
+                                    hidden
+                                    rounded-full
+                                    border
+                                    border-(--accent-primary)
+                                    bg-(--accent-primary)
+                                    px-5
+                                    py-2.5
+                                    text-sm
+                                    font-semibold
+                                    text-white
+                                    transition-all
+                                    duration-300
+                                    hover:scale-105
+                                    hover:shadow-[0_0_25px_var(--accent-glow)]
+                                    lg:block
+                                "
+              >
+                Sign In
+              </button>
+            </NavLink>
+          )}
 
           <IconButton
-            label={
-              menuOpen
-                ? "Close menu"
-                : "Open menu"
-            }
-            onClick={() =>
-              setMenuOpen((open) => !open)
-            }
+            label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((open) => !open)}
             className="lg:hidden"
           >
-            {menuOpen ? (
-              <CloseIcon />
-            ) : (
-              <MenuIcon />
-            )}
+            {menuOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
         </div>
       </nav>
-
 
       <div
         className="
@@ -172,16 +191,15 @@ const Navbar = () => {
                 "
       />
 
-
       <MobileMenu
         open={menuOpen}
         onClose={closeMenu}
         signedIn={Boolean(user)}
+        photoURL={photoURL}
       />
     </header>
   );
 };
-
 
 const Logo = () => {
   return (
@@ -206,7 +224,6 @@ const Logo = () => {
                 "
       >
         Cine
-
         <span
           className="
                         text-(--accent-primary)
@@ -232,18 +249,13 @@ const Logo = () => {
   );
 };
 
-
 interface NavItemProps {
   to: string;
   children: ReactNode;
   end?: boolean;
 }
 
-const NavItem = ({
-  to,
-  children,
-  end = false,
-}: NavItemProps) => {
+const NavItem = ({ to, children, end = false }: NavItemProps) => {
   return (
     <NavLink
       to={to}
@@ -259,18 +271,12 @@ const NavItem = ({
                 transition-colors
                 duration-300
 
-                ${isActive
-          ? "text-white"
-          : "text-white/50 hover:text-white"
-        }
+                ${isActive ? "text-white" : "text-white/50 hover:text-white"}
             `}
     >
       {({ isActive }) => (
         <>
-          <span>
-            {children}
-          </span>
-
+          <span>{children}</span>
 
           <span
             className={`
@@ -285,10 +291,11 @@ const NavItem = ({
                             transition-all
                             duration-300
 
-                            ${isActive
-                ? "w-full opacity-100"
-                : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
-              }
+                            ${
+                              isActive
+                                ? "w-full opacity-100"
+                                : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                            }
                         `}
           />
         </>
@@ -297,18 +304,14 @@ const NavItem = ({
   );
 };
 
-
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
   signedIn: boolean;
+  photoURL: string | null;
 }
 
-const MobileMenu = ({
-  open,
-  onClose,
-  signedIn,
-}: MobileMenuProps) => {
+const MobileMenu = ({ open, onClose, signedIn, photoURL }: MobileMenuProps) => {
   return (
     <div
       className={`
@@ -321,10 +324,11 @@ const MobileMenu = ({
                 duration-300
                 lg:hidden
 
-                ${open
-          ? "max-h-175 opacity-100"
-          : "max-h-0 border-transparent opacity-0"
-        }
+                ${
+                  open
+                    ? "max-h-175 opacity-100"
+                    : "max-h-0 border-transparent opacity-0"
+                }
             `}
     >
       <div
@@ -336,52 +340,31 @@ const MobileMenu = ({
                     sm:px-6
                 "
       >
-
         <div className="mb-5">
           <MovieSearch closeMenu={onClose} />
         </div>
 
-
         <div className="flex flex-col" aria-label="Mobile navigation">
-          <MobileNavItem
-            to="/"
-            end
-            onClick={onClose}
-          >
+          <MobileNavItem to="/" end onClick={onClose}>
             Discover
           </MobileNavItem>
 
-          <MobileNavItem
-            to="/trending"
-            onClick={onClose}
-          >
+          <MobileNavItem to="/trending" onClick={onClose}>
             Trending
           </MobileNavItem>
 
-          {signedIn && <>
+          {signedIn && (
+            <>
+              <MobileNavItem to="/my-list" onClick={onClose}>
+                My List
+              </MobileNavItem>
 
-            <MobileNavItem
-              to="/my-list"
-              onClick={onClose}
-            >
-              My List
-            </MobileNavItem>
-
-            <MobileNavItem
-              to="/for-you"
-              onClick={onClose}
-            >
-              For You
-            </MobileNavItem>
-
-
-          </>}
-
-
-
-
+              <MobileNavItem to="/for-you" onClick={onClose}>
+                For You
+              </MobileNavItem>
+            </>
+          )}
         </div>
-
 
         <div
           className="
@@ -394,17 +377,7 @@ const MobileMenu = ({
                         pt-5
                     "
         >
-
-          {signedIn && <div
-            className="
-                            flex
-                            items-center
-                            gap-3
-                        "
-          >
-
-          </div>}
-
+          <div />
 
           <div
             className="
@@ -413,18 +386,42 @@ const MobileMenu = ({
                             gap-3
                         "
           >
-            {signedIn && <NavLink to="/profile" onClick={onClose}><IconButton label="Profile"><UserIcon /></IconButton></NavLink>}
+            {signedIn && (
+              <NavLink to="/profile" onClick={onClose}>
+                <IconButton label="Profile">
+                  <UserIcon photoURL={photoURL} />
+                </IconButton>
+              </NavLink>
+            )}
 
-            {!signedIn && <NavLink to="/login" onClick={onClose} className="rounded-full border border-(--accent-primary) bg-(--accent-primary) px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-[0_0_25px_var(--accent-glow)]">
-              Sign In
-            </NavLink>}
+            {!signedIn && (
+              <NavLink
+                to="/login"
+                onClick={onClose}
+                className="
+                                    rounded-full
+                                    border
+                                    border-(--accent-primary)
+                                    bg-(--accent-primary)
+                                    px-5
+                                    py-2.5
+                                    text-sm
+                                    font-semibold
+                                    text-white
+                                    transition-all
+                                    duration-300
+                                    hover:shadow-[0_0_25px_var(--accent-glow)]
+                                "
+              >
+                Sign In
+              </NavLink>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 interface MobileNavItemProps {
   to: string;
@@ -456,15 +453,15 @@ const MobileNavItem = ({
                 transition-all
                 duration-300
 
-                ${isActive
-          ? "pl-3 text-white"
-          : "text-white/50 hover:pl-3 hover:text-white"
-        }
+                ${
+                  isActive
+                    ? "pl-3 text-white"
+                    : "text-white/50 hover:pl-3 hover:text-white"
+                }
             `}
     >
       {({ isActive }) => (
         <>
-
           <span
             className={`
                             absolute
@@ -477,10 +474,7 @@ const MobileNavItem = ({
                             transition-all
                             duration-300
 
-                            ${isActive
-                ? "opacity-100"
-                : "opacity-0"
-              }
+                            ${isActive ? "opacity-100" : "opacity-0"}
                         `}
           />
 
@@ -490,7 +484,6 @@ const MobileNavItem = ({
     </NavLink>
   );
 };
-
 
 interface IconButtonProps {
   label: string;
@@ -537,8 +530,21 @@ const IconButton = ({
   );
 };
 
+interface UserIconProps {
+  photoURL: string | null;
+}
 
-const UserIcon = () => {
+const UserIcon = ({ photoURL }: UserIconProps) => {
+  if (photoURL) {
+    return (
+      <img
+        src={photoURL}
+        alt="Profile"
+        className="size-7 rounded-full object-cover"
+      />
+    );
+  }
+
   return (
     <svg
       viewBox="0 0 24 24"
@@ -550,11 +556,7 @@ const UserIcon = () => {
       className="size-4.5"
       aria-hidden="true"
     >
-      <circle
-        cx="12"
-        cy="8"
-        r="4"
-      />
+      <circle cx="12" cy="8" r="4" />
 
       <path d="M4 21c.8-4.1 3.5-6 8-6s7.2 1.9 8 6" />
     </svg>
