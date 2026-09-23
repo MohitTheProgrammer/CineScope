@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T as i,X as a,a as o,b as s,d as c,f as l,i as u,l as d,p as f,q as p,r as m,x as h,y as g}from"./index-CBwXnnyZ.js";var _=e(a(),1),v=n(),y=({icon:e,label:t,className:n=``})=>(0,v.jsxs)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,J as i,S as a,Z as o,a as s,b as c,d as l,f as u,i as d,l as f,p,r as m,x as h,y as g}from"./index-a77-dag6.js";var _=e(o(),1),v=n(),y=({icon:e,label:t,className:n=``})=>(0,v.jsxs)(`div`,{className:`
                 absolute
                 flex
                 items-center
@@ -100,7 +100,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                         h-48
                         max-w-4xl
                         md:block
-                    `,children:[(0,v.jsx)(y,{className:`left-[5%] top-8 rotate-[-8deg]`,icon:(0,v.jsx)(l,{className:`size-5 text-orange-400`}),label:`Action`}),(0,v.jsx)(y,{className:`left-[27%] top-28 rotate-[5deg]`,icon:(0,v.jsx)(s,{className:`size-5 text-violet-400`}),label:`Mystery`}),(0,v.jsx)(y,{className:`right-[27%] top-8 rotate-[-5deg]`,icon:(0,v.jsx)(h,{className:`size-5 text-yellow-400`}),label:`Comedy`}),(0,v.jsx)(y,{className:`right-[5%] top-28 rotate-[8deg]`,icon:(0,v.jsx)(g,{className:`size-5 text-cyan-400`}),label:`Sci-Fi`}),(0,v.jsx)(`div`,{className:`
+                    `,children:[(0,v.jsx)(y,{className:`left-[5%] top-8 rotate-[-8deg]`,icon:(0,v.jsx)(u,{className:`size-5 text-orange-400`}),label:`Action`}),(0,v.jsx)(y,{className:`left-[27%] top-28 rotate-[5deg]`,icon:(0,v.jsx)(c,{className:`size-5 text-violet-400`}),label:`Mystery`}),(0,v.jsx)(y,{className:`right-[27%] top-8 rotate-[-5deg]`,icon:(0,v.jsx)(h,{className:`size-5 text-yellow-400`}),label:`Comedy`}),(0,v.jsx)(y,{className:`right-[5%] top-28 rotate-[8deg]`,icon:(0,v.jsx)(g,{className:`size-5 text-cyan-400`}),label:`Sci-Fi`}),(0,v.jsx)(`div`,{className:`
                             absolute
                             left-1/2
                             top-1/2
@@ -115,7 +115,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                             border-(--accent-primary)/20
                             bg-(--accent-primary)/5
                             shadow-[0_0_80px_var(--accent-glow)]
-                        `,children:(0,v.jsx)(d,{className:`
+                        `,children:(0,v.jsx)(f,{className:`
                                 size-12
                                 text-(--accent-primary)
                             `})})]})]})]}),x=({onSeeDNA:e})=>(0,v.jsx)(`section`,{className:`
@@ -245,7 +245,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                         from-orange-500/30
                         via-red-500/10
                         to-transparent
-                    `,children:[(0,v.jsxs)(`div`,{className:`absolute inset-0 flex flex-col items-center justify-center`,children:[(0,v.jsx)(c,{className:`
+                    `,children:[(0,v.jsxs)(`div`,{className:`absolute inset-0 flex flex-col items-center justify-center`,children:[(0,v.jsx)(l,{className:`
                                 size-20
                                 transition-all
                                 duration-500
@@ -259,7 +259,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                             to-transparent
                             p-6
                             pt-20
-                        `,children:[(0,v.jsx)(`p`,{className:`text-xs uppercase tracking-widest text-white/30`,children:`Your signal`}),(0,v.jsxs)(`div`,{className:`mt-2 flex items-center gap-2`,children:[(0,v.jsx)(f,{className:`
+                        `,children:[(0,v.jsx)(`p`,{className:`text-xs uppercase tracking-widest text-white/30`,children:`Your signal`}),(0,v.jsxs)(`div`,{className:`mt-2 flex items-center gap-2`,children:[(0,v.jsx)(p,{className:`
                                     size-4
                                     ${e?`fill-current text-(--accent-primary)`:`text-white/40`}
                                 `}),(0,v.jsx)(`span`,{className:`text-sm font-bold`,children:e?`Added to your taste profile`:`Waiting for your signal`})]})]})]})}),(0,v.jsxs)(`button`,{type:`button`,onClick:t,className:`
@@ -280,7 +280,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                     transition-all
                     hover:border-(--accent-primary)
                     hover:bg-(--accent-primary)
-                `,children:[(0,v.jsx)(f,{className:`
+                `,children:[(0,v.jsx)(p,{className:`
                         size-4
                         ${e?`fill-current`:``}
                     `}),e?`You liked it`:`Like this movie`]})]}),w=()=>(0,v.jsx)(`div`,{className:`w-full max-w-lg`,children:(0,v.jsxs)(`div`,{className:`
@@ -296,10 +296,10 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                             justify-center
                             rounded-2xl
                             bg-(--accent-primary)/10
-                        `,children:(0,v.jsx)(c,{className:`
+                        `,children:(0,v.jsx)(l,{className:`
                                 size-7
                                 text-(--accent-primary)
-                            `})}),(0,v.jsxs)(`div`,{children:[(0,v.jsx)(`p`,{className:`text-xs uppercase tracking-[0.2em] text-white/30`,children:`Movie ingredients`}),(0,v.jsx)(`h3`,{className:`mt-1 text-lg font-black`,children:`What makes a movie yours?`})]})]}),(0,v.jsx)(`div`,{className:`mt-7 space-y-3`,children:[{icon:l,genre:`Action`},{icon:s,genre:`Mystery`},{icon:h,genre:`Comedy`}].map(({icon:e,genre:t},n)=>(0,v.jsxs)(`div`,{className:`
+                            `})}),(0,v.jsxs)(`div`,{children:[(0,v.jsx)(`p`,{className:`text-xs uppercase tracking-[0.2em] text-white/30`,children:`Movie ingredients`}),(0,v.jsx)(`h3`,{className:`mt-1 text-lg font-black`,children:`What makes a movie yours?`})]})]}),(0,v.jsx)(`div`,{className:`mt-7 space-y-3`,children:[{icon:u,genre:`Action`},{icon:c,genre:`Mystery`},{icon:h,genre:`Comedy`}].map(({icon:e,genre:t},n)=>(0,v.jsxs)(`div`,{className:`
                                     flex
                                     items-center
                                     gap-4
@@ -376,7 +376,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                             transition-all
                             duration-300
                             ${e>=3?`border-(--accent-primary)/30 bg-(--accent-primary)/10`:e>=2.5?`border-yellow-400/20 bg-yellow-400/10`:`border-white/10 bg-white/5`}
-                        `,children:e>=3?(0,v.jsx)(r,{className:`size-8 text-(--accent-secondary)`}):e>=2.5?(0,v.jsx)(h,{className:`size-8 text-yellow-400`}):(0,v.jsx)(t,{className:`size-8 text-white/40`})}),(0,v.jsx)(`div`,{className:`mt-4 text-6xl font-black`,children:e.toFixed(1)}),(0,v.jsx)(`p`,{className:`mt-2 text-xs uppercase tracking-[0.2em] text-white/30`,children:`Your rating`})]}),(0,v.jsx)(`input`,{type:`range`,min:`1`,max:`5`,step:`0.5`,value:e,onChange:e=>n(Number(e.target.value)),className:`
+                        `,children:e>=3?(0,v.jsx)(a,{className:`size-8 text-(--accent-secondary)`}):e>=2.5?(0,v.jsx)(h,{className:`size-8 text-yellow-400`}):(0,v.jsx)(t,{className:`size-8 text-white/40`})}),(0,v.jsx)(`div`,{className:`mt-4 text-6xl font-black`,children:e.toFixed(1)}),(0,v.jsx)(`p`,{className:`mt-2 text-xs uppercase tracking-[0.2em] text-white/30`,children:`Your rating`})]}),(0,v.jsx)(`input`,{type:`range`,min:`1`,max:`5`,step:`0.5`,value:e,onChange:e=>n(Number(e.target.value)),className:`
                         mt-10
                         w-full
                         accent-(--accent-primary)
@@ -409,10 +409,10 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                                 border-(--accent-primary)/30
                                 bg-(--accent-primary)/10
                                 shadow-[0_0_50px_var(--accent-glow)]
-                            `,children:(0,v.jsx)(u,{className:`
+                            `,children:(0,v.jsx)(d,{className:`
                                     size-11
                                     text-(--accent-primary)
-                                `})})}),(0,v.jsx)(`div`,{className:`mt-8 grid grid-cols-3 gap-3`,children:[{icon:f,label:`Likes`},{icon:o,label:`Patterns`},{icon:r,label:`Ratings`}].map(({icon:e,label:t})=>(0,v.jsxs)(`div`,{className:`
+                                `})})}),(0,v.jsx)(`div`,{className:`mt-8 grid grid-cols-3 gap-3`,children:[{icon:p,label:`Likes`},{icon:s,label:`Patterns`},{icon:a,label:`Ratings`}].map(({icon:e,label:t})=>(0,v.jsxs)(`div`,{className:`
                                         flex
                                         flex-col
                                         items-center
@@ -444,7 +444,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                             bg-(--accent-primary)/5
                             p-5
                             text-center
-                        `,children:[(0,v.jsx)(d,{className:`
+                        `,children:[(0,v.jsx)(f,{className:`
                                 mx-auto
                                 size-7
                                 text-(--accent-primary)
@@ -487,7 +487,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                             border-(--accent-primary)/20
                             bg-(--accent-primary)/10
                             shadow-[0_0_50px_var(--accent-glow)]
-                        `,children:(0,v.jsx)(d,{className:`
+                        `,children:(0,v.jsx)(f,{className:`
                                 size-11
                                 text-(--accent-primary)
                             `})}),(0,v.jsx)(`p`,{className:`
@@ -550,7 +550,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                                 shadow-[0_0_30px_var(--accent-glow)]
                                 transition-all
                                 hover:scale-105
-                            `,children:[e?(0,v.jsxs)(v.Fragment,{children:[(0,v.jsx)(d,{className:`size-4`}),`See My Movie DNA`]}):(0,v.jsxs)(v.Fragment,{children:[(0,v.jsx)(c,{className:`size-4`}),`Start Building My DNA`]}),(0,v.jsx)(m,{className:`size-4`})]})})]})]})}),k=[{name:`Action`,icon:l,percentage:42,color:`bg-orange-400`},{name:`Mystery`,icon:s,percentage:23,color:`bg-violet-400`},{name:`Comedy`,icon:h,percentage:16,color:`bg-yellow-400`},{name:`Sci-Fi`,icon:g,percentage:12,color:`bg-cyan-400`},{name:`Thriller`,icon:t,percentage:7,color:`bg-rose-400`}],A=()=>{let e=p(),{user:t,loading:n}=i(),[r,a]=(0,_.useState)(4.5),[o,s]=(0,_.useState)(!1),[c,l]=(0,_.useState)(0);return n?(0,v.jsx)(`main`,{className:`
+                            `,children:[e?(0,v.jsxs)(v.Fragment,{children:[(0,v.jsx)(f,{className:`size-4`}),`See My Movie DNA`]}):(0,v.jsxs)(v.Fragment,{children:[(0,v.jsx)(l,{className:`size-4`}),`Start Building My DNA`]}),(0,v.jsx)(m,{className:`size-4`})]})})]})]})}),k=[{name:`Action`,icon:u,percentage:42,color:`bg-orange-400`},{name:`Mystery`,icon:c,percentage:23,color:`bg-violet-400`},{name:`Comedy`,icon:h,percentage:16,color:`bg-yellow-400`},{name:`Sci-Fi`,icon:g,percentage:12,color:`bg-cyan-400`},{name:`Thriller`,icon:t,percentage:7,color:`bg-rose-400`}],A=()=>{let e=i(),{user:t,loading:n}=r(),[a,o]=(0,_.useState)(4.5),[s,c]=(0,_.useState)(!1),[l,u]=(0,_.useState)(0);return n?(0,v.jsx)(`main`,{className:`
                     flex
                     min-h-screen
                     items-center
@@ -568,4 +568,4 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,E as n,S as r,T
                 overflow-hidden
                 bg-(--bg-primary)
                 text-white
-            `,children:[(0,v.jsx)(b,{isLoggedIn:!!t,onStartDiscovering:()=>e(`/register`)}),t&&(0,v.jsx)(x,{onSeeDNA:()=>e(`/for-you`)}),(0,v.jsx)(S,{number:`01`,eyebrow:`It starts with you`,title:`You like a movie.`,description:t?`When you add a movie to your liked list, CineScope saves it as a signal. That movie becomes another clue about the kind of stories you enjoy.`:`When you add a movie to your liked list, CineScope doesn't just remember the title. It looks at what makes that movie tick.`,children:(0,v.jsx)(C,{liked:o,onToggle:()=>s(e=>!e)})}),(0,v.jsx)(S,{number:`02`,eyebrow:`We look deeper`,title:`Every movie has ingredients.`,description:t?`CineScope looks at the genres connected to the movies you like. Those genres become building blocks for your personal taste profile.`:`A movie isn't just a title. It contains genres, themes and patterns. Those details become the ingredients of your Movie DNA.`,reverse:!0,children:(0,v.jsx)(w,{})}),(0,v.jsx)(S,{number:`03`,eyebrow:`Patterns emerge`,title:`Your favorite genres rise to the top.`,description:t?`As your liked movies grow, CineScope combines their genre signals and gives more weight to the patterns that appear most often.`:`One movie tells us a little. Several movies reveal patterns. Repeated genre signals gradually become more important.`,children:(0,v.jsx)(T,{genres:k,activeGenre:c,onGenreChange:l})}),(0,v.jsx)(S,{number:`04`,eyebrow:`Your opinion matters`,title:`Ratings make the signal stronger.`,description:t?`When you rate a movie, CineScope gets a better idea of how strongly you feel about the genres inside it.`:`Liking a movie tells us that you enjoyed it. Your rating tells us how much. The stronger the feeling, the stronger the signal.`,reverse:!0,children:(0,v.jsx)(E,{rating:r,onRatingChange:a})}),(0,v.jsx)(S,{number:`05`,eyebrow:`The algorithm connects the dots`,title:`Small signals become a bigger picture.`,description:t?`CineScope combines your liked movies, their genres and your ratings to understand the patterns behind your choices.`:`The algorithm connects your movie signals together. The result isn't a simple list of genres — it's a picture of how your taste is distributed.`,children:(0,v.jsx)(D,{})}),(0,v.jsx)(O,{user:!!t,genres:k,onAction:()=>e(t?`/for-you`:`/register`)})]})};export{A as default};
+            `,children:[(0,v.jsx)(b,{isLoggedIn:!!t,onStartDiscovering:()=>e(`/register`)}),t&&(0,v.jsx)(x,{onSeeDNA:()=>e(`/for-you`)}),(0,v.jsx)(S,{number:`01`,eyebrow:`It starts with you`,title:`You like a movie.`,description:t?`When you add a movie to your liked list, CineScope saves it as a signal. That movie becomes another clue about the kind of stories you enjoy.`:`When you add a movie to your liked list, CineScope doesn't just remember the title. It looks at what makes that movie tick.`,children:(0,v.jsx)(C,{liked:s,onToggle:()=>c(e=>!e)})}),(0,v.jsx)(S,{number:`02`,eyebrow:`We look deeper`,title:`Every movie has ingredients.`,description:t?`CineScope looks at the genres connected to the movies you like. Those genres become building blocks for your personal taste profile.`:`A movie isn't just a title. It contains genres, themes and patterns. Those details become the ingredients of your Movie DNA.`,reverse:!0,children:(0,v.jsx)(w,{})}),(0,v.jsx)(S,{number:`03`,eyebrow:`Patterns emerge`,title:`Your favorite genres rise to the top.`,description:t?`As your liked movies grow, CineScope combines their genre signals and gives more weight to the patterns that appear most often.`:`One movie tells us a little. Several movies reveal patterns. Repeated genre signals gradually become more important.`,children:(0,v.jsx)(T,{genres:k,activeGenre:l,onGenreChange:u})}),(0,v.jsx)(S,{number:`04`,eyebrow:`Your opinion matters`,title:`Ratings make the signal stronger.`,description:t?`When you rate a movie, CineScope gets a better idea of how strongly you feel about the genres inside it.`:`Liking a movie tells us that you enjoyed it. Your rating tells us how much. The stronger the feeling, the stronger the signal.`,reverse:!0,children:(0,v.jsx)(E,{rating:a,onRatingChange:o})}),(0,v.jsx)(S,{number:`05`,eyebrow:`The algorithm connects the dots`,title:`Small signals become a bigger picture.`,description:t?`CineScope combines your liked movies, their genres and your ratings to understand the patterns behind your choices.`:`The algorithm connects your movie signals together. The result isn't a simple list of genres — it's a picture of how your taste is distributed.`,children:(0,v.jsx)(D,{})}),(0,v.jsx)(O,{user:!!t,genres:k,onAction:()=>e(t?`/for-you`:`/register`)})]})};export{A as default};

@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W as i,X as a,d as o,q as s,r as c,t as l}from"./index-CBwXnnyZ.js";import{r as u}from"./userService-HPq-o6Fr.js";import{a as d}from"./movie-Rjv1zAsd.js";import{t as f}from"./MovieCard-D2KLO_0u.js";var p=t(),m=({movielist:e,title:t})=>{let r=s(),i=e=>{r(`/movie/${e}`)};return(0,p.jsxs)(`section`,{className:`mx-auto max-w-7xl px-1 pb-24 lg:px-8`,children:[(0,p.jsxs)(`div`,{className:`flex items-end justify-between gap-4`,children:[(0,p.jsxs)(`div`,{children:[(0,p.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,p.jsx)(`span`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,G as r,J as i,S as a,Z as o,d as s,r as c,t as l}from"./index-a77-dag6.js";import{r as u}from"./userService-BUZZd7Oe.js";import{a as d}from"./movie-B4kAIbhw.js";import{t as f}from"./MovieCard-CpwPfCfo.js";var p=t(),m=({movielist:e,title:t})=>{let n=i(),r=e=>{n(`/movie/${e}`)};return(0,p.jsxs)(`section`,{className:`mx-auto max-w-7xl px-1 pb-24 lg:px-8`,children:[(0,p.jsxs)(`div`,{className:`flex items-end justify-between gap-4`,children:[(0,p.jsxs)(`div`,{children:[(0,p.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,p.jsx)(`span`,{className:`
                                 size-1.5
                                 rounded-full
                                 bg-(--accent-primary)
@@ -49,7 +49,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W
                             border-(--accent-primary)/20
                             bg-(--accent-primary)/10
                             text-(--accent-primary)
-                        `,children:(0,p.jsx)(o,{className:`size-6`})}),(0,p.jsx)(`p`,{className:`mt-4 text-sm font-bold text-white/50`,children:`No movies found`}),(0,p.jsx)(`p`,{className:`mt-1 text-xs text-white/25`,children:`There aren't any movies to show here yet.`})]}):(0,p.jsx)(`div`,{className:`
+                        `,children:(0,p.jsx)(s,{className:`size-6`})}),(0,p.jsx)(`p`,{className:`mt-4 text-sm font-bold text-white/50`,children:`No movies found`}),(0,p.jsx)(`p`,{className:`mt-1 text-xs text-white/25`,children:`There aren't any movies to show here yet.`})]}):(0,p.jsx)(`div`,{className:`
                         mt-7
                         grid
                         grid-cols-2
@@ -58,7 +58,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W
                         md:grid-cols-4
                         lg:grid-cols-5
                         xl:grid-cols-6
-                    `,children:e.map(e=>(0,p.jsxs)(`article`,{onClick:()=>i(e.id),className:`
+                    `,children:e.map(e=>(0,p.jsxs)(`article`,{onClick:()=>r(e.id),className:`
                                 group
                                 cursor-pointer
                             `,children:[(0,p.jsxs)(`div`,{className:`
@@ -89,7 +89,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W
                                             justify-center
                                             bg-white/5
                                             text-white/20
-                                        `,children:(0,p.jsx)(o,{className:`size-10`})}),(0,p.jsx)(`div`,{className:`
+                                        `,children:(0,p.jsx)(s,{className:`size-10`})}),(0,p.jsx)(`div`,{className:`
                                         pointer-events-none
                                         absolute
                                         inset-0
@@ -112,7 +112,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W
                                                 px-2
                                                 py-1
                                                 backdrop-blur-md
-                                            `,children:[(0,p.jsx)(n,{className:`
+                                            `,children:[(0,p.jsx)(a,{className:`
                                                     size-3
                                                     fill-(--accent-primary)
                                                     text-(--accent-primary)
@@ -156,13 +156,13 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W
                                         text-white
                                         transition-colors
                                         group-hover:text-(--accent-primary)
-                                    `,children:e.title}),(0,p.jsxs)(`div`,{className:`mt-1 flex items-center gap-1.5`,children:[(0,p.jsx)(o,{className:`
+                                    `,children:e.title}),(0,p.jsxs)(`div`,{className:`mt-1 flex items-center gap-1.5`,children:[(0,p.jsx)(s,{className:`
                                             size-3
                                             text-(--accent-primary)/60
                                         `}),(0,p.jsx)(`span`,{className:`
                                             text-[10px]
                                             text-white/25
-                                        `,children:`Movie`})]})]})]},e.id))})]})},h=e(a(),1),g=()=>{let{user:e,loading:t}=r(),[n,i]=(0,h.useState)([]),[a,o]=(0,h.useState)(!0),[s,c]=(0,h.useState)(``),[l,f]=(0,h.useState)(``),[p,m]=(0,h.useState)(null),g=(0,h.useCallback)(async()=>{if(!e){i([]),o(!1);return}try{o(!0),c(``);let t=await u(e.uid),n=Array.from(new Set([...t.liked,...t.watched,...t.watchlist,...Object.keys(t.rated).map(Number)]));if(n.length===0){i([]);return}let r=(await d(n)).map(e=>{let n=e.movieId,r=t.rated[String(n)]??null;return{movieId:n,title:e.title??``,posterPath:e.posterPath??null,movieSynopsis:e.movieSynopsis??``,genreIds:e.genreIds??[],voteAverage:e.voteAverage??0,liked:t.liked.includes(n),watched:t.watched.includes(n),watchlisted:t.watchlist.includes(n),rated:r!==null,rating:r}});i(r),console.log(`[useMyList] Movies loaded successfully:`,r)}catch(e){console.error(`[useMyList] Failed to load user movies:`,e),c(`We couldn't load your saved movies. Please try again.`)}finally{o(!1)}},[e]);return(0,h.useEffect)(()=>{t||g()},[e,t,g]),{user:e,userLoading:t,movies:n,loading:a,error:s,searchQuery:l,setSearchQuery:f,movieGroups:(0,h.useMemo)(()=>{let e=l.trim().toLowerCase(),t=t=>!e||t.title.toLowerCase().includes(e);return[{title:`Want to Watch`,movies:n.filter(e=>e.watchlisted&&t(e)).map(_)},{title:`Watched`,movies:n.filter(e=>e.watched&&t(e)).map(_)},{title:`Liked`,movies:n.filter(e=>e.liked&&t(e)).map(_)},{title:`Rated`,movies:n.filter(e=>e.rated&&t(e)).map(_)}].filter(e=>e.movies.length>0)},[n,l]),selectedGroup:p,setSelectedGroup:m,reload:g}},_=e=>({id:e.movieId,title:e.title,overview:e.movieSynopsis??``,poster_path:e.posterPath??null,genre_ids:e.genreIds??[],vote_average:e.voteAverage??0,adult:!1,backdrop_path:null,original_language:``,original_title:e.title,popularity:0,release_date:``,video:!1,vote_count:0}),v=({authenticated:e,searchQuery:t})=>e?(0,p.jsxs)(`div`,{className:`
+                                        `,children:`Movie`})]})]})]},e.id))})]})},h=e(o(),1),g=()=>{let{user:e,loading:t}=n(),[r,i]=(0,h.useState)([]),[a,o]=(0,h.useState)(!0),[s,c]=(0,h.useState)(``),[l,f]=(0,h.useState)(``),[p,m]=(0,h.useState)(null),g=(0,h.useCallback)(async()=>{if(!e){i([]),o(!1);return}try{o(!0),c(``);let t=await u(e.uid),n=Array.from(new Set([...t.liked,...t.watched,...t.watchlist,...Object.keys(t.rated).map(Number)]));if(n.length===0){i([]);return}let r=(await d(n)).map(e=>{let n=e.movieId,r=t.rated[String(n)]??null;return{movieId:n,title:e.title??``,posterPath:e.posterPath??null,movieSynopsis:e.movieSynopsis??``,genreIds:e.genreIds??[],voteAverage:e.voteAverage??0,liked:t.liked.includes(n),watched:t.watched.includes(n),watchlisted:t.watchlist.includes(n),rated:r!==null,rating:r}});i(r),console.log(`[useMyList] Movies loaded successfully:`,r)}catch(e){console.error(`[useMyList] Failed to load user movies:`,e),c(`We couldn't load your saved movies. Please try again.`)}finally{o(!1)}},[e]);return(0,h.useEffect)(()=>{t||g()},[e,t,g]),{user:e,userLoading:t,movies:r,loading:a,error:s,searchQuery:l,setSearchQuery:f,movieGroups:(0,h.useMemo)(()=>{let e=l.trim().toLowerCase(),t=t=>!e||t.title.toLowerCase().includes(e);return[{title:`Want to Watch`,movies:r.filter(e=>e.watchlisted&&t(e)).map(_)},{title:`Watched`,movies:r.filter(e=>e.watched&&t(e)).map(_)},{title:`Liked`,movies:r.filter(e=>e.liked&&t(e)).map(_)},{title:`Rated`,movies:r.filter(e=>e.rated&&t(e)).map(_)}].filter(e=>e.movies.length>0)},[r,l]),selectedGroup:p,setSelectedGroup:m,reload:g}},_=e=>({id:e.movieId,title:e.title,overview:e.movieSynopsis??``,poster_path:e.posterPath??null,genre_ids:e.genreIds??[],vote_average:e.voteAverage??0,adult:!1,backdrop_path:null,original_language:``,original_title:e.title,popularity:0,release_date:``,video:!1,vote_count:0}),v=({authenticated:e,searchQuery:t})=>e?(0,p.jsxs)(`div`,{className:`
                 mt-10
                 rounded-2xl
                 border
@@ -170,7 +170,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W
                 bg-white/5
                 p-10
                 text-center
-            `,children:[(0,p.jsx)(`p`,{className:`text-white/70`,children:t?`No movies match “${t}”.`:`No movies in your list yet.`}),!t&&(0,p.jsx)(i,{to:`/trending`,className:`
+            `,children:[(0,p.jsx)(`p`,{className:`text-white/70`,children:t?`No movies match “${t}”.`:`No movies in your list yet.`}),!t&&(0,p.jsx)(r,{to:`/trending`,className:`
                         mt-4
                         inline-flex
                         font-bold
@@ -191,7 +191,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,S as n,T as r,W
                         `,children:`Your list is waiting.`}),(0,p.jsx)(`p`,{className:`
                             mt-3
                             text-white/60
-                        `,children:`Sign in to save movies and pick up where you left off.`}),(0,p.jsx)(i,{to:`/login`,className:`
+                        `,children:`Sign in to save movies and pick up where you left off.`}),(0,p.jsx)(r,{to:`/login`,className:`
                             mt-6
                             inline-flex
                             rounded-full

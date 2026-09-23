@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X as i,d as a,i as o,l as s,q as c,r as l,x as u}from"./index-CBwXnnyZ.js";import{r as d}from"./userService-HPq-o6Fr.js";import{a as f}from"./movie-Rjv1zAsd.js";import{i as p,n as m,r as h,t as g}from"./recommendation-Bu02fBVz.js";var _=e(i(),1),v=()=>{let[e,t]=(0,_.useState)([]),[r,i]=(0,_.useState)(!0),[a,o]=(0,_.useState)(null),s=(0,_.useCallback)(async()=>{try{i(!0),o(null),t([]);let e=n.currentUser;if(!e)throw Error(`You must be logged in.`);let r=await d(e.uid),a=Object.keys(r.rated).map(Number),s=[...new Set([...r.liked,...r.watched,...r.watchlist,...a])].filter(e=>Number.isFinite(e));if(!s.length){t([]);return}let c=(await f(s)).map(e=>{let t=e.movieId,n=r.rated[String(t)];return{movieId:t,title:e.title,posterPath:e.posterPath,genreIds:e.genreIds,voteAverage:e.voteAverage,liked:r.liked.includes(t),watchlisted:r.watchlist.includes(t),watched:r.watched.includes(t),rated:typeof n==`number`,rating:typeof n==`number`?n:null,createdAt:e.createdAt??null,updatedAt:e.updatedAt??null}}),l=g(c),u=h(l),_=m(u),v=await p(_,c);await new Promise(e=>setTimeout(e,1800)),t(v.slice(0,3))}catch(e){console.error(`Failed to generate recommendations:`,e),o(`We couldn't build your recommendations.`)}finally{i(!1)}},[]);return(0,_.useEffect)(()=>{s()},[s]),{movies:e,loading:r,error:a,generateRecommendations:s}},y=r(),b=()=>(0,y.jsx)(`section`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,J as r,O as i,Z as a,d as o,i as s,l as c,r as l,x as u}from"./index-a77-dag6.js";import{r as d}from"./userService-BUZZd7Oe.js";import{a as f}from"./movie-B4kAIbhw.js";import{i as p,n as m,r as h,t as g}from"./recommendation-Bu02fBVz.js";var _=e(a(),1),v=()=>{let[e,t]=(0,_.useState)([]),[n,r]=(0,_.useState)(!0),[a,o]=(0,_.useState)(null),s=(0,_.useCallback)(async()=>{try{r(!0),o(null),t([]);let e=i.currentUser;if(!e)throw Error(`You must be logged in.`);let n=await d(e.uid),a=Object.keys(n.rated).map(Number),s=[...new Set([...n.liked,...n.watched,...n.watchlist,...a])].filter(e=>Number.isFinite(e));if(!s.length){t([]);return}let c=(await f(s)).map(e=>{let t=e.movieId,r=n.rated[String(t)];return{movieId:t,title:e.title,posterPath:e.posterPath,genreIds:e.genreIds,voteAverage:e.voteAverage,liked:n.liked.includes(t),watchlisted:n.watchlist.includes(t),watched:n.watched.includes(t),rated:typeof r==`number`,rating:typeof r==`number`?r:null,createdAt:e.createdAt??null,updatedAt:e.updatedAt??null}}),l=g(c),u=h(l),_=m(u),v=await p(_,c);await new Promise(e=>setTimeout(e,1800)),t(v.slice(0,3))}catch(e){console.error(`Failed to generate recommendations:`,e),o(`We couldn't build your recommendations.`)}finally{r(!1)}},[]);return(0,_.useEffect)(()=>{s()},[s]),{movies:e,loading:n,error:a,generateRecommendations:s}},y=n(),b=()=>(0,y.jsx)(`section`,{className:`
                 relative
                 mx-auto
                 max-w-7xl
@@ -112,7 +112,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X
                                 bg-(--accent-primary)/10
                                 text-(--accent-primary)
                                 shadow-[0_0_60px_var(--accent-glow)]
-                            `,children:(0,y.jsx)(s,{className:`size-9 animate-pulse`})})]}),(0,y.jsxs)(`div`,{className:`mt-8 flex items-center gap-2`,children:[(0,y.jsx)(`span`,{className:`
+                            `,children:(0,y.jsx)(c,{className:`size-9 animate-pulse`})})]}),(0,y.jsxs)(`div`,{className:`mt-8 flex items-center gap-2`,children:[(0,y.jsx)(`span`,{className:`
                                 size-1.5
                                 animate-pulse
                                 rounded-full
@@ -138,7 +138,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X
                             text-sm
                             leading-6
                             text-white/35
-                        `,children:`Analyzing your Movie DNA and searching for something that matches your taste.`}),(0,y.jsxs)(`div`,{className:`mt-8 flex flex-wrap items-center justify-center gap-3`,children:[(0,y.jsx)(S,{icon:(0,y.jsx)(u,{className:`size-3`}),label:`Taste`}),(0,y.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,y.jsx)(S,{icon:(0,y.jsx)(o,{className:`size-3`}),label:`Analyze`}),(0,y.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,y.jsx)(S,{icon:(0,y.jsx)(a,{className:`size-3`}),label:`Discover`})]}),(0,y.jsxs)(`div`,{className:`mt-7 flex items-center gap-1.5`,children:[(0,y.jsx)(C,{}),(0,y.jsx)(C,{delay:`150ms`}),(0,y.jsx)(C,{delay:`300ms`})]})]})]})}),S=({icon:e,label:t})=>(0,y.jsxs)(`div`,{className:`
+                        `,children:`Analyzing your Movie DNA and searching for something that matches your taste.`}),(0,y.jsxs)(`div`,{className:`mt-8 flex flex-wrap items-center justify-center gap-3`,children:[(0,y.jsx)(S,{icon:(0,y.jsx)(u,{className:`size-3`}),label:`Taste`}),(0,y.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,y.jsx)(S,{icon:(0,y.jsx)(s,{className:`size-3`}),label:`Analyze`}),(0,y.jsx)(`span`,{className:`text-white/15`,children:`→`}),(0,y.jsx)(S,{icon:(0,y.jsx)(o,{className:`size-3`}),label:`Discover`})]}),(0,y.jsxs)(`div`,{className:`mt-7 flex items-center gap-1.5`,children:[(0,y.jsx)(C,{}),(0,y.jsx)(C,{delay:`150ms`}),(0,y.jsx)(C,{delay:`300ms`})]})]})]})}),S=({icon:e,label:t})=>(0,y.jsxs)(`div`,{className:`
                 flex
                 items-center
                 gap-2
@@ -177,7 +177,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X
                         border-(--accent-primary)/20
                         bg-(--accent-primary)/10
                         text-(--accent-primary)
-                    `,children:(0,y.jsx)(a,{className:`size-7`})}),(0,y.jsx)(`h2`,{className:`mt-6 text-2xl font-black`,children:`The movie universe glitched.`}),(0,y.jsx)(`p`,{className:`mx-auto mt-3 max-w-md text-sm leading-6 text-white/35`,children:e}),(0,y.jsxs)(`button`,{type:`button`,onClick:t,className:`
+                    `,children:(0,y.jsx)(o,{className:`size-7`})}),(0,y.jsx)(`h2`,{className:`mt-6 text-2xl font-black`,children:`The movie universe glitched.`}),(0,y.jsx)(`p`,{className:`mx-auto mt-3 max-w-md text-sm leading-6 text-white/35`,children:e}),(0,y.jsxs)(`button`,{type:`button`,onClick:t,className:`
                         mt-8
                         inline-flex
                         items-center
@@ -200,11 +200,11 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X
                     px-6
                     py-20
                     text-center
-                `,children:[(0,y.jsx)(s,{className:`
+                `,children:[(0,y.jsx)(c,{className:`
                         mx-auto
                         size-12
                         text-(--accent-primary)
-                    `}),(0,y.jsx)(`h2`,{className:`mt-5 text-2xl font-black`,children:`Your Movie DNA needs a little more data.`}),(0,y.jsx)(`p`,{className:`mx-auto mt-3 max-w-lg text-sm leading-6 text-white/35`,children:`Like, watch, rate or save a few movies and CineScope will have enough information to find your next obsession.`})]})}),E=`https://image.tmdb.org/t/p/`,D=({movie:e,rank:n,label:r,featured:i=!1,onClick:o})=>{let s=e.poster_path?E+(i?`original`:`w780`)+e.poster_path:null,c=e.backdrop_path?E+`original`+e.backdrop_path:s;return(0,y.jsxs)(`article`,{onClick:o,className:`
+                    `}),(0,y.jsx)(`h2`,{className:`mt-5 text-2xl font-black`,children:`Your Movie DNA needs a little more data.`}),(0,y.jsx)(`p`,{className:`mx-auto mt-3 max-w-lg text-sm leading-6 text-white/35`,children:`Like, watch, rate or save a few movies and CineScope will have enough information to find your next obsession.`})]})}),E=`https://image.tmdb.org/t/p/`,D=({movie:e,rank:n,label:r,featured:i=!1,onClick:a})=>{let s=e.poster_path?E+(i?`original`:`w780`)+e.poster_path:null,c=e.backdrop_path?E+`original`+e.backdrop_path:s;return(0,y.jsxs)(`article`,{onClick:a,className:`
                 group
                 relative
                 cursor-pointer
@@ -275,7 +275,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X
                                     items-center
                                     justify-center
                                     bg-white/5
-                                `,children:(0,y.jsx)(a,{className:`size-12 text-white/20`})})}),(0,y.jsx)(`div`,{className:`
+                                `,children:(0,y.jsx)(o,{className:`size-12 text-white/20`})})}),(0,y.jsx)(`div`,{className:`
                             pointer-events-none
                             absolute
                             -bottom-10
@@ -435,9 +435,9 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{C as t,D as n,E as r,X
                         border-(--accent-primary)/15
                         bg-(--accent-primary)/5
                         text-(--accent-primary)
-                    `,children:(0,y.jsx)(s,{className:`size-4`})}),(0,y.jsx)(`p`,{className:`mt-4 text-xs text-white/25`,children:`Recommendations powered by your Movie DNA`})]})]})},k=()=>{let e=c(),{movies:t,loading:n,error:r,generateRecommendations:i}=v();return(0,y.jsxs)(`main`,{className:`
+                    `,children:(0,y.jsx)(c,{className:`size-4`})}),(0,y.jsx)(`p`,{className:`mt-4 text-xs text-white/25`,children:`Recommendations powered by your Movie DNA`})]})]})},k=()=>{let e=r(),{movies:t,loading:n,error:i,generateRecommendations:a}=v();return(0,y.jsxs)(`main`,{className:`
                 min-h-screen
                 overflow-hidden
                 bg-(--bg-primary)
                 text-white
-            `,children:[(0,y.jsx)(b,{}),n&&(0,y.jsx)(x,{}),!n&&r&&(0,y.jsx)(w,{message:r,onRetry:i}),!n&&!r&&t.length===0&&(0,y.jsx)(T,{}),!n&&!r&&t.length>0&&(0,y.jsx)(O,{movies:t,onRegenerate:i,onMovieClick:t=>e(`/movie/${t}`)})]})};export{k as default};
+            `,children:[(0,y.jsx)(b,{}),n&&(0,y.jsx)(x,{}),!n&&i&&(0,y.jsx)(w,{message:i,onRetry:a}),!n&&!i&&t.length===0&&(0,y.jsx)(T,{}),!n&&!i&&t.length>0&&(0,y.jsx)(O,{movies:t,onRegenerate:a,onMovieClick:t=>e(`/movie/${t}`)})]})};export{k as default};

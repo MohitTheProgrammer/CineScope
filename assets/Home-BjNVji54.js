@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,W as r,X as i,q as a,t as o}from"./index-CBwXnnyZ.js";import{n as s}from"./userService-HPq-o6Fr.js";import{t as c}from"./MovieCard-D2KLO_0u.js";import{a as l,i as u}from"./tmdb-CBdVkwx0.js";var d=t(),f=()=>(0,d.jsx)(`div`,{className:`flex gap-5 overflow-hidden`,children:Array.from({length:5}).map((e,t)=>(0,d.jsxs)(`div`,{className:`w-44 shrink-0 sm:w-48 lg:w-52`,children:[(0,d.jsx)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,G as r,J as i,Z as a,t as o}from"./index-a77-dag6.js";import{n as s}from"./userService-BUZZd7Oe.js";import{t as c}from"./MovieCard-CpwPfCfo.js";import{a as l,i as u}from"./tmdb-CBdVkwx0.js";var d=t(),f=()=>(0,d.jsx)(`div`,{className:`flex gap-5 overflow-hidden`,children:Array.from({length:5}).map((e,t)=>(0,d.jsxs)(`div`,{className:`w-44 shrink-0 sm:w-48 lg:w-52`,children:[(0,d.jsx)(`div`,{className:`
                             aspect-2/3
                             animate-pulse
                             rounded-2xl
@@ -17,7 +17,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,W as r,X
                             animate-pulse
                             rounded
                             bg-white/5
-                        `})]},t))}),p=({movies:e,loading:t,error:n,title:r,redirectLink:i,subtitle:s,id:l})=>{let u=a();return(0,d.jsxs)(`section`,{id:l,className:`
+                        `})]},t))}),p=({movies:e,loading:t,error:n,title:r,redirectLink:a,subtitle:s,id:l})=>{let u=i();return(0,d.jsxs)(`section`,{id:l,className:`
                 mx-auto
                 max-w-7xl
                 px-6
@@ -51,7 +51,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,W as r,X
                         transition-colors
                         hover:text-(--accent-primary)
                         sm:flex
-                    `,onClick:()=>{u(i)},children:[`View all`,(0,d.jsx)(o,{})]})]}),t&&(0,d.jsx)(f,{}),!t&&n&&(0,d.jsxs)(`div`,{className:`
+                    `,onClick:()=>{u(a)},children:[`View all`,(0,d.jsx)(o,{})]})]}),t&&(0,d.jsx)(f,{}),!t&&n&&(0,d.jsxs)(`div`,{className:`
                         rounded-2xl
                         border
                         border-white/10
@@ -77,7 +77,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,T as n,W as r,X
                     uppercase
                     tracking-wider
                     text-white/40
-                `,children:t})]}),h=e(i(),1),g=`https://image.tmdb.org/t/p/original`,_=[`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`],v=async e=>{try{let t=await s(e,15);if(!t.length)return y();let n=(await Promise.allSettled(t.map(async e=>{let t=await fetch(`https://api.themoviedb.org/3/movie/${e}/images?api_key=9306b63a19c60cc5c7b1bc4de94f57d7&include_image_language=en,null`);if(!t.ok)throw Error(`Failed to fetch images for movie ${e}: ${t.status}`);return t.json()}))).filter(e=>e.status===`fulfilled`).flatMap(e=>e.value.backdrops);if(!n.length)return y();let r=n.filter(e=>e.width>=1920&&e.height>=1080),i=[...r.length>0?r:n].sort((e,t)=>t.vote_average-e.vote_average).slice(0,20);return g+i[Math.floor(Math.random()*i.length)].file_path}catch{return y()}},y=()=>_.length?_[Math.floor(Math.random()*_.length)]:null,b=[{first:`Discover`,accent:`something`,last:`unforgettable.`},{first:`Explore`,accent:`incredible`,last:`adventures.`},{first:`Uncover`,accent:`captivating`,last:`storylines.`},{first:`Experience`,accent:`extraordinary`,last:`masterpieces.`}],x=e=>{let[t,n]=(0,h.useState)(()=>Math.floor(Math.random()*b.length)),[r,i]=(0,h.useState)(``);return(0,h.useEffect)(()=>{let t=!0;(async()=>{try{let n=await v(e??``);t&&n&&i(n)}catch{return}})();let r=window.setInterval(()=>{n(e=>(e+1)%b.length)},5e3);return()=>{t=!1,window.clearInterval(r)}},[e]),{heroTextIndex:t,heroBackdrop:r}},S=`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`,C=({uid:e})=>{let{heroTextIndex:t,heroBackdrop:n}=x(e),i=b[t];return(0,d.jsxs)(`section`,{className:`relative min-h-180 overflow-hidden`,children:[(0,d.jsxs)(`div`,{className:`absolute inset-0`,children:[(0,d.jsx)(`img`,{src:n||S,alt:``,"aria-hidden":`true`,className:`
+                `,children:t})]}),h=e(a(),1),g=`https://image.tmdb.org/t/p/original`,_=[`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`],v=async e=>{try{let t=await s(e,15);if(!t.length)return y();let n=(await Promise.allSettled(t.map(async e=>{let t=await fetch(`https://api.themoviedb.org/3/movie/${e}/images?api_key=9306b63a19c60cc5c7b1bc4de94f57d7&include_image_language=en,null`);if(!t.ok)throw Error(`Failed to fetch images for movie ${e}: ${t.status}`);return t.json()}))).filter(e=>e.status===`fulfilled`).flatMap(e=>e.value.backdrops);if(!n.length)return y();let r=n.filter(e=>e.width>=1920&&e.height>=1080),i=[...r.length>0?r:n].sort((e,t)=>t.vote_average-e.vote_average).slice(0,20);return g+i[Math.floor(Math.random()*i.length)].file_path}catch{return y()}},y=()=>_.length?_[Math.floor(Math.random()*_.length)]:null,b=[{first:`Discover`,accent:`something`,last:`unforgettable.`},{first:`Explore`,accent:`incredible`,last:`adventures.`},{first:`Uncover`,accent:`captivating`,last:`storylines.`},{first:`Experience`,accent:`extraordinary`,last:`masterpieces.`}],x=e=>{let[t,n]=(0,h.useState)(()=>Math.floor(Math.random()*b.length)),[r,i]=(0,h.useState)(``);return(0,h.useEffect)(()=>{let t=!0;(async()=>{try{let n=await v(e??``);t&&n&&i(n)}catch{return}})();let r=window.setInterval(()=>{n(e=>(e+1)%b.length)},5e3);return()=>{t=!1,window.clearInterval(r)}},[e]),{heroTextIndex:t,heroBackdrop:r}},S=`https://image.tmdb.org/t/p/original/7iwUUcKURMT7aKfCwMy6YnGtchD.jpg`,C=({uid:e})=>{let{heroTextIndex:t,heroBackdrop:n}=x(e),i=b[t];return(0,d.jsxs)(`section`,{className:`relative min-h-180 overflow-hidden`,children:[(0,d.jsxs)(`div`,{className:`absolute inset-0`,children:[(0,d.jsx)(`img`,{src:n||S,alt:``,"aria-hidden":`true`,className:`
                         h-full
                         w-full
                         object-cover

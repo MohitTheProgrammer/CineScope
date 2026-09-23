@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T as i,W as a,X as o,_ as s,c,d as l,g as u,l as d,m as f,o as p,q as m,r as h,s as g,t as _,v,x as y}from"./index-CBwXnnyZ.js";import{c as b,i as x,l as S,n as C,o as w,r as T}from"./movie-Rjv1zAsd.js";import{n as E,r as D,s as O,t as k}from"./tmdb-CBdVkwx0.js";var A=e(o(),1),ee=async(e,t=`IN`)=>(await O.get(`/movie/${e}/watch/providers`)).data.results?.[t]??null,j=e=>{let[t,n]=(0,A.useState)(null),[r,i]=(0,A.useState)([]),[a,o]=(0,A.useState)([]),[s,c]=(0,A.useState)(null),[l,u]=(0,A.useState)(!0),[d,f]=(0,A.useState)(null);return(0,A.useEffect)(()=>{let t=!1;return Number.isInteger(e)&&e>0?(async()=>{try{u(!0),f(null);let[r,a,s,l]=await Promise.all([k(e),D(e),E(e),ee(e)]);if(t)return;n(r),o(a?.results??[]),i(s?.cast??[]),c(l??null)}catch{t||f(`Failed to load movie details.`)}finally{t||u(!1)}})():(u(!1),f(`Invalid movie ID.`)),()=>{t=!0}},[e]),{movie:t,cast:r,videos:a,watchProviders:s,loading:l,error:d}},M=e=>{let{user:t}=i(),[n,r]=(0,A.useState)(!1),[a,o]=(0,A.useState)(!0),[s,c]=(0,A.useState)(!1);return(0,A.useEffect)(()=>{let n=!1;return(async()=>{if(!t||!e){r(!1),o(!1);return}try{o(!0);let i=await w(t.uid,e.id);n||(r(i),console.log(`[useMovieWatchlist] Watchlist state loaded: ${e.id} -> ${i}`))}catch(t){n||(console.error(`[useMovieWatchlist] Failed to check watchlist: ${e.id}`,t),r(!1))}finally{n||o(!1)}})(),()=>{n=!0}},[t,e]),{watchlistAdded:n,checkingWatchlist:a,addingToWatchlist:s,addToWatchlist:async()=>{if(!(!t||!e||n))try{c(!0);let n=e.genre_ids?.length?e.genre_ids:e.genres?.map(e=>e.id)??[];console.log(`[useMovieWatchlist] Movie before saving:`,{id:e.id,title:e.title,overview:e.overview,genre_ids:n,vote_average:e.vote_average}),await T(t.uid,{id:e.id,title:e.title,overview:e.overview??``,poster_path:e.poster_path??null,genre_ids:n,vote_average:e.vote_average??0}),r(!0),console.log(`[useMovieWatchlist] Movie added to watchlist successfully: ${e.id}`)}catch(t){console.error(`[useMovieWatchlist] Failed to add movie to watchlist: ${e.id}`,t)}finally{c(!1)}}}},N=e=>{let{user:t}=i(),[n,r]=(0,A.useState)(!1),[a,o]=(0,A.useState)(!0),[s,c]=(0,A.useState)(!1);return(0,A.useEffect)(()=>{let n=!1;return(async()=>{if(!t||!e){r(!1),o(!1);return}try{o(!0);let i=await b(t.uid,e.id);if(n)return;r(i),console.log(`[useMovieWatched] Watched state loaded: ${e.id} -> ${i}`)}catch(t){if(n)return;console.error(`[useMovieWatched] Failed to check watched state: ${e.id}`,t),r(!1)}finally{n||o(!1)}})(),()=>{n=!0}},[t,e]),{watched:n,checkingWatched:a,addingWatched:s,addWatched:async()=>{if(!(!t||!e||n||s))try{c(!0);let n=e.genre_ids?.length?e.genre_ids:e.genres?.map(e=>e.id)??[],i={id:e.id,title:e.title,overview:e.overview??``,poster_path:e.poster_path??null,genre_ids:n,vote_average:typeof e.vote_average==`number`?e.vote_average:0};console.log(`[useMovieWatched] Movie data being saved:`,i),await C(t.uid,i),r(!0),console.log(`[useMovieWatched] Movie added to watched successfully: ${e.id}`)}catch(t){console.error(`[useMovieWatched] Failed to add movie to watched: ${e.id}`,t)}finally{c(!1)}}}},P=e=>{let{user:t}=i(),[n,r]=(0,A.useState)(!1),[a,o]=(0,A.useState)(null),[s,c]=(0,A.useState)(!0),[l,u]=(0,A.useState)(!1),[d,f]=(0,A.useState)(!1);return(0,A.useEffect)(()=>{let n=!1;return(async()=>{if(!t||!e){r(!1),o(null),c(!1);return}try{c(!0);let i=await x(t.uid,e.id);n||(o(i),r(i!==null),console.log(`[useMovieRating] Rating state loaded: ${e.id} -> ${i}`))}catch(t){n||(console.error(`[useMovieRating] Failed to check rating: ${e.id}`,t),r(!1),o(null))}finally{n||c(!1)}})(),()=>{n=!0}},[t,e]),{rated:n,userRating:a,checkingRated:s,savingRating:l,ratingOpen:d,toggleRating:()=>{n||l||f(e=>!e)},rate:async i=>{if(!(!t||!e||n||l))try{u(!0);let n=e.genre_ids?.length?e.genre_ids:e.genres?.map(e=>e.id)??[];console.log(`[useMovieRating] Rating movie:`,{movieId:e.id,title:e.title,rating:i,overview:e.overview??``,genreIds:n}),await S(t.uid,{id:e.id,title:e.title,overview:e.overview??``,poster_path:e.poster_path??null,genre_ids:n,vote_average:e.vote_average??0},i),o(i),r(!0),f(!1),console.log(`[useMovieRating] Movie rated successfully: ${e.id} -> ${i}`)}catch(t){console.error(`[useMovieRating] Failed to rate movie: ${e.id}`,t)}finally{u(!1)}}}},F=t(),I=`https://image.tmdb.org/t/p`,L=({movie:e})=>{let t=e.release_date?new Date(e.release_date).getFullYear():null;return(0,F.jsx)(`section`,{className:`mx-auto max-w-7xl px-6 pb-16 pt-28 lg:px-8`,children:(0,F.jsxs)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,G as r,J as i,S as a,Y as o,Z as s,_ as c,c as l,d as u,g as d,l as f,m as p,o as m,r as h,s as g,t as _,v,x as y}from"./index-a77-dag6.js";import{c as b,i as x,l as S,n as C,o as w,r as T}from"./movie-B4kAIbhw.js";import{n as E,r as D,s as O,t as k}from"./tmdb-CBdVkwx0.js";var A=e(s(),1),ee=async(e,t=`IN`)=>(await O.get(`/movie/${e}/watch/providers`)).data.results?.[t]??null,j=e=>{let[t,n]=(0,A.useState)(null),[r,i]=(0,A.useState)([]),[a,o]=(0,A.useState)([]),[s,c]=(0,A.useState)(null),[l,u]=(0,A.useState)(!0),[d,f]=(0,A.useState)(null);return(0,A.useEffect)(()=>{let t=!1;return Number.isInteger(e)&&e>0?(async()=>{try{u(!0),f(null);let[r,a,s,l]=await Promise.all([k(e),D(e),E(e),ee(e)]);if(t)return;n(r),o(a?.results??[]),i(s?.cast??[]),c(l??null)}catch{t||f(`Failed to load movie details.`)}finally{t||u(!1)}})():(u(!1),f(`Invalid movie ID.`)),()=>{t=!0}},[e]),{movie:t,cast:r,videos:a,watchProviders:s,loading:l,error:d}},M=e=>{let{user:t}=n(),[r,i]=(0,A.useState)(!1),[a,o]=(0,A.useState)(!0),[s,c]=(0,A.useState)(!1);return(0,A.useEffect)(()=>{let n=!1;return(async()=>{if(!t||!e){i(!1),o(!1);return}try{o(!0);let r=await w(t.uid,e.id);n||(i(r),console.log(`[useMovieWatchlist] Watchlist state loaded: ${e.id} -> ${r}`))}catch(t){n||(console.error(`[useMovieWatchlist] Failed to check watchlist: ${e.id}`,t),i(!1))}finally{n||o(!1)}})(),()=>{n=!0}},[t,e]),{watchlistAdded:r,checkingWatchlist:a,addingToWatchlist:s,addToWatchlist:async()=>{if(!(!t||!e||r))try{c(!0);let n=e.genre_ids?.length?e.genre_ids:e.genres?.map(e=>e.id)??[];console.log(`[useMovieWatchlist] Movie before saving:`,{id:e.id,title:e.title,overview:e.overview,genre_ids:n,vote_average:e.vote_average}),await T(t.uid,{id:e.id,title:e.title,overview:e.overview??``,poster_path:e.poster_path??null,genre_ids:n,vote_average:e.vote_average??0}),i(!0),console.log(`[useMovieWatchlist] Movie added to watchlist successfully: ${e.id}`)}catch(t){console.error(`[useMovieWatchlist] Failed to add movie to watchlist: ${e.id}`,t)}finally{c(!1)}}}},N=e=>{let{user:t}=n(),[r,i]=(0,A.useState)(!1),[a,o]=(0,A.useState)(!0),[s,c]=(0,A.useState)(!1);return(0,A.useEffect)(()=>{let n=!1;return(async()=>{if(!t||!e){i(!1),o(!1);return}try{o(!0);let r=await b(t.uid,e.id);if(n)return;i(r),console.log(`[useMovieWatched] Watched state loaded: ${e.id} -> ${r}`)}catch(t){if(n)return;console.error(`[useMovieWatched] Failed to check watched state: ${e.id}`,t),i(!1)}finally{n||o(!1)}})(),()=>{n=!0}},[t,e]),{watched:r,checkingWatched:a,addingWatched:s,addWatched:async()=>{if(!(!t||!e||r||s))try{c(!0);let n=e.genre_ids?.length?e.genre_ids:e.genres?.map(e=>e.id)??[],r={id:e.id,title:e.title,overview:e.overview??``,poster_path:e.poster_path??null,genre_ids:n,vote_average:typeof e.vote_average==`number`?e.vote_average:0};console.log(`[useMovieWatched] Movie data being saved:`,r),await C(t.uid,r),i(!0),console.log(`[useMovieWatched] Movie added to watched successfully: ${e.id}`)}catch(t){console.error(`[useMovieWatched] Failed to add movie to watched: ${e.id}`,t)}finally{c(!1)}}}},P=e=>{let{user:t}=n(),[r,i]=(0,A.useState)(!1),[a,o]=(0,A.useState)(null),[s,c]=(0,A.useState)(!0),[l,u]=(0,A.useState)(!1),[d,f]=(0,A.useState)(!1);return(0,A.useEffect)(()=>{let n=!1;return(async()=>{if(!t||!e){i(!1),o(null),c(!1);return}try{c(!0);let r=await x(t.uid,e.id);n||(o(r),i(r!==null),console.log(`[useMovieRating] Rating state loaded: ${e.id} -> ${r}`))}catch(t){n||(console.error(`[useMovieRating] Failed to check rating: ${e.id}`,t),i(!1),o(null))}finally{n||c(!1)}})(),()=>{n=!0}},[t,e]),{rated:r,userRating:a,checkingRated:s,savingRating:l,ratingOpen:d,toggleRating:()=>{r||l||f(e=>!e)},rate:async n=>{if(!(!t||!e||r||l))try{u(!0);let r=e.genre_ids?.length?e.genre_ids:e.genres?.map(e=>e.id)??[];console.log(`[useMovieRating] Rating movie:`,{movieId:e.id,title:e.title,rating:n,overview:e.overview??``,genreIds:r}),await S(t.uid,{id:e.id,title:e.title,overview:e.overview??``,poster_path:e.poster_path??null,genre_ids:r,vote_average:e.vote_average??0},n),o(n),i(!0),f(!1),console.log(`[useMovieRating] Movie rated successfully: ${e.id} -> ${n}`)}catch(t){console.error(`[useMovieRating] Failed to rate movie: ${e.id}`,t)}finally{u(!1)}}}},F=t(),I=`https://image.tmdb.org/t/p`,L=({movie:e})=>{let t=e.release_date?new Date(e.release_date).getFullYear():null;return(0,F.jsx)(`section`,{className:`mx-auto max-w-7xl px-6 pb-16 pt-28 lg:px-8`,children:(0,F.jsxs)(`div`,{className:`
                     grid
                     gap-8
                     lg:grid-cols-[280px_1fr]
@@ -73,7 +73,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                                 leading-7
                                 text-white/60
                                 sm:text-base
-                            `,children:e.overview||`No synopsis available.`})]})]})]})})},R=()=>(0,F.jsx)(`svg`,{viewBox:`0 0 24 24`,fill:`currentColor`,className:`size-4 text-(--accent-secondary)`,children:(0,F.jsx)(`path`,{d:`m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z`})}),z=()=>(0,F.jsx)(`span`,{className:`size-1 rounded-full bg-white/20`}),B=({hasBeenReleased:e,checkingWatchlist:t,addingToWatchlist:n,watchlistAdded:i,checkingWatched:a,addingWatched:o,watched:c,checkingRated:l,savingRating:u,rated:d,userRating:m,ratingOpen:h,onAddToWatchlist:g,onAddWatched:_,onToggleRating:v,onRateMovie:y})=>(0,F.jsx)(`section`,{className:`
+                            `,children:e.overview||`No synopsis available.`})]})]})]})})},R=()=>(0,F.jsx)(`svg`,{viewBox:`0 0 24 24`,fill:`currentColor`,className:`size-4 text-(--accent-secondary)`,children:(0,F.jsx)(`path`,{d:`m12 3 2.78 5.63 6.22.9-4.5 4.38 1.06 6.2L12 17.18 6.44 20.1l1.06-6.2L3 9.53l6.22-.9L12 3Z`})}),z=()=>(0,F.jsx)(`span`,{className:`size-1 rounded-full bg-white/20`}),B=({hasBeenReleased:e,checkingWatchlist:t,addingToWatchlist:n,watchlistAdded:r,checkingWatched:i,addingWatched:o,watched:s,checkingRated:l,savingRating:u,rated:d,userRating:f,ratingOpen:h,onAddToWatchlist:g,onAddWatched:_,onToggleRating:v,onRateMovie:y})=>(0,F.jsx)(`section`,{className:`
                 mx-auto
                 max-w-7xl
                 px-4
@@ -85,21 +85,21 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                     flex-wrap
                     items-center
                     gap-2.5
-                `,children:[(0,F.jsx)(`button`,{type:`button`,onClick:g,disabled:t||n||i,className:`
+                `,children:[(0,F.jsx)(`button`,{type:`button`,onClick:g,disabled:t||n||r,className:`
                         ${V}
-                        ${i?`
+                        ${r?`
                                     border-(--accent-primary)/25
                                     bg-(--accent-primary)/10
                                     text-(--accent-primary)
                                 `:``}
-                    `,children:t?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(f,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Checking...`})]}):i?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Added to Watchlist`})]}):n?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(f,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Adding...`})]}):(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(s,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Add to Watchlist`})]})}),e&&(0,F.jsx)(`button`,{type:`button`,onClick:_,disabled:a||o||c,className:`
+                    `,children:t?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Checking...`})]}):r?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(m,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Added to Watchlist`})]}):n?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Adding...`})]}):(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(c,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Add to Watchlist`})]})}),e&&(0,F.jsx)(`button`,{type:`button`,onClick:_,disabled:i||o||s,className:`
                             ${V}
-                            ${c?`
+                            ${s?`
                                         border-white/15
                                         bg-white/8
                                         text-white/50
                                     `:``}
-                        `,children:a?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(f,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Checking...`})]}):c?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Marked as Watched`})]}):o?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(f,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Marking...`})]}):(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Mark as Watched`})]})}),e&&(0,F.jsxs)(`div`,{className:`
+                        `,children:i?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Checking...`})]}):s?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(m,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Marked as Watched`})]}):o?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Marking...`})]}):(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(m,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Mark as Watched`})]})}),e&&(0,F.jsxs)(`div`,{className:`
                             relative
                             min-w-0
                         `,children:[(0,F.jsx)(`button`,{type:`button`,onClick:v,disabled:l||u||d,"aria-expanded":h,className:`
@@ -109,10 +109,10 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                                             bg-(--accent-secondary)/5
                                             text-white/60
                                         `:``}
-                            `,children:l?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(f,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Checking...`})]}):d?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(r,{className:`
+                            `,children:l?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(`span`,{children:`Checking...`})]}):d?(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(a,{className:`
                                             size-4
                                             text-(--accent-secondary)
-                                        `}),(0,F.jsx)(`span`,{children:m===null?`Rated`:`Your rating: ${m}/5`})]}):(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(r,{className:`
+                                        `}),(0,F.jsx)(`span`,{children:f===null?`Rated`:`Your rating: ${f}/5`})]}):(0,F.jsxs)(F.Fragment,{children:[(0,F.jsx)(a,{className:`
                                             size-4
                                             text-(--accent-secondary)
                                         `}),(0,F.jsx)(`span`,{children:`Rate Movie`})]})}),h&&!d&&(0,F.jsxs)(`div`,{className:`
@@ -166,7 +166,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
 
                                                     disabled:cursor-not-allowed
                                                     disabled:opacity-50
-                                                `,children:u?(0,F.jsx)(f,{className:`size-4`}):e},e))}),(0,F.jsx)(`p`,{className:`
+                                                `,children:u?(0,F.jsx)(p,{className:`size-4`}):e},e))}),(0,F.jsx)(`p`,{className:`
                                         mt-1
                                         whitespace-nowrap
                                         px-1
@@ -266,7 +266,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                             group-hover:border-(--accent-primary)/20
                             group-hover:bg-(--accent-primary)/10
                             group-hover:text-(--accent-primary)
-                        `,children:(0,F.jsx)(v,{})}),(0,F.jsxs)(`div`,{children:[(0,F.jsx)(`p`,{className:`text-sm font-bold text-white`,children:`View Watch Sources`}),(0,F.jsx)(`p`,{className:`mt-1 text-xs text-white/35`,children:`See where this movie is available`})]})]}),(0,F.jsx)(c,{open:t})]}),(0,F.jsx)(`div`,{className:`
+                        `,children:(0,F.jsx)(v,{})}),(0,F.jsxs)(`div`,{children:[(0,F.jsx)(`p`,{className:`text-sm font-bold text-white`,children:`View Watch Sources`}),(0,F.jsx)(`p`,{className:`mt-1 text-xs text-white/35`,children:`See where this movie is available`})]})]}),(0,F.jsx)(l,{open:t})]}),(0,F.jsx)(`div`,{className:`
                     grid
                     transition-all
                     duration-500
@@ -340,7 +340,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                         tracking-tight
                         text-white
                         sm:text-3xl
-                    `,children:`Watch Now`})]}),(0,F.jsxs)(`div`,{className:`mt-6 space-y-3`,children:[(0,F.jsxs)(`div`,{children:[(0,F.jsx)(K,{icon:(0,F.jsx)(u,{className:`size-5`}),title:`Watch Movie on CineScope`,description:r?`Click to stop and close the player`:`Watch ${e.title} directly on CineScope`,open:r,onClick:a}),(0,F.jsx)(`div`,{className:`
+                    `,children:`Watch Now`})]}),(0,F.jsxs)(`div`,{className:`mt-6 space-y-3`,children:[(0,F.jsxs)(`div`,{children:[(0,F.jsx)(K,{icon:(0,F.jsx)(d,{className:`size-5`}),title:`Watch Movie on CineScope`,description:r?`Click to stop and close the player`:`Watch ${e.title} directly on CineScope`,open:r,onClick:a}),(0,F.jsx)(`div`,{className:`
                             grid
                             transition-all
                             duration-500
@@ -353,7 +353,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                                         border-(--accent-primary)/15
                                         bg-black
                                         shadow-[0_20px_70px_rgba(0,0,0,0.45)]
-                                    `,children:s})})})]}),(0,F.jsxs)(`div`,{children:[(0,F.jsx)(K,{icon:(0,F.jsx)(u,{className:`size-5`}),title:`Watch Trailer`,description:n?`Finding the official trailer...`:t?i?`Click to stop and close the trailer`:`Watch the official trailer`:`No trailer available for this movie`,open:i,disabled:n||!t,loading:n,onClick:o}),(0,F.jsx)(`div`,{className:`
+                                    `,children:s})})})]}),(0,F.jsxs)(`div`,{children:[(0,F.jsx)(K,{icon:(0,F.jsx)(d,{className:`size-5`}),title:`Watch Trailer`,description:n?`Finding the official trailer...`:t?i?`Click to stop and close the trailer`:`Watch the official trailer`:`No trailer available for this movie`,open:i,disabled:n||!t,loading:n,onClick:o}),(0,F.jsx)(`div`,{className:`
                             grid
                             transition-all
                             duration-500
@@ -401,7 +401,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                         group-hover:border-(--accent-primary)/30
                         group-hover:bg-(--accent-primary)/10
                         group-hover:text-(--accent-primary)
-                    `,children:e}),(0,F.jsxs)(`div`,{className:`min-w-0`,children:[(0,F.jsx)(`p`,{className:`truncate text-sm font-bold text-white`,children:t}),(0,F.jsx)(`p`,{className:`mt-1 truncate text-xs text-white/40`,children:n})]})]}),(0,F.jsxs)(`div`,{className:`ml-4 flex shrink-0 items-center gap-3`,children:[a&&(0,F.jsx)(f,{className:`size-4`}),(0,F.jsx)(g,{className:`
+                    `,children:e}),(0,F.jsxs)(`div`,{className:`min-w-0`,children:[(0,F.jsx)(`p`,{className:`truncate text-sm font-bold text-white`,children:t}),(0,F.jsx)(`p`,{className:`mt-1 truncate text-xs text-white/40`,children:n})]})]}),(0,F.jsxs)(`div`,{className:`ml-4 flex shrink-0 items-center gap-3`,children:[a&&(0,F.jsx)(p,{className:`size-4`}),(0,F.jsx)(g,{className:`
                         size-5
                         text-white/35
                         transition-transform
@@ -579,7 +579,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                                     border
                                     border-white/10
                                     bg-white/5
-                                `},e))})]})]}),ne=({tmdbId:e,title:t})=>{let{user:n,loading:r}=i(),[a,o]=(0,A.useState)(!1);(0,A.useEffect)(()=>{let e=window.setTimeout(()=>{o(!1)},3500);return()=>{window.clearTimeout(e)}},[e]);let s=!r&&n?`https://vidrock.net/movie/${e}?autoplay=true&download=false`:void 0;return(0,A.useEffect)(()=>{if(!n||r){o(!1);return}o(!0)},[n,r,e]),r?(0,F.jsx)($,{children:(0,F.jsx)(re,{})}):n?(0,F.jsxs)($,{children:[(0,F.jsxs)(`div`,{className:`relative left-1/2 w-[calc(100%+3rem)] -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:left-auto sm:w-full sm:translate-x-0`,children:[(0,F.jsx)(`div`,{className:`
+                                `},e))})]})]}),ne=({tmdbId:e,title:t})=>{let{user:r,loading:i}=n(),[a,o]=(0,A.useState)(!1);(0,A.useEffect)(()=>{let e=window.setTimeout(()=>{o(!1)},3500);return()=>{window.clearTimeout(e)}},[e]);let s=!i&&r?`https://vidrock.net/movie/${e}?autoplay=true&download=false`:void 0;return(0,A.useEffect)(()=>{if(!r||i){o(!1);return}o(!0)},[r,i,e]),i?(0,F.jsx)($,{children:(0,F.jsx)(re,{})}):r?(0,F.jsxs)($,{children:[(0,F.jsxs)(`div`,{className:`relative left-1/2 w-[calc(100%+3rem)] -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:left-auto sm:w-full sm:translate-x-0`,children:[(0,F.jsx)(`div`,{className:`
                         absolute
                         inset-x-0
                         top-0
@@ -616,7 +616,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                                     border-(--accent-primary)/20
                                     bg-(--accent-primary)/10
                                     text-(--accent-primary)
-                                `,children:(0,F.jsx)(l,{className:`size-6`})}),(0,F.jsx)(`p`,{className:`
+                                `,children:(0,F.jsx)(u,{className:`size-6`})}),(0,F.jsx)(`p`,{className:`
                                     relative
                                     mt-4
                                     text-[10px]
@@ -637,7 +637,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                             rounded-md
                             bg-(--accent-primary)/10
                             text-(--accent-primary)
-                        `,children:(0,F.jsx)(d,{className:`size-3`})}),(0,F.jsx)(`span`,{className:`text-[10px] font-bold uppercase tracking-[0.15em] text-white/25`,children:`CineScope Player`})]}),(0,F.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,F.jsx)(`span`,{className:`size-1.5 rounded-full bg-green-400`}),(0,F.jsx)(`span`,{className:`text-[10px] font-medium text-white/25`,children:`Ready to watch`})]})]})]}):(0,F.jsx)($,{children:(0,F.jsx)(ie,{title:t})})},$=({children:e})=>(0,F.jsxs)(`section`,{className:`mx-auto max-w-7xl px-6 pb-16 lg:px-8`,children:[(0,F.jsxs)(`div`,{className:`mb-6`,children:[(0,F.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,F.jsx)(`span`,{className:`
+                        `,children:(0,F.jsx)(f,{className:`size-3`})}),(0,F.jsx)(`span`,{className:`text-[10px] font-bold uppercase tracking-[0.15em] text-white/25`,children:`CineScope Player`})]}),(0,F.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,F.jsx)(`span`,{className:`size-1.5 rounded-full bg-green-400`}),(0,F.jsx)(`span`,{className:`text-[10px] font-medium text-white/25`,children:`Ready to watch`})]})]})]}):(0,F.jsx)($,{children:(0,F.jsx)(ie,{title:t})})},$=({children:e})=>(0,F.jsxs)(`section`,{className:`mx-auto max-w-7xl px-6 pb-16 lg:px-8`,children:[(0,F.jsxs)(`div`,{className:`mb-6`,children:[(0,F.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,F.jsx)(`span`,{className:`
                             size-1.5
                             rounded-full
                             bg-(--accent-primary)
@@ -676,14 +676,14 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                     border-(--accent-primary)/20
                     bg-(--accent-primary)/10
                     text-(--accent-primary)
-                `,children:(0,F.jsx)(d,{className:`size-6 animate-pulse`})}),(0,F.jsx)(`p`,{className:`
+                `,children:(0,F.jsx)(f,{className:`size-6 animate-pulse`})}),(0,F.jsx)(`p`,{className:`
                     mt-4
                     text-[10px]
                     font-bold
                     uppercase
                     tracking-[0.2em]
                     text-(--accent-primary)
-                `,children:`Checking account`}),(0,F.jsx)(`p`,{className:`mt-2 text-xs text-white/30`,children:`Preparing your watch session...`}),(0,F.jsxs)(`div`,{className:`mt-4 flex gap-1.5`,children:[(0,F.jsx)(`span`,{className:`size-1.5 animate-bounce rounded-full bg-(--accent-primary)`}),(0,F.jsx)(`span`,{className:`size-1.5 animate-bounce rounded-full bg-(--accent-primary) [animation-delay:150ms]`}),(0,F.jsx)(`span`,{className:`size-1.5 animate-bounce rounded-full bg-(--accent-primary) [animation-delay:300ms]`})]})]}),ie=({title:e})=>{let t=m();return(0,F.jsxs)(`div`,{className:`
+                `,children:`Checking account`}),(0,F.jsx)(`p`,{className:`mt-2 text-xs text-white/30`,children:`Preparing your watch session...`}),(0,F.jsxs)(`div`,{className:`mt-4 flex gap-1.5`,children:[(0,F.jsx)(`span`,{className:`size-1.5 animate-bounce rounded-full bg-(--accent-primary)`}),(0,F.jsx)(`span`,{className:`size-1.5 animate-bounce rounded-full bg-(--accent-primary) [animation-delay:150ms]`}),(0,F.jsx)(`span`,{className:`size-1.5 animate-bounce rounded-full bg-(--accent-primary) [animation-delay:300ms]`})]})]}),ie=({title:e})=>{let t=i();return(0,F.jsxs)(`div`,{className:`
                 relative
                 flex
                 aspect-video
@@ -719,7 +719,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                     border-(--accent-primary)/20
                     bg-(--accent-primary)/10
                     text-(--accent-primary)
-                `,children:(0,F.jsx)(l,{className:`size-7`})}),(0,F.jsxs)(`div`,{className:`relative`,children:[(0,F.jsx)(`p`,{className:`
+                `,children:(0,F.jsx)(u,{className:`size-7`})}),(0,F.jsxs)(`div`,{className:`relative`,children:[(0,F.jsx)(`p`,{className:`
                         mt-5
                         text-[10px]
                         font-bold
@@ -768,7 +768,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                     uppercase
                     tracking-[0.15em]
                     text-white/20
-                `,children:[(0,F.jsx)(y,{className:`size-3 text-(--accent-primary)`}),`Your account unlocks the player`]})]})};console.log(`hello from our movie detail page`);var ae=()=>{let{movieId:e}=n(),{user:t}=i(),r=Number(e),{movie:o,cast:s,videos:c,watchProviders:l,loading:u,error:d}=j(r),f=M(o),p=N(o),m=P(o),[h,g]=(0,A.useState)(!1),[_,v]=(0,A.useState)(!1),[y,b]=(0,A.useState)(!1),x=(0,A.useMemo)(()=>c?.length?c.find(e=>e.site===`YouTube`&&e.type===`Trailer`&&e.official===!0)||c.find(e=>e.site===`YouTube`&&e.type===`Trailer`)||(c.find(e=>e.site===`YouTube`)??null):null,[c]);if(u)return(0,F.jsx)(te,{});if(d||!o||!Number.isInteger(r)||r<=0)return(0,F.jsx)(`main`,{className:`
+                `,children:[(0,F.jsx)(y,{className:`size-3 text-(--accent-primary)`}),`Your account unlocks the player`]})]})};console.log(`hello from our movie detail page`);var ae=()=>{let{movieId:e}=o(),{user:t}=n(),i=Number(e),{movie:a,cast:s,videos:c,watchProviders:l,loading:u,error:d}=j(i),f=M(a),p=N(a),m=P(a),[h,g]=(0,A.useState)(!1),[_,v]=(0,A.useState)(!1),[y,b]=(0,A.useState)(!1),x=(0,A.useMemo)(()=>c?.length?c.find(e=>e.site===`YouTube`&&e.type===`Trailer`&&e.official===!0)||c.find(e=>e.site===`YouTube`&&e.type===`Trailer`)||(c.find(e=>e.site===`YouTube`)??null):null,[c]);if(u)return(0,F.jsx)(te,{});if(d||!a||!Number.isInteger(i)||i<=0)return(0,F.jsx)(`main`,{className:`
                     flex
                     min-h-screen
                     items-center
@@ -790,7 +790,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                             mt-2
                             text-sm
                             text-white/35
-                        `,children:`We couldn't load this movie.`}),(0,F.jsx)(a,{to:`/`,className:`
+                        `,children:`We couldn't load this movie.`}),(0,F.jsx)(r,{to:`/`,className:`
                             mt-7
                             inline-flex
                             rounded-xl
@@ -804,8 +804,8 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{E as t,J as n,S as r,T
                             duration-300
                             hover:-translate-y-0.5
                             hover:shadow-[0_10px_35px_var(--accent-glow)]
-                        `,children:`Back to CineScope`})]})});let S=!!(o.release_date&&new Date(o.release_date)<=new Date);return(0,F.jsxs)(`main`,{className:`
+                        `,children:`Back to CineScope`})]})});let S=!!(a.release_date&&new Date(a.release_date)<=new Date);return(0,F.jsxs)(`main`,{className:`
                 min-h-screen
                 bg-(--bg-primary)
                 text-white
-            `,children:[(0,F.jsx)(L,{movie:o}),t&&(0,F.jsx)(B,{hasBeenReleased:S,checkingWatchlist:f.checkingWatchlist,addingToWatchlist:f.addingToWatchlist,watchlistAdded:f.watchlistAdded,checkingWatched:p.checkingWatched,addingWatched:p.addingWatched,watched:p.watched,checkingRated:m.checkingRated,savingRating:m.savingRating,rated:m.rated,userRating:m.userRating,ratingOpen:m.ratingOpen,onAddToWatchlist:()=>void f.addToWatchlist(),onAddWatched:()=>void p.addWatched(),onToggleRating:m.toggleRating,onRateMovie:e=>void m.rate(e)}),l&&(0,F.jsx)(U,{providers:l,open:h,onToggle:()=>g(e=>!e)}),(0,F.jsx)(G,{movie:o,trailer:x,loadingTrailer:!1,showCineScopePlayer:_,showTrailer:y,onToggleCineScopePlayer:()=>{t&&(b(!1),v(e=>!e))},onToggleTrailer:()=>{v(!1),b(e=>!e)},player:t?(0,F.jsx)(ne,{tmdbId:o.id,title:o.title}):null,isLoggedIn:!!t}),(0,F.jsx)(J,{movie:o}),s.length>0&&(0,F.jsx)(Q,{cast:s})]})};export{ae as default};
+            `,children:[(0,F.jsx)(L,{movie:a}),t&&(0,F.jsx)(B,{hasBeenReleased:S,checkingWatchlist:f.checkingWatchlist,addingToWatchlist:f.addingToWatchlist,watchlistAdded:f.watchlistAdded,checkingWatched:p.checkingWatched,addingWatched:p.addingWatched,watched:p.watched,checkingRated:m.checkingRated,savingRating:m.savingRating,rated:m.rated,userRating:m.userRating,ratingOpen:m.ratingOpen,onAddToWatchlist:()=>void f.addToWatchlist(),onAddWatched:()=>void p.addWatched(),onToggleRating:m.toggleRating,onRateMovie:e=>void m.rate(e)}),l&&(0,F.jsx)(U,{providers:l,open:h,onToggle:()=>g(e=>!e)}),(0,F.jsx)(G,{movie:a,trailer:x,loadingTrailer:!1,showCineScopePlayer:_,showTrailer:y,onToggleCineScopePlayer:()=>{t&&(b(!1),v(e=>!e))},onToggleTrailer:()=>{v(!1),b(e=>!e)},player:t?(0,F.jsx)(ne,{tmdbId:a.id,title:a.title}):null,isLoggedIn:!!t}),(0,F.jsx)(J,{movie:a}),s.length>0&&(0,F.jsx)(Q,{cast:s})]})};export{ae as default};
