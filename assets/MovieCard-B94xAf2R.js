@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,J as r,Z as i,q as a}from"./index-a77-dag6.js";import{s as o,t as s}from"./movie-B4kAIbhw.js";var c=e(i(),1),l=t(),u=({message:e,type:t=`success`,onClose:n})=>((0,c.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,l.jsx)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,J as r,Z as i,q as a}from"./index-C1IA28ou.js";import{s as o,t as s}from"./movie-U2YIBs55.js";var c=e(i(),1),l=t(),u=({message:e,type:t=`success`,onClose:n})=>((0,c.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,l.jsx)(`div`,{className:`
                 fixed
                 bottom-6
                 left-1/2
@@ -69,7 +69,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,J as r,Z
                         transition-opacity
                         duration-300
                         group-hover:opacity-100
-                    `}),A>0&&(0,l.jsx)(m,{value:A}),E&&(I||b)&&(0,l.jsx)(`button`,{type:`button`,"aria-label":b?D?`${D} is in your liked list`:`Movie is in your liked list`:D?`Add ${D} to my liked list`:`Add movie to my liked list`,onClick:async n=>{if(n.stopPropagation(),!p){t(`/login`);return}if(!(!E||b||w))try{T(!0);let t={id:E,title:D,overview:e.overview??``,poster_path:O,vote_average:A,genre_ids:j};await s(p.uid,t),x(!0),y({message:`${D} added to your liked list`,type:`success`})}catch(e){console.error(`[MovieCard] Failed to like movie:`,e),y({message:`Failed to add movie`,type:`error`})}finally{T(!1)}},disabled:S||w||b,className:`
+                    `}),A>0&&(0,l.jsx)(m,{value:A}),E&&(I||b)&&(0,l.jsx)(`button`,{type:`button`,"aria-label":b?D?`${D} is in your liked list`:`Movie is in your liked list`:D?`Add ${D} to my liked list`:`Add movie to my liked list`,onClick:async n=>{if(n.stopPropagation(),!p){t(`/login`);return}if(!(!E||b||w))try{T(!0);let t={id:E,title:D,overview:e.overview??``,poster_path:O,vote_average:A,genre_ids:j};await s(p.uid,t),x(!0),y({message:`${D} added to your liked list`,type:`success`})}catch{y({message:`Failed to add movie`,type:`error`})}finally{T(!1)}},disabled:S||w||b,className:`
                             absolute
                             right-3
                             top-3
