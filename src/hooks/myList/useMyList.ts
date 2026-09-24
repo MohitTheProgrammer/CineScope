@@ -173,10 +173,7 @@ const useMyList = (): UseMyListResult => {
 
       setMovies(userMovies);
 
-      console.log("[useMyList] Movies loaded successfully:", userMovies);
-    } catch (err) {
-      console.error("[useMyList] Failed to load user movies:", err);
-
+    } catch {
       setError("We couldn't load your saved movies. Please try again.");
     } finally {
       setLoading(false);

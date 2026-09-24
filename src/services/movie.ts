@@ -14,6 +14,9 @@ import {
 
 import { db } from "../services/firebase";
 
+/* Error boundaries below preserve the intentional fallback values used by callers. */
+/* eslint-disable no-useless-catch */
+
 interface Movie {
   id: number;
   title: string;
@@ -56,25 +59,14 @@ const createOrUpdateGlobalMovie = async (movie: Movie): Promise<void> => {
     if (snapshot.exists()) {
       await updateDoc(movieRef, movieData);
 
-      console.log(
-        `[MovieService] Global movie updated successfully: ${movie.id}`,
-      );
     } else {
       await setDoc(movieRef, {
         ...movieData,
         createdAt: serverTimestamp(),
       });
 
-      console.log(
-        `[MovieService] Global movie created successfully: ${movie.id}`,
-      );
     }
   } catch (error) {
-    console.error(
-      `[MovieService] Failed to create/update global movie: ${movie.id}`,
-      error,
-    );
-
     throw error;
   }
 };
@@ -89,8 +81,6 @@ export const getMovieRating = async (
     const snapshot = await getDoc(userRef);
 
     if (!snapshot.exists()) {
-      console.log(`[MovieService] User document not found: ${uid}`);
-
       return null;
     }
 
@@ -115,20 +105,11 @@ export const getMovieRating = async (
           : null;
 
     if (movieRating === null || !Number.isFinite(movieRating)) {
-      console.log(`[MovieService] Movie is not rated: ${movieId}`);
-
       return null;
     }
 
-    console.log(`[MovieService] Movie rating fetched successfully: ${movieId}`);
-
     return movieRating;
-  } catch (error) {
-    console.error(
-      `[MovieService] Failed to get movie rating: ${movieId}`,
-      error,
-    );
-
+  } catch {
     return null;
   }
 };
@@ -142,8 +123,6 @@ export const addLikedMovie = async (
   movie: Movie,
 ): Promise<void> => {
   try {
-    console.log("[MovieService] Adding liked movie:", movie.id);
-
     await createOrUpdateGlobalMovie(movie);
 
     const userRef = doc(db, "users", uid);
@@ -159,10 +138,7 @@ export const addLikedMovie = async (
       },
     );
 
-    console.log("[MovieService] Movie liked successfully:", movie.id);
   } catch (error) {
-    console.error("[MovieService] Failed to like movie:", error);
-
     throw error;
   }
 };
@@ -176,8 +152,6 @@ export const removeLikedMovie = async (
   movieId: number,
 ): Promise<void> => {
   try {
-    console.log("[MovieService] Removing liked movie:", movieId);
-
     const userRef = doc(db, "users", uid);
 
     await updateDoc(userRef, {
@@ -185,10 +159,7 @@ export const removeLikedMovie = async (
       updatedAt: serverTimestamp(),
     });
 
-    console.log("[MovieService] Movie unliked successfully:", movieId);
   } catch (error) {
-    console.error("[MovieService] Failed to remove like:", error);
-
     throw error;
   }
 };
@@ -207,9 +178,7 @@ export const isMovieLiked = async (
     const liked = snapshot.data().liked;
 
     return Array.isArray(liked) && liked.includes(movieId);
-  } catch (error) {
-    console.error(`[MovieService] Failed to check liked movie: ${movieId}`, error);
-
+  } catch {
     return false;
   }
 };
@@ -223,8 +192,6 @@ export const addWatchlistMovie = async (
   movie: Movie,
 ): Promise<void> => {
   try {
-    console.log("[MovieService] Adding movie to watchlist:", movie.id);
-
     await createOrUpdateGlobalMovie(movie);
 
     const userRef = doc(db, "users", uid);
@@ -240,10 +207,7 @@ export const addWatchlistMovie = async (
       },
     );
 
-    console.log("[MovieService] Movie added to watchlist:", movie.id);
   } catch (error) {
-    console.error("[MovieService] Failed to add watchlist movie:", error);
-
     throw error;
   }
 };
@@ -257,8 +221,6 @@ export const removeWatchlistMovie = async (
   movieId: number,
 ): Promise<void> => {
   try {
-    console.log("[MovieService] Removing movie from watchlist:", movieId);
-
     const userRef = doc(db, "users", uid);
 
     await updateDoc(userRef, {
@@ -266,10 +228,7 @@ export const removeWatchlistMovie = async (
       updatedAt: serverTimestamp(),
     });
 
-    console.log("[MovieService] Movie removed from watchlist:", movieId);
   } catch (error) {
-    console.error("[MovieService] Failed to remove watchlist movie:", error);
-
     throw error;
   }
 };
@@ -284,8 +243,6 @@ export const isMovieInWatchlist = async (
     const snapshot = await getDoc(userRef);
 
     if (!snapshot.exists()) {
-      console.log(`[MovieService] User document not found: ${uid}`);
-
       return false;
     }
 
@@ -295,15 +252,8 @@ export const isMovieInWatchlist = async (
 
     const exists = watchlist.includes(movieId);
 
-    console.log(`[MovieService] Watchlist check: ${movieId} -> ${exists}`);
-
     return exists;
-  } catch (error) {
-    console.error(
-      `[MovieService] Failed to check watchlist: ${movieId}`,
-      error,
-    );
-
+  } catch {
     return false;
   }
 };
@@ -317,8 +267,6 @@ export const addWatchedMovie = async (
   movie: Movie,
 ): Promise<void> => {
   try {
-    console.log("[MovieService] Adding watched movie:", movie.id);
-
     await createOrUpdateGlobalMovie(movie);
 
     const userRef = doc(db, "users", uid);
@@ -334,10 +282,7 @@ export const addWatchedMovie = async (
       },
     );
 
-    console.log("[MovieService] Movie marked as watched:", movie.id);
   } catch (error) {
-    console.error("[MovieService] Failed to add watched movie:", error);
-
     throw error;
   }
 };
@@ -352,8 +297,6 @@ export const isMovieWatched = async (
     const snapshot = await getDoc(userRef);
 
     if (!snapshot.exists()) {
-      console.log(`[MovieService] User document not found: ${uid}`);
-
       return false;
     }
 
@@ -363,17 +306,8 @@ export const isMovieWatched = async (
 
     const exists = watched.includes(movieId);
 
-    console.log(
-      `[MovieService] Watched state checked: ${movieId} -> ${exists}`,
-    );
-
     return exists;
   } catch (error) {
-    console.error(
-      `[MovieService] Failed to check watched movie: ${movieId}`,
-      error,
-    );
-
     throw error;
   }
 };
@@ -388,8 +322,6 @@ export const rateMovie = async (
   rating: number,
 ): Promise<void> => {
   try {
-    console.log("[MovieService] Rating movie:", movie.id, "rating:", rating);
-
     await createOrUpdateGlobalMovie(movie);
 
     const userRef = doc(db, "users", uid);
@@ -407,10 +339,7 @@ export const rateMovie = async (
       },
     );
 
-    console.log("[MovieService] Movie rated successfully:", movie.id, rating);
   } catch (error) {
-    console.error("[MovieService] Failed to rate movie:", error);
-
     throw error;
   }
 };
@@ -423,21 +352,15 @@ export const getGlobalMovie = async (
   movieId: number,
 ): Promise<GlobalMovie | null> => {
   try {
-    console.log("[MovieService] Fetching global movie:", movieId);
-
     const movieRef = doc(db, "movies", String(movieId));
 
     const snapshot = await getDoc(movieRef);
 
     if (!snapshot.exists()) {
-      console.log("[MovieService] Global movie not found:", movieId);
-
       return null;
     }
 
     const data = snapshot.data();
-
-    console.log("[MovieService] Global movie fetched:", movieId);
 
     return {
       movieId: data.movieId,
@@ -450,8 +373,6 @@ export const getGlobalMovie = async (
       updatedAt: data.updatedAt ?? null,
     };
   } catch (error) {
-    console.error("[MovieService] Failed to fetch global movie:", error);
-
     throw error;
   }
 };
@@ -473,8 +394,6 @@ export const getUserMovieState = async (
   movieId: number,
 ): Promise<UserMovieState> => {
   try {
-    console.log("[MovieService] Fetching user movie state:", movieId);
-
     const userRef = doc(db, "users", uid);
 
     const snapshot = await getDoc(userRef);
@@ -514,12 +433,8 @@ export const getUserMovieState = async (
       rating,
     };
 
-    console.log("[MovieService] User movie state:", movieId, result);
-
     return result;
   } catch (error) {
-    console.error("[MovieService] Failed to fetch user movie state:", error);
-
     throw error;
   }
 };
@@ -550,8 +465,6 @@ const normalizeRating = (value: unknown): number | null => {
 
 export const getLikedMovies = async (uid: string): Promise<GlobalMovie[]> => {
   try {
-    console.log("[MovieService] Fetching liked movies");
-
     const userRef = doc(db, "users", uid);
 
     const userSnapshot = await getDoc(userRef);
@@ -574,12 +487,8 @@ export const getLikedMovies = async (uid: string): Promise<GlobalMovie[]> => {
       (movie): movie is GlobalMovie => movie !== null,
     );
 
-    console.log("[MovieService] Liked movies fetched:", result.length);
-
     return result;
   } catch (error) {
-    console.error("[MovieService] Failed to fetch liked movies:", error);
-
     throw error;
   }
 };
@@ -592,8 +501,6 @@ export const getWatchlistMovies = async (
   uid: string,
 ): Promise<GlobalMovie[]> => {
   try {
-    console.log("[MovieService] Fetching watchlist movies");
-
     const userRef = doc(db, "users", uid);
 
     const userSnapshot = await getDoc(userRef);
@@ -618,12 +525,8 @@ export const getWatchlistMovies = async (
       (movie): movie is GlobalMovie => movie !== null,
     );
 
-    console.log("[MovieService] Watchlist movies fetched:", result.length);
-
     return result;
   } catch (error) {
-    console.error("[MovieService] Failed to fetch watchlist movies:", error);
-
     throw error;
   }
 };
@@ -634,8 +537,6 @@ export const getWatchlistMovies = async (
 
 export const getWatchedMovies = async (uid: string): Promise<GlobalMovie[]> => {
   try {
-    console.log("[MovieService] Fetching watched movies");
-
     const userRef = doc(db, "users", uid);
 
     const userSnapshot = await getDoc(userRef);
@@ -660,12 +561,8 @@ export const getWatchedMovies = async (uid: string): Promise<GlobalMovie[]> => {
       (movie): movie is GlobalMovie => movie !== null,
     );
 
-    console.log("[MovieService] Watched movies fetched:", result.length);
-
     return result;
   } catch (error) {
-    console.error("[MovieService] Failed to fetch watched movies:", error);
-
     throw error;
   }
 };
@@ -729,14 +626,8 @@ export const getMoviesByIds = async (
       });
     }
 
-    console.log(
-      `[MovieService] Global movies fetched successfully: ${results.length}`,
-    );
-
     return results;
   } catch (error) {
-    console.error("[MovieService] Failed to fetch movies by IDs:", error);
-
     throw error;
   }
 };

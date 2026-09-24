@@ -42,21 +42,17 @@ const Navbar = () => {
         const snapshot = await getDoc(userRef);
 
         if (!snapshot.exists()) {
-          console.log("User document does not exist.");
           setPhotoURL(null);
           return;
         }
 
         const data = snapshot.data();
 
-        console.log("User Data:", data);
-
         const currentAvatar =
           AVATARS.find((avatar) => avatar.id === data.avatarId) ?? AVATARS[0];
 
         setPhotoURL(currentAvatar.src);
-      } catch (error) {
-        console.error("Failed to load user profile:", error);
+      } catch {
         setPhotoURL(null);
       }
     };

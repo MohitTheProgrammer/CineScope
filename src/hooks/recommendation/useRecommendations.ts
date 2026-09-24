@@ -253,12 +253,7 @@ const useRecommendations = () => {
                         3
                     )
                 );
-            } catch (error) {
-                console.error(
-                    "Failed to generate recommendations:",
-                    error
-                );
-
+            } catch {
                 setError(
                     "We couldn't build your recommendations."
                 );

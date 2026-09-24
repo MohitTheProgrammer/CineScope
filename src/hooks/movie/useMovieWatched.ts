@@ -43,18 +43,10 @@ export const useMovieWatched = (movie: Movie | null): UseMovieWatchedResult => {
 
         setWatched(exists);
 
-        console.log(
-          `[useMovieWatched] Watched state loaded: ${movie.id} -> ${exists}`,
-        );
-      } catch (error) {
+      } catch {
         if (cancelled) {
           return;
         }
-
-        console.error(
-          `[useMovieWatched] Failed to check watched state: ${movie.id}`,
-          error,
-        );
 
         setWatched(false);
       } finally {
@@ -101,20 +93,12 @@ export const useMovieWatched = (movie: Movie | null): UseMovieWatchedResult => {
           typeof movie.vote_average === "number" ? movie.vote_average : 0,
       };
 
-      console.log("[useMovieWatched] Movie data being saved:", movieData);
-
       await addWatchedMovie(user.uid, movieData);
 
       setWatched(true);
 
-      console.log(
-        `[useMovieWatched] Movie added to watched successfully: ${movie.id}`,
-      );
-    } catch (error) {
-      console.error(
-        `[useMovieWatched] Failed to add movie to watched: ${movie.id}`,
-        error,
-      );
+    } catch {
+      // Keep the current watched state when saving fails.
     } finally {
       setAddingWatched(false);
     }

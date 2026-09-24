@@ -18,8 +18,6 @@ import MovieDetailSkeleton from "../components/movie/MovieDetailSkeleton";
 
 import VidRockPlayer from "../components/VidRockPlayer";
 
-console.log("hello from our movie detail page");
-
 const MovieDetail = () => {
   const { movieId } = useParams();
 

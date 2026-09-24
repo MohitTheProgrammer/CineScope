@@ -42,17 +42,9 @@ export const useMovieWatchlist = (
         if (!cancelled) {
           setWatchlistAdded(exists);
 
-          console.log(
-            `[useMovieWatchlist] Watchlist state loaded: ${movie.id} -> ${exists}`,
-          );
         }
-      } catch (error) {
+      } catch {
         if (!cancelled) {
-          console.error(
-            `[useMovieWatchlist] Failed to check watchlist: ${movie.id}`,
-            error,
-          );
-
           setWatchlistAdded(false);
         }
       } finally {
@@ -84,17 +76,6 @@ const addToWatchlist = async () => {
                       (genre) => genre.id
                   ) ?? [];
 
-        console.log(
-            "[useMovieWatchlist] Movie before saving:",
-            {
-                id: movie.id,
-                title: movie.title,
-                overview: movie.overview,
-                genre_ids: genreIds,
-                vote_average: movie.vote_average,
-            }
-        );
-
         await addWatchlistMovie(
             user.uid,
             {
@@ -111,14 +92,8 @@ const addToWatchlist = async () => {
 
         setWatchlistAdded(true);
 
-        console.log(
-            `[useMovieWatchlist] Movie added to watchlist successfully: ${movie.id}`
-        );
-    } catch (error) {
-        console.error(
-            `[useMovieWatchlist] Failed to add movie to watchlist: ${movie.id}`,
-            error
-        );
+    } catch {
+        // Keep the current watchlist state when saving fails.
     } finally {
         setAddingToWatchlist(false);
     }

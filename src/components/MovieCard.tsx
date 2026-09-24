@@ -129,9 +129,7 @@ const MovieCard = (movie: MovieCardProps) => {
         message: `${title} added to your liked list`,
         type: "success",
       });
-    } catch (error) {
-      console.error("[MovieCard] Failed to like movie:", error);
-
+    } catch {
       setToast({
         message: "Failed to add movie",
         type: "error",

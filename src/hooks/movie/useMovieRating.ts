@@ -59,17 +59,9 @@ export const useMovieRating = (movie: Movie | null): UseMovieRatingResult => {
           setUserRating(rating);
           setRated(rating !== null);
 
-          console.log(
-            `[useMovieRating] Rating state loaded: ${movie.id} -> ${rating}`,
-          );
         }
-      } catch (error) {
+      } catch {
         if (!cancelled) {
-          console.error(
-            `[useMovieRating] Failed to check rating: ${movie.id}`,
-            error,
-          );
-
           setRated(false);
           setUserRating(null);
         }
@@ -124,14 +116,6 @@ export const useMovieRating = (movie: Movie | null): UseMovieRatingResult => {
         ? movie.genre_ids
         : (movie.genres?.map((genre) => genre.id) ?? []);
 
-      console.log("[useMovieRating] Rating movie:", {
-        movieId: movie.id,
-        title: movie.title,
-        rating,
-        overview: movie.overview ?? "",
-        genreIds,
-      });
-
       await rateMovie(
         user.uid,
         {
@@ -154,14 +138,8 @@ export const useMovieRating = (movie: Movie | null): UseMovieRatingResult => {
       setRated(true);
       setRatingOpen(false);
 
-      console.log(
-        `[useMovieRating] Movie rated successfully: ${movie.id} -> ${rating}`,
-      );
-    } catch (error) {
-      console.error(
-        `[useMovieRating] Failed to rate movie: ${movie.id}`,
-        error,
-      );
+    } catch {
+      // Keep the current rating state when saving fails.
     } finally {
       setSavingRating(false);
     }
