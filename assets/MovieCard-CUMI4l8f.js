@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,J as r,Z as i,q as a}from"./index-C1IA28ou.js";import{s as o,t as s}from"./movie-U2YIBs55.js";var c=e(i(),1),l=t(),u=({message:e,type:t=`success`,onClose:n})=>((0,c.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,l.jsx)(`div`,{className:`
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{D as t,E as n,J as r,Z as i,q as a}from"./index-CRLBOGEA.js";import{s as o,t as s}from"./movie-c6V8jYOP.js";var c=e(i(),1),l=t(),u=({message:e,type:t=`success`,onClose:n})=>((0,c.useEffect)(()=>{let e=setTimeout(()=>{n()},2500);return()=>clearTimeout(e)},[n]),(0,l.jsx)(`div`,{className:`
                 fixed
                 bottom-6
                 left-1/2
