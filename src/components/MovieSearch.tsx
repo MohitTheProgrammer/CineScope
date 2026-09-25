@@ -2,37 +2,33 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-    closeMenu?: () => void
+  closeMenu?: () => void;
 }
 
 const MovieSearch = ({ closeMenu }: Props) => {
-    const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleSearch = () => {
-        const trimmedQuery = query.trim();
+  const handleSearch = () => {
+    const trimmedQuery = query.trim();
 
-        if (!trimmedQuery) return;
+    if (!trimmedQuery) return;
 
-        navigate(
-            `/search?query=${encodeURIComponent(trimmedQuery)}`
-        );
-        setQuery("")
-    };
+    navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
+    setQuery("");
+  };
 
-    const handleKeyDown = (
-        event: React.KeyboardEvent<HTMLInputElement>
-    ) => {
-        if (event.key === "Enter") {
-            handleSearch();
-            closeMenu?.();
-        }
-    };
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" || event.keyCode === 13) {
+      handleSearch();
+      closeMenu?.();
+    }
+  };
 
-    return (
-        <div
-            className="
+  return (
+    <div
+      className="
                 flex
                 items-center
                 gap-2
@@ -48,16 +44,16 @@ const MovieSearch = ({ closeMenu }: Props) => {
                 focus-within:border-(--accent-primary)
                 focus-within:shadow-[0_0_20px_var(--accent-glow)]
             "
-        >
-            <SearchIcon />
+    >
+      <SearchIcon />
 
-            <input
-                type="text"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Search movies..."
-                className="
+      <input
+        type="text"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Search movies..."
+        className="
                     w-28
                     bg-transparent
                     text-sm
@@ -66,27 +62,27 @@ const MovieSearch = ({ closeMenu }: Props) => {
                     placeholder:text-white/40
                     sm:w-40
                 "
-            />
-        </div>
-    );
+      />
+    </div>
+  );
 };
 
 const SearchIcon = () => {
-    return (
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="size-4 shrink-0 text-white/50"
-            aria-hidden="true"
-        >
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-4-4" />
-        </svg>
-    );
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="size-4 shrink-0 text-white/50"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-4-4" />
+    </svg>
+  );
 };
 
 export default MovieSearch;
